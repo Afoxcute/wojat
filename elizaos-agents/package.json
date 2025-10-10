@@ -1,0 +1,29 @@
+{
+  "name": "iris-elizaos-agents",
+  "version": "1.0.0",
+  "description": "ElizaOS agents for Iris memecoin hunting platform",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "node test-agent.js"
+  },
+  "keywords": [
+    "elizaos",
+    "solana",
+    "memecoin",
+    "trading",
+    "ai"
+  ],
+  "author": "Iris Team",
+  "license": "MIT",
+  "dependencies": {
+    "@elizaos/core": "^0.1.0",
+    "@elizaos/plugin-solana": "^0.1.0",
+    "amqplib": "^0.10.9",
+    "dotenv": "^16.4.5",
+    "sharp": "^0.34.4",
+    "twitter-api-v2": "^1.27.0"
+  }
+}
