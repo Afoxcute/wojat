@@ -24,13 +24,13 @@ function log(message, color = 'blue') {
   console.log(`${colors[color]}${message}${colors.reset}`);
 }
 
-function runCommand(command, cwd = process.cwd()) {
+function runCommand(command, cwd = process.cwd(), env = {}) {
   try {
     log(`Running: ${command}`, 'blue');
     execSync(command, { 
       cwd, 
       stdio: 'inherit',
-      env: { ...process.env, NODE_ENV: 'production' }
+      env: { ...process.env, NODE_ENV: 'production', ...env }
     });
     return true;
   } catch (error) {
@@ -54,7 +54,10 @@ async function buildForRender() {
       throw new Error('Failed to install frontend dependencies');
     }
     
-    if (!runCommand('npm run build', path.join(__dirname, 'frontend'))) {
+    // Set environment variables for production build
+    const buildEnv = { ...process.env, NODE_ENV: 'production', NEXT_PUBLIC_APP_URL: 'https://your-app.onrender.com' };
+    
+    if (!runCommand('npm run build', path.join(__dirname, 'frontend'), buildEnv)) {
       throw new Error('Failed to build frontend');
     }
 

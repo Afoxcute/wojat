@@ -3,7 +3,9 @@ const nextConfig = {
   experimental: {
     esmExternals: "loose",
   },
-  output: 'standalone',
+  output: 'export',
+  trailingSlash: true,
+  distDir: 'out',
   async headers() {
     return [
       {
