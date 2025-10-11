@@ -1,8 +1,6 @@
-// Master Scheduler Agent - Coordinates all social media agents
+// Master Scheduler Agent - Coordinates Twitter social media agents
 import ContentGeneratorAgent from './content-generator-agent.js';
 import TwitterManagerAgent from './twitter-manager-agent.js';
-import TelegramManagerAgent from './telegram-manager-agent.js';
-import DiscordManagerAgent from './discord-manager-agent.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -10,26 +8,22 @@ dotenv.config();
 export class MasterSchedulerAgent {
   constructor() {
     this.name = 'Master Scheduler Agent';
-    this.personality = 'Strategic coordinator focused on maximizing social media impact and community engagement';
+    this.personality = 'Strategic coordinator focused on maximizing Twitter impact and community engagement';
     this.goals = [
-      'Coordinate all social media platforms for maximum impact',
-      'Optimize posting schedules across platforms',
+      'Coordinate Twitter platform for maximum impact',
+      'Optimize posting schedules for Twitter',
       'Ensure consistent brand messaging',
-      'Maximize engagement and reach',
-      'Monitor and analyze performance across all platforms'
+      'Maximize engagement and reach on Twitter',
+      'Monitor and analyze performance on Twitter'
     ];
 
-    // Initialize all agents
+    // Initialize Twitter agents only
     this.contentGenerator = new ContentGeneratorAgent();
     this.twitterManager = new TwitterManagerAgent();
-    this.telegramManager = new TelegramManagerAgent();
-    this.discordManager = new DiscordManagerAgent();
     
     this.agents = [
       this.contentGenerator,
-      this.twitterManager,
-      this.telegramManager,
-      this.discordManager
+      this.twitterManager
     ];
 
     this.isRunning = false;
@@ -42,25 +36,28 @@ export class MasterSchedulerAgent {
     };
   }
 
-  // Initialize all agents
+  // Initialize all agents (legacy method - now Twitter only)
   async initialize() {
+    return this.initializeTwitterOnly();
+  }
+
+  // Initialize Twitter-only agents
+  async initializeTwitterOnly() {
     try {
-      console.log('🎯 Initializing Master Scheduler Agent...');
+      console.log('🎯 Initializing Master Scheduler Agent (Twitter Only)...');
       
-      // Initialize all social media agents
+      // Initialize Twitter agents only
       const initResults = await Promise.allSettled([
-        this.twitterManager.initialize(),
-        this.telegramManager.initialize(),
-        this.discordManager.initialize()
+        this.twitterManager.initialize()
       ]);
 
       const successCount = initResults.filter(result => result.status === 'fulfilled' && result.value).length;
-      console.log(`✅ ${successCount}/${initResults.length} social media agents initialized`);
+      console.log(`✅ ${successCount}/${initResults.length} Twitter agents initialized`);
 
       // Create initial schedule
-      this.createMasterSchedule();
+      this.createTwitterSchedule();
       
-      console.log('✅ Master Scheduler Agent initialized successfully');
+      console.log('✅ Master Scheduler Agent (Twitter Only) initialized successfully');
       return true;
     } catch (error) {
       console.error('❌ Failed to initialize Master Scheduler Agent:', error);
@@ -68,8 +65,8 @@ export class MasterSchedulerAgent {
     }
   }
 
-  // Create master posting schedule
-  createMasterSchedule() {
+  // Create Twitter-only posting schedule
+  createTwitterSchedule() {
     const today = new Date();
     this.schedule = [];
 
@@ -77,7 +74,7 @@ export class MasterSchedulerAgent {
     this.schedule.push({
       time: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 8, 0),
       type: 'educational',
-      platforms: ['twitter', 'telegram', 'discord'],
+      platforms: ['twitter'],
       content: 'risk-management',
       priority: 'high'
     });
@@ -86,7 +83,7 @@ export class MasterSchedulerAgent {
     this.schedule.push({
       time: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 12, 0),
       type: 'trending',
-      platforms: ['twitter', 'telegram', 'discord'],
+      platforms: ['twitter'],
       content: 'daily-trends',
       priority: 'high'
     });
@@ -95,7 +92,7 @@ export class MasterSchedulerAgent {
     this.schedule.push({
       time: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 16, 0),
       type: 'analysis',
-      platforms: ['twitter', 'telegram', 'discord'],
+      platforms: ['twitter'],
       content: 'market-analysis',
       priority: 'medium'
     });
@@ -104,7 +101,7 @@ export class MasterSchedulerAgent {
     this.schedule.push({
       time: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 20, 0),
       type: 'community',
-      platforms: ['twitter', 'telegram', 'discord'],
+      platforms: ['twitter'],
       content: 'community-spotlight',
       priority: 'medium'
     });
@@ -145,7 +142,7 @@ export class MasterSchedulerAgent {
     }
   }
 
-  // Execute a single post across platforms
+  // Execute a single post on Twitter
   async executePost(post) {
     const results = {};
     
@@ -157,12 +154,9 @@ export class MasterSchedulerAgent {
           case 'twitter':
             result = await this.executeTwitterPost(post);
             break;
-          case 'telegram':
-            result = await this.executeTelegramPost(post);
-            break;
-          case 'discord':
-            result = await this.executeDiscordPost(post);
-            break;
+          default:
+            console.log(`⚠️ Platform ${platform} not supported in Twitter-only mode`);
+            result = { success: false, error: 'Platform not supported' };
         }
         
         results[platform] = result;
@@ -198,48 +192,11 @@ export class MasterSchedulerAgent {
     }
   }
 
-  // Execute Telegram post
-  async executeTelegramPost(post) {
-    switch (post.type) {
-      case 'educational':
-        return await this.telegramManager.postEducationalContent(post.content);
-      case 'trending':
-        console.log('📈 Would post trending update to Telegram');
-        return { success: true, simulated: true };
-      case 'analysis':
-        console.log('📊 Would post market analysis to Telegram');
-        return { success: true, simulated: true };
-      case 'community':
-        console.log('👥 Would post community content to Telegram');
-        return { success: true, simulated: true };
-      default:
-        return { success: false, error: 'Unknown post type' };
-    }
-  }
 
-  // Execute Discord post
-  async executeDiscordPost(post) {
-    switch (post.type) {
-      case 'educational':
-        return await this.discordManager.postEducationalContent(post.content);
-      case 'trending':
-        console.log('📈 Would post trending update to Discord');
-        return { success: true, simulated: true };
-      case 'analysis':
-        console.log('📊 Would post market analysis to Discord');
-        return { success: true, simulated: true };
-      case 'community':
-        console.log('👥 Would post community content to Discord');
-        return { success: true, simulated: true };
-      default:
-        return { success: false, error: 'Unknown post type' };
-    }
-  }
-
-  // Post trending alert across all platforms
+  // Post trending alert on Twitter
   async postTrendingAlert(trendingData) {
     try {
-      console.log('🔥 Posting trending alert across all platforms...');
+      console.log('🔥 Posting trending alert on Twitter...');
       
       const results = {};
       
@@ -250,24 +207,10 @@ export class MasterSchedulerAgent {
         results.twitter = { success: false, error: error.message };
       }
       
-      // Post to Telegram
-      try {
-        results.telegram = await this.telegramManager.postTrendingAlert(trendingData);
-      } catch (error) {
-        results.telegram = { success: false, error: error.message };
-      }
-      
-      // Post to Discord
-      try {
-        results.discord = await this.discordManager.postTrendingAlert(trendingData);
-      } catch (error) {
-        results.discord = { success: false, error: error.message };
-      }
-      
       // Update performance metrics
       this.updatePerformanceMetrics(results);
       
-      console.log('✅ Trending alert posted across all platforms');
+      console.log('✅ Trending alert posted on Twitter');
       return results;
     } catch (error) {
       console.error('❌ Error posting trending alert:', error);
@@ -275,10 +218,10 @@ export class MasterSchedulerAgent {
     }
   }
 
-  // Post educational content across all platforms
+  // Post educational content on Twitter
   async postEducationalContent(topic) {
     try {
-      console.log(`📚 Posting educational content across all platforms: ${topic}`);
+      console.log(`📚 Posting educational content on Twitter: ${topic}`);
       
       const results = {};
       
@@ -289,24 +232,10 @@ export class MasterSchedulerAgent {
         results.twitter = { success: false, error: error.message };
       }
       
-      // Post to Telegram
-      try {
-        results.telegram = await this.telegramManager.postEducationalContent(topic);
-      } catch (error) {
-        results.telegram = { success: false, error: error.message };
-      }
-      
-      // Post to Discord
-      try {
-        results.discord = await this.discordManager.postEducationalContent(topic);
-      } catch (error) {
-        results.discord = { success: false, error: error.message };
-      }
-      
       // Update performance metrics
       this.updatePerformanceMetrics(results);
       
-      console.log('✅ Educational content posted across all platforms');
+      console.log('✅ Educational content posted on Twitter');
       return results;
     } catch (error) {
       console.error('❌ Error posting educational content:', error);
@@ -314,10 +243,10 @@ export class MasterSchedulerAgent {
     }
   }
 
-  // Post market analysis across all platforms
+  // Post market analysis on Twitter
   async postMarketAnalysis(analysis) {
     try {
-      console.log('📊 Posting market analysis across all platforms...');
+      console.log('📊 Posting market analysis on Twitter...');
       
       const results = {};
       
@@ -328,24 +257,10 @@ export class MasterSchedulerAgent {
         results.twitter = { success: false, error: error.message };
       }
       
-      // Post to Telegram
-      try {
-        results.telegram = await this.telegramManager.postMarketAnalysis(analysis);
-      } catch (error) {
-        results.telegram = { success: false, error: error.message };
-      }
-      
-      // Post to Discord
-      try {
-        results.discord = await this.discordManager.postMarketAnalysis(analysis);
-      } catch (error) {
-        results.discord = { success: false, error: error.message };
-      }
-      
       // Update performance metrics
       this.updatePerformanceMetrics(results);
       
-      console.log('✅ Market analysis posted across all platforms');
+      console.log('✅ Market analysis posted on Twitter');
       return results;
     } catch (error) {
       console.error('❌ Error posting market analysis:', error);
@@ -371,12 +286,10 @@ export class MasterSchedulerAgent {
   // Get performance metrics for all platforms
   async getPerformanceMetrics() {
     try {
-      console.log('📊 Gathering performance metrics from all platforms...');
+      console.log('📊 Gathering performance metrics from Twitter...');
       
       const metrics = {
         twitter: await this.twitterManager.getEngagementMetrics(),
-        telegram: await this.telegramManager.getChannelStats(),
-        discord: await this.discordManager.getServerStats(),
         master: this.performanceMetrics
       };
       
@@ -492,9 +405,7 @@ export class MasterSchedulerAgent {
     return {
       master: this.getStatus(),
       contentGenerator: this.contentGenerator.getStatus(),
-      twitterManager: this.twitterManager.getStatus(),
-      telegramManager: this.telegramManager.getStatus(),
-      discordManager: this.discordManager.getStatus()
+      twitterManager: this.twitterManager.getStatus()
     };
   }
 }

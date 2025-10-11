@@ -1,9 +1,7 @@
-// Phase 2 Orchestrator - Enhanced Social Media Automation
+// Phase 2 Orchestrator - Twitter-Only Social Media Automation
 import MasterSchedulerAgent from './agents/master-scheduler-agent.js';
 import ContentGeneratorAgent from './agents/content-generator-agent.js';
 import TwitterManagerAgent from './agents/twitter-manager-agent.js';
-import TelegramManagerAgent from './agents/telegram-manager-agent.js';
-import DiscordManagerAgent from './agents/discord-manager-agent.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -11,24 +9,20 @@ dotenv.config();
 export class Phase2Orchestrator {
   constructor() {
     this.name = 'Phase 2 Orchestrator';
-    this.description = 'Enhanced Social Media Automation System';
-    this.version = '2.0.0';
+    this.description = 'Twitter-Only Social Media Automation System';
+    this.version = '2.1.0';
     
     // Initialize master scheduler
     this.masterScheduler = new MasterSchedulerAgent();
     
-    // Individual agents for direct access
+    // Individual agents for direct access (Twitter only)
     this.contentGenerator = new ContentGeneratorAgent();
     this.twitterManager = new TwitterManagerAgent();
-    this.telegramManager = new TelegramManagerAgent();
-    this.discordManager = new DiscordManagerAgent();
     
     this.agents = [
       this.masterScheduler,
       this.contentGenerator,
-      this.twitterManager,
-      this.telegramManager,
-      this.discordManager
+      this.twitterManager
     ];
     
     this.isRunning = false;
@@ -37,15 +31,15 @@ export class Phase2Orchestrator {
   // Initialize Phase 2 system
   async initialize() {
     try {
-      console.log('🚀 Initializing Phase 2: Enhanced Social Media Automation...\n');
+      console.log('🚀 Initializing Phase 2: Twitter-Only Social Media Automation...\n');
       
-      // Initialize master scheduler (which initializes all agents)
-      const initialized = await this.masterScheduler.initialize();
+      // Initialize master scheduler (which initializes Twitter agents only)
+      const initialized = await this.masterScheduler.initializeTwitterOnly();
       
       if (initialized) {
         console.log('✅ Phase 2 system initialized successfully');
-        console.log('📱 Available platforms: Twitter, Telegram, Discord');
-        console.log('🤖 Active agents: Content Generator, Platform Managers, Master Scheduler');
+        console.log('🐦 Platform: Twitter only');
+        console.log('🤖 Active agents: Content Generator, Twitter Manager, Master Scheduler');
         return true;
       } else {
         console.log('⚠️ Phase 2 system initialized with limited functionality');
@@ -311,6 +305,6 @@ export async function main() {
 }
 
 // Run if this file is executed directly
-if (process.argv[1] && process.argv[1].endsWith('phase2-orchestrator.js')) {
+if (import.meta.url.endsWith('phase2-orchestrator.js')) {
   main();
 }

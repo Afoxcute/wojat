@@ -1,5 +1,29 @@
 # Iris - The TikTok Memecoin Hunter
 
+## 🚀 **Single Command to Run All Phases**
+
+```bash
+# Install dependencies and start everything
+npm run iris
+# or
+yarn iris
+# or
+node start-iris.js
+```
+
+**What this runs:**
+- **Phase 1**: Data Collection & Display (Frontend)
+- **Phase 2**: Social Media Automation (ElizaOS Agents)  
+- **Phase 3**: AI-Powered Frontend (Frontend)
+- **Phase 4**: Advanced AI Trading (ElizaOS Agents)
+
+**Access Points:**
+- Main App: http://localhost:3000
+- AI Chat: http://localhost:3000/ai-chat
+- Dashboard: http://localhost:3000/dashboard
+
+---
+
 **Description:**  
 Iris is an autonomous AI-powered agent that hunts for the hottest memecoins trending on TikTok and provides real-time analytics on their performance. Designed for crypto enthusiasts and memecoin hunters, Iris bridges the gap between TikTok meme culture and emerging cryptocurrency trends.
 

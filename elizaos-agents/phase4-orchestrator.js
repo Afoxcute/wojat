@@ -649,6 +649,6 @@ export async function main() {
 }
 
 // Run if this file is executed directly
-if (process.argv[1] && process.argv[1].endsWith('phase4-orchestrator.js')) {
+if (import.meta.url.endsWith('phase4-orchestrator.js')) {
   main();
 }

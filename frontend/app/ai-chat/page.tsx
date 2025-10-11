@@ -83,7 +83,7 @@ export default function AIChatPage() {
     if ('Notification' in window && Notification.permission === 'granted') {
       new Notification(`Iris Alert: ${update.type}`, {
         body: `New ${update.type} update available`,
-        icon: '/bomboh.png'
+        icon: '/wojat.png'
       });
     }
   };

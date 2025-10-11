@@ -211,6 +211,8 @@ const processSearchTerm = async (page, keyword, maxResults = 50) => {
   const searchUrl = `https://www.tiktok.com/search?q=${keyword}`;
   const results = [];
   const scrollPauseTime = 2000;
+  const maxRetries = 10; // Maximum number of retries
+  let retryCount = 0;
 
   try {
     console.log(`\nProcessing search term: ${keyword}`);
@@ -219,20 +221,44 @@ const processSearchTerm = async (page, keyword, maxResults = 50) => {
     if (await verifyPageLoaded(page, searchUrl)) {
       console.log("\nWaiting for video feed...");
 
-      while (results.length < maxResults) {
-        // const videoElements = await page.$$('div[class*="DivItemContainerV2"]');
-        const videoElements = await page.$$(
-          'div[class*="DivItemContainerForSearch"]'
-        );
+      while (results.length < maxResults && retryCount < maxRetries) {
+        // Try multiple selectors for video elements
+        let videoElements = await page.$$('div[class*="DivItemContainerForSearch"]');
+        
+        // Ensure videoElements is an array
+        if (!videoElements) {
+          videoElements = [];
+        }
+        
+        // If no elements found, try alternative selectors
+        if (!videoElements.length) {
+          videoElements = await page.$$('div[class*="DivItemContainerV2"]') || [];
+        }
+        
+        // Try more generic selectors
+        if (!videoElements.length) {
+          videoElements = await page.$$('[data-e2e="search-video-item"]') || [];
+        }
+        
+        // Try even more generic selectors
+        if (!videoElements.length) {
+          videoElements = await page.$$('div[class*="ItemContainer"]') || [];
+        }
 
         if (!videoElements.length) {
-          console.log("No video elements found. Waiting...");
+          retryCount++;
+          console.log(`No video elements found. Waiting... (Attempt ${retryCount}/${maxRetries})`);
+          
+          if (retryCount >= maxRetries) {
+            console.log("\n❌ Maximum retries reached. Moving to next keyword.");
+            break;
+          }
+          
           await new Promise((resolve) => setTimeout(resolve, 5000));
           continue;
         }
 
-        console.log("Count of Video elements")
-        console.log(videoElements.length);
+        console.log(`Count of Video elements: ${videoElements.length}`);
 
         for (const element of videoElements) {
           if (results.length >= maxResults) break;
@@ -244,7 +270,7 @@ const processSearchTerm = async (page, keyword, maxResults = 50) => {
             !processedUrls.has(videoData.video_url)
           ) {
             console.log(
-              `Found video ${results.length}/${maxResults}: ${videoData.video_url}`
+              `Found video ${results.length + 1}/${maxResults}: ${videoData.video_url}`
             );
 
             const postId = videoData.video_url.split("/").pop();
@@ -257,10 +283,11 @@ const processSearchTerm = async (page, keyword, maxResults = 50) => {
         }
 
         if (results.length >= maxResults) {
-          console.log(`\nReached target number of videos for '${keyword}'`);
+          console.log(`\n✅ Reached target number of videos for '${keyword}'`);
           break;
         }
 
+        // Scroll down to load more content
         const previousHeight = await page.evaluate(
           "document.documentElement.scrollHeight"
         );
@@ -268,19 +295,21 @@ const processSearchTerm = async (page, keyword, maxResults = 50) => {
           "window.scrollTo(0, document.documentElement.scrollHeight)"
         );
         await new Promise((resolve) => setTimeout(resolve, scrollPauseTime));
+
         const newHeight = await page.evaluate(
           "document.documentElement.scrollHeight"
         );
+
         if (newHeight === previousHeight) {
-          console.log(`\nReached end of feed for '${keyword}'`);
+          console.log("\n⚠️ No new content loaded. Moving to next keyword.");
           break;
         }
       }
     }
 
     return results;
-  } catch (e) {
-    console.error(`\nError processing search term '${keyword}': ${e}`);
+  } catch (error) {
+    console.error(`Error processing search term ${keyword}:`, error);
     return results;
   }
 };
@@ -289,6 +318,8 @@ const processHashtagTerm = async (page, keyword, maxResults = 50) => {
   const hashtagUrl = `https://www.tiktok.com/tag/${keyword}`;
   const results = [];
   const scrollPauseTime = 2000;
+  const startTime = Date.now();
+  const SCRAPING_TIMEOUT = 300000; // 5 minutes timeout
 
   try {
     console.log(`\nProcessing hashtag term: ${keyword}`);
@@ -297,8 +328,14 @@ const processHashtagTerm = async (page, keyword, maxResults = 50) => {
     if (await verifyPageLoaded(page, hashtagUrl)) {
       console.log("\nWaiting for video feed...");
 
-      while (results.length < maxResults) {
-        const videoElements = await page.$$('div[class*="DivItemContainerV2"]');
+      // Timeout check
+      if (Date.now() - startTime > SCRAPING_TIMEOUT) {
+        console.log("\n⏰ Scraping timeout reached. Stopping...");
+        return results;
+      }
+
+while (results.length < maxResults) {
+        const videoElements = await page.$$('div[class*="DivItemContainerV2"]') || [];
 
         if (!videoElements.length) {
           console.log("No video elements found. Waiting...");

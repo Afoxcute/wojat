@@ -63,14 +63,14 @@ export default function Layout({
           }}
         >
           <Image
-            src="/bomboh.png"
-            alt="Bimboh Logo"
+            src="/wojat.png"
+            alt="Wojat Logo"
             width={40}
             height={40}
             className="rounded-full"
           />
           <p className="font-bold text-lg sm:text-2xl crypto-futuristic tracking-widest text-iris-primary">
-            Bimboh
+            Wojat
           </p>
         </div>
 
