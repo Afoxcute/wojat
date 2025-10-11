@@ -14,9 +14,13 @@
     "start:phases": "node start-iris.js",
     "run:all": "node start-iris.js",
     "twitter": "node start-twitter-only.js",
-    "start:twitter": "node start-twitter-only.js"
+    "start:twitter": "node start-twitter-only.js",
+    "build:render": "node build-for-render.js",
+    "render:build": "npm run build:render",
+    "render:start": "node server.js"
   },
   "dependencies": {
+    "express": "^4.18.2",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-progress": "^1.1.7",

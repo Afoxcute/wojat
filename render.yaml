@@ -1,21 +1,45 @@
+# Render.com deployment configuration for Wojat Platform
+# This file is optional but provides better control over deployment
+
 services:
   - type: web
     name: wojat-platform
     env: node
     plan: starter
-    buildCommand: npm install && cd frontend && npm install && npm run build
-    startCommand: cd frontend && npm run start
+    buildCommand: |
+      npm install --legacy-peer-deps
+      cd frontend && npm install --legacy-peer-deps && npm run build
+      cd ../elizaos-agents && npm install --legacy-peer-deps
+      cd ../js-scraper && npm install --legacy-peer-deps
+      cd ../bitquery && npm install --legacy-peer-deps
+    startCommand: node server.js
     envVars:
       - key: NODE_ENV
         value: production
-      - key: NEXT_PUBLIC_SUPABASE_URL
-        sync: false
-      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
-        sync: false
-      - key: NEXT_PUBLIC_WS_URL
-        value: wss://wojat-platform.onrender.com/ws
       - key: PORT
-        value: 10000
-    healthCheckPath: /
-    autoDeploy: true
-    branch: main
+        value: 3000
+      # Add your environment variables here
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: BITQUERY_API_KEY
+        sync: false
+      - key: ACCESS_TOKEN
+        sync: false
+      - key: CONSUMER_KEY
+        sync: false
+      - key: CONSUMER_SECRET
+        sync: false
+      - key: ZORO_ACCESS_TOKEN
+        sync: false
+      - key: ZORO_ACCESS_TOKEN_SECRET
+        sync: false
+      - key: SOLANA_PRIVATE_KEY
+        sync: false
+      - key: SOLANA_PUBLIC_KEY
+        sync: false
+      - key: SOLANA_RPC_URL
+        value: https://api.mainnet-beta.solana.com

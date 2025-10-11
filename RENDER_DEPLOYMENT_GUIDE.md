@@ -1,233 +1,232 @@
-# 🚀 Wojat Platform - Render Deployment Guide
+# 🚀 Wojat Platform - Render.com Deployment Guide
 
-This guide will help you deploy the Wojat memecoin hunting platform on Render as a web service.
+This guide will help you deploy the Wojat memecoin hunting platform to Render.com as a single web service.
 
 ## 📋 Prerequisites
 
-- Render account (free tier available)
-- GitHub repository with your Wojat code
-- Environment variables ready
+1. **Render.com Account**: Sign up at [render.com](https://render.com)
+2. **GitHub Repository**: Push your code to GitHub
+3. **Environment Variables**: Prepare all required API keys and credentials
 
-## 🔧 Deployment Steps
+## 🔧 Required Environment Variables
 
-### 1. Prepare Your Repository
+Set these in your Render dashboard under "Environment Variables":
 
-Make sure your code is pushed to GitHub with the following files:
-- `render.yaml` (Render configuration)
-- `Dockerfile` (Docker configuration)
-- `.dockerignore` (Docker ignore file)
-- `package.json` (Root dependencies)
-- `frontend/package.json` (Frontend dependencies)
-
-### 2. Create Render Web Service
-
-1. **Go to Render Dashboard**
-   - Visit [render.com](https://render.com)
-   - Sign in or create an account
-
-2. **Create New Web Service**
-   - Click "New +" → "Web Service"
-   - Connect your GitHub repository
-   - Select your Wojat repository
-
-3. **Configure Service Settings**
-   - **Name**: `wojat-platform`
-   - **Environment**: `Node`
-   - **Region**: Choose closest to your users
-   - **Branch**: `main` (or your default branch)
-   - **Root Directory**: Leave empty (uses root)
-   - **Build Command**: `npm install && cd frontend && npm install && npm run build`
-   - **Start Command**: `cd frontend && npm run start`
-
-### 3. Environment Variables
-
-Add these environment variables in Render dashboard:
-
-#### Required Variables:
-```
+### **Core Services**
+```env
 NODE_ENV=production
-PORT=10000
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-NEXT_PUBLIC_WS_URL=wss://wojat-platform.onrender.com/ws
+PORT=3000
 ```
 
-#### Optional Variables (for full functionality):
-```
+### **AI Services**
+```env
 OPENAI_API_KEY=your_openai_api_key
-CONSUMER_KEY=your_twitter_consumer_key
-CONSUMER_SECRET=your_twitter_consumer_secret
-ZORO_ACCESS_TOKEN=your_twitter_access_token
-ZORO_ACCESS_TOKEN_SECRET=your_twitter_access_token_secret
-SOLANA_PRIVATE_KEY=your_solana_private_key
-SOLANA_PUBLIC_KEY=your_solana_public_key
-SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
+```
+
+### **Database (Supabase)**
+```env
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+### **Blockchain Data (Bitquery)**
+```env
 BITQUERY_API_KEY=your_bitquery_api_key
 ACCESS_TOKEN=your_bitquery_access_token
 ```
 
-### 4. Deploy
+### **Twitter Integration**
+```env
+CONSUMER_KEY=your_twitter_consumer_key
+CONSUMER_SECRET=your_twitter_consumer_secret
+ZORO_ACCESS_TOKEN=your_twitter_access_token
+ZORO_ACCESS_TOKEN_SECRET=your_twitter_access_token_secret
+```
 
-1. **Start Deployment**
+### **Solana Integration (Optional)**
+```env
+SOLANA_PRIVATE_KEY=your_base58_private_key
+SOLANA_PUBLIC_KEY=your_public_key
+SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
+```
+
+### **Enhanced RPC Services (Optional)**
+```env
+HELIUS_API_KEY=your_helius_api_key
+BIRDEYE_API_KEY=your_birdeye_api_key
+```
+
+## 🚀 Deployment Steps
+
+### **Method 1: Using Render Dashboard (Recommended)**
+
+1. **Connect Repository**
+   - Go to [render.com/dashboard](https://render.com/dashboard)
+   - Click "New +" → "Web Service"
+   - Connect your GitHub repository
+   - Select the repository containing Wojat
+
+2. **Configure Service**
+   - **Name**: `wojat-platform`
+   - **Environment**: `Node`
+   - **Region**: Choose closest to your users
+   - **Branch**: `main` (or your default branch)
+
+3. **Build & Deploy Settings**
+   - **Build Command**: 
+     ```bash
+     npm install && cd frontend && npm install && npm run build && cd ../elizaos-agents && npm install && cd ../js-scraper && npm install && cd ../bitquery && npm install
+     ```
+   - **Start Command**: 
+     ```bash
+     node server.js
+     ```
+
+4. **Environment Variables**
+   - Add all the environment variables listed above
+   - Mark sensitive ones as "Secret"
+
+5. **Deploy**
    - Click "Create Web Service"
-   - Render will automatically build and deploy your app
-   - Monitor the build logs for any issues
+   - Wait for build to complete (5-10 minutes)
+   - Your service will be available at `https://wojat-platform.onrender.com`
 
-2. **Wait for Deployment**
-   - Build process takes 5-10 minutes
-   - You'll see build logs in real-time
-   - Service will be available at `https://wojat-platform.onrender.com`
+### **Method 2: Using render.yaml (Alternative)**
 
-## 🔧 Configuration Files
+1. **Add render.yaml to your repository** (already created)
+2. **Deploy from GitHub**
+   - Connect repository in Render dashboard
+   - Render will automatically detect the `render.yaml` file
+   - Follow the prompts to deploy
 
-### render.yaml
-```yaml
-services:
-  - type: web
-    name: wojat-platform
-    env: node
-    plan: starter
-    buildCommand: npm install && cd frontend && npm install && npm run build
-    startCommand: cd frontend && npm run start
-    envVars:
-      - key: NODE_ENV
-        value: production
-      - key: PORT
-        value: 10000
-    healthCheckPath: /
-    autoDeploy: true
-    branch: main
-```
+### **Method 3: Using Docker (Advanced)**
 
-### Dockerfile
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY frontend/package*.json ./frontend/
-RUN cd frontend && npm install
-COPY . .
-RUN cd frontend && npm run build
-EXPOSE 3000
-ENV NODE_ENV=production
-ENV PORT=3000
-CMD ["cd", "frontend", "&&", "npm", "run", "start"]
-```
+1. **Dockerfile is already created** in your repository
+2. **Deploy as Docker service**
+   - Select "Docker" as environment in Render
+   - Render will use the Dockerfile automatically
 
-## 🚨 Important Notes
+## 🔍 Post-Deployment Verification
 
-### Render Free Tier Limitations:
-- **Sleep Mode**: Service sleeps after 15 minutes of inactivity
-- **Cold Start**: First request after sleep takes 30-60 seconds
-- **Build Time**: 750 minutes per month
-- **Bandwidth**: 100GB per month
+### **Health Check**
+Visit: `https://your-app-name.onrender.com/health`
 
-### Production Optimizations:
-1. **Enable Auto-Deploy**: Automatically deploys on git push
-2. **Health Checks**: Configure health check endpoint
-3. **Environment Variables**: Use Render's secure env var storage
-4. **Custom Domain**: Add your own domain (paid feature)
-
-## 🔍 Troubleshooting
-
-### Common Issues:
-
-1. **Build Fails**
-   - Check build logs in Render dashboard
-   - Ensure all dependencies are in package.json
-   - Verify Node.js version compatibility
-
-2. **Service Won't Start**
-   - Check start command is correct
-   - Verify PORT environment variable
-   - Check application logs
-
-3. **Environment Variables Not Working**
-   - Ensure variables are set in Render dashboard
-   - Check variable names match your code
-   - Restart service after adding variables
-
-4. **Database Connection Issues**
-   - Verify Supabase URL and keys
-   - Check database is accessible from Render
-   - Ensure RLS policies are configured
-
-### Debug Commands:
-```bash
-# Check if service is running
-curl https://wojat-platform.onrender.com
-
-# Check health endpoint
-curl https://wojat-platform.onrender.com/api/health
-
-# View logs in Render dashboard
-# Go to your service → Logs tab
-```
-
-## 📊 Monitoring
-
-### Render Dashboard Features:
-- **Metrics**: CPU, Memory, Response Time
-- **Logs**: Real-time application logs
-- **Deployments**: Build and deployment history
-- **Environment**: Variable management
-
-### Health Check Endpoint:
-Add this to your Next.js API routes:
-```typescript
-// pages/api/health.ts
-export default function handler(req, res) {
-  res.status(200).json({ 
-    status: 'healthy', 
-    timestamp: new Date().toISOString() 
-  });
+Expected response:
+```json
+{
+  "status": "healthy",
+  "timestamp": "2024-01-01T00:00:00.000Z",
+  "services": {
+    "frontend": "running",
+    "phase2": "running",
+    "phase4": "running",
+    "scraper": "running"
+  },
+  "uptime": 123.456
 }
 ```
 
-## 🚀 Post-Deployment
+### **Frontend Access**
+Visit: `https://your-app-name.onrender.com`
 
-### 1. Test Your Deployment
-- Visit your Render URL
-- Test all major features
-- Check console for errors
-- Verify environment variables
+### **API Endpoints**
+- **Status**: `https://your-app-name.onrender.com/api/status`
+- **Health**: `https://your-app-name.onrender.com/health`
 
-### 2. Set Up Monitoring
-- Configure health checks
-- Set up uptime monitoring
-- Monitor performance metrics
+## 🛠️ Troubleshooting
 
-### 3. Configure Domain (Optional)
-- Add custom domain in Render dashboard
-- Update DNS records
-- Configure SSL certificate
+### **Common Issues**
 
-## 💰 Cost Considerations
+1. **Build Fails**
+   - Check that all dependencies are in package.json files
+   - Verify Node.js version compatibility
+   - Check build logs in Render dashboard
 
-### Free Tier:
-- Perfect for development and testing
-- Limited to 750 build minutes/month
-- Service sleeps after inactivity
+2. **Service Won't Start**
+   - Verify all environment variables are set
+   - Check that PORT is set to 3000
+   - Review startup logs
 
-### Paid Plans:
-- **Starter**: $7/month - Always on, custom domains
-- **Professional**: $25/month - More resources, better performance
-- **Business**: $85/month - High availability, priority support
+3. **Frontend Not Loading**
+   - Ensure frontend build completed successfully
+   - Check that `frontend/out` directory exists
+   - Verify static file serving configuration
 
-## 🎯 Next Steps
+4. **Background Services Not Running**
+   - Check that all service directories exist
+   - Verify package.json files in each service directory
+   - Review service startup logs
 
-1. **Deploy to Render** using this guide
-2. **Test all features** thoroughly
-3. **Set up monitoring** and alerts
-4. **Configure custom domain** (optional)
-5. **Set up CI/CD** for automatic deployments
+### **Logs and Monitoring**
 
-Your Wojat platform will be live at: `https://wojat-platform.onrender.com`
+1. **View Logs**
+   - Go to your service dashboard
+   - Click "Logs" tab
+   - Monitor real-time output
+
+2. **Service Status**
+   - Check "Metrics" tab for resource usage
+   - Monitor "Events" for deployment history
+
+## 🔧 Customization
+
+### **Scaling**
+- **Starter Plan**: 1 instance, 512MB RAM
+- **Standard Plan**: 1+ instances, 1GB RAM
+- **Pro Plan**: Multiple instances, 2GB+ RAM
+
+### **Custom Domain**
+1. Go to service settings
+2. Add custom domain
+3. Update DNS records as instructed
+
+### **Environment-Specific Configs**
+- **Development**: Use different environment variables
+- **Staging**: Create separate Render service
+- **Production**: Use production environment variables
+
+## 📊 Monitoring and Maintenance
+
+### **Health Monitoring**
+- Set up uptime monitoring for your health endpoint
+- Monitor service logs for errors
+- Set up alerts for service failures
+
+### **Updates**
+- Push changes to your GitHub repository
+- Render will automatically redeploy
+- Monitor deployment logs for issues
+
+### **Backup**
+- Database backups (if using external database)
+- Environment variable backup
+- Code repository backup (GitHub)
+
+## 🎯 Production Checklist
+
+- [ ] All environment variables configured
+- [ ] Frontend builds successfully
+- [ ] All services start without errors
+- [ ] Health check endpoint responds
+- [ ] Frontend loads correctly
+- [ ] API endpoints work
+- [ ] Background services running
+- [ ] Custom domain configured (if needed)
+- [ ] Monitoring set up
+- [ ] SSL certificate active
+
+## 🆘 Support
+
+If you encounter issues:
+
+1. **Check Render Documentation**: [render.com/docs](https://render.com/docs)
+2. **Review Service Logs**: Look for error messages
+3. **Verify Environment Variables**: Ensure all required vars are set
+4. **Test Locally**: Run `node server.js` locally first
+5. **Contact Support**: Use Render's support channels
 
 ---
 
-**Need Help?**
-- Check Render documentation: https://render.com/docs
-- Review build logs for specific errors
-- Test locally first to ensure everything works
+**🎉 Your Wojat platform should now be running on Render.com!**
+
+Visit your service URL to start hunting for memecoins! 🚀
