@@ -3,13 +3,7 @@ const nextConfig = {
   experimental: {
     esmExternals: "loose",
   },
-  output: 'export',
-  trailingSlash: true,
-  distDir: 'out',
-  // Disable API routes for static export
-  async rewrites() {
-    return [];
-  },
+  output: 'standalone',
   async headers() {
     return [
       {

@@ -8,8 +8,8 @@ services:
     plan: starter
     buildCommand: |
       npm install --legacy-peer-deps
-      cd frontend && npm install --legacy-peer-deps && NODE_ENV=production npm run build
-      cd ../elizaos-agents && npm install --legacy-peer-deps || npm install
+      cd frontend && npm install --legacy-peer-deps && npm run build
+      cd ../elizaos-agents && npm install --legacy-peer-deps
       cd ../js-scraper && npm install --legacy-peer-deps
       cd ../bitquery && npm install --legacy-peer-deps
     startCommand: node server.js

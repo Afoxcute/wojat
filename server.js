@@ -15,6 +15,10 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'frontend/out')));
+
+// Store running processes
+const processes = new Map();
 
 // Colors for console output
 const colors = {
@@ -45,19 +49,6 @@ function log(service, message, type = 'info') {
   
   console.log(`${colors.cyan}${timestamp}${colors.reset} ${prefix} ${serviceName} ${message}`);
 }
-
-// Serve static files from frontend build
-const frontendPath = path.join(__dirname, 'frontend/out');
-if (fs.existsSync(frontendPath)) {
-  app.use(express.static(frontendPath));
-  log('SERVER', `Serving static files from: ${frontendPath}`, 'success');
-} else {
-  log('SERVER', `Frontend build not found at: ${frontendPath}`, 'warning');
-  log('SERVER', 'Frontend will not be available until build completes', 'warning');
-}
-
-// Store running processes
-const processes = new Map();
 
 // Start a service
 async function startService(serviceName, config) {
@@ -166,25 +157,7 @@ app.get('/api/status', (req, res) => {
 
 // Serve frontend routes
 app.get('*', (req, res) => {
-  const indexPath = path.join(__dirname, 'frontend/out/index.html');
-  
-  if (fs.existsSync(indexPath)) {
-    res.sendFile(indexPath);
-  } else {
-    // Fallback response when frontend is not built
-    res.status(503).json({
-      status: 'building',
-      message: 'Wojat Platform is starting up...',
-      services: {
-        frontend: 'building',
-        phase2: processes.has('phase2') ? 'running' : 'starting',
-        phase4: processes.has('phase4') ? 'running' : 'starting',
-        scraper: processes.has('scraper') ? 'running' : 'starting'
-      },
-      timestamp: new Date().toISOString(),
-      note: 'Please wait a moment for the frontend to build and refresh the page.'
-    });
-  }
+  res.sendFile(path.join(__dirname, 'frontend/out/index.html'));
 });
 
 // Start all services
