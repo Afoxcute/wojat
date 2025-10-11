@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 /**
- * Iris Platform Master Startup Script
- * Runs all phases of the Iris memecoin hunting platform
+ * Wojat Platform Master Startup Script
+ * Runs all phases of the Wojat memecoin hunting platform
  */
 
 const { spawn, exec } = require('child_process');
@@ -22,7 +22,7 @@ const colors = {
   white: '\x1b[37m'
 };
 
-class IrisOrchestrator {
+class WojatOrchestrator {
   constructor() {
     this.processes = new Map();
     this.isShuttingDown = false;
@@ -343,7 +343,7 @@ class IrisOrchestrator {
       await Promise.all(shutdownPromises);
       
       const runtime = Math.round((Date.now() - this.startTime) / 1000);
-      console.log(`\n${colors.green}✅ Iris Platform stopped successfully after ${runtime} seconds${colors.reset}`);
+      console.log(`\n${colors.green}✅ Wojat Platform stopped successfully after ${runtime} seconds${colors.reset}`);
       process.exit(0);
     };
 
@@ -369,13 +369,13 @@ class IrisOrchestrator {
 
 // Main execution
 async function main() {
-  const orchestrator = new IrisOrchestrator();
+  const orchestrator = new WojatOrchestrator();
   
   try {
     await orchestrator.startAll();
     orchestrator.startMonitoring();
   } catch (error) {
-    console.error(`${colors.red}❌ Failed to start Iris Platform: ${error.message}${colors.reset}`);
+    console.error(`${colors.red}❌ Failed to start Wojat Platform: ${error.message}${colors.reset}`);
     process.exit(1);
   }
 }

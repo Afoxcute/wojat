@@ -299,7 +299,7 @@ export class AIAgentService {
   // Handle help queries
   private handleHelpQuery(): { content: string; data?: any } {
     return {
-      content: 'I\'m Iris, your AI memecoin hunting assistant! I can help you with:\n\n' +
+      content: 'I\'m Wojat, your AI memecoin hunting assistant! I can help you with:\n\n' +
         '🔍 **Finding Trending Memecoins**\n' +
         '• "Show me trending memecoins"\n' +
         '• "What\'s hot on TikTok right now?"\n\n' +

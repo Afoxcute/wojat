@@ -46,7 +46,7 @@ export function AIChatInterface({
     {
       id: '1',
       type: 'ai',
-      content: 'Hello! I\'m Iris, your AI memecoin hunting assistant. I can help you find trending memecoins, analyze market data, and provide trading insights. What would you like to know?',
+      content: 'Hello! I\'m Wojat, your AI memecoin hunting assistant. I can help you find trending memecoins, analyze market data, and provide trading insights. What would you like to know?',
       timestamp: new Date(),
     }
   ]);
@@ -264,7 +264,7 @@ export function AIChatInterface({
       <div className="flex items-center justify-between p-4 border-b">
         <div className="flex items-center space-x-2">
           <Bot className="h-6 w-6 text-blue-500" />
-          <h2 className="text-lg font-semibold">Iris AI Assistant</h2>
+          <h2 className="text-lg font-semibold">Wojat AI Assistant</h2>
         </div>
         <div className="flex items-center space-x-2">
           <Button
@@ -319,7 +319,7 @@ export function AIChatInterface({
                   {message.isTyping ? (
                     <div className="flex items-center space-x-1">
                       <Loader2 className="h-4 w-4 animate-spin" />
-                      <span className="text-sm">Iris is typing...</span>
+                      <span className="text-sm">Wojat is typing...</span>
                     </div>
                   ) : (
                     renderMessageContent(message)
@@ -340,7 +340,7 @@ export function AIChatInterface({
                 <div className="rounded-lg px-4 py-2 bg-muted">
                   <div className="flex items-center space-x-1">
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    <span className="text-sm">Iris is thinking...</span>
+                    <span className="text-sm">Wojat is thinking...</span>
                   </div>
                 </div>
               </div>
@@ -358,7 +358,7 @@ export function AIChatInterface({
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Ask Iris about memecoins..."
+            placeholder="Ask Wojat about memecoins..."
             disabled={isLoading}
             className="flex-1"
           />

@@ -1,4 +1,4 @@
-# Iris - The TikTok Memecoin Hunter
+# Wojat - The TikTok Memecoin Hunter
 
 ## 🚀 **Single Command to Run All Phases**
 
@@ -25,9 +25,9 @@ node start-iris.js
 ---
 
 **Description:**  
-Iris is an autonomous AI-powered agent that hunts for the hottest memecoins trending on TikTok and provides real-time analytics on their performance. Designed for crypto enthusiasts and memecoin hunters, Iris bridges the gap between TikTok meme culture and emerging cryptocurrency trends.
+Wojat is an autonomous AI-powered agent that hunts for the hottest memecoins trending on TikTok and provides real-time analytics on their performance. Designed for crypto enthusiasts and memecoin hunters, Wojat bridges the gap between TikTok meme culture and emerging cryptocurrency trends.
 
-By leveraging TikTok's trending data and Pump.fun's database of launched tokens, Iris offers users insights into memecoin popularity, trading volume, and market movements. It also integrates BONK tokens to incentivize premium features for advanced users.
+By leveraging TikTok's trending data and Pump.fun's database of launched tokens, Wojat offers users insights into memecoin popularity, trading volume, and market movements. It also integrates BONK tokens to incentivize premium features for advanced users.
 
 ---
 
@@ -78,7 +78,7 @@ By leveraging TikTok's trending data and Pump.fun's database of launched tokens,
 
 1. **Data Collection:**
 
-   - Iris scrapes TikTok for relevant hashtags, descriptions, and comments.
+   - Wojat scrapes TikTok for relevant hashtags, descriptions, and comments.
    - Patterns are matched with Pump.fun's database to identify associated tokens.
 
 2. **Trend Analysis:**
@@ -96,9 +96,9 @@ By leveraging TikTok's trending data and Pump.fun's database of launched tokens,
 
 ---
 
-## Why Iris?
+## Why Wojat?
 
-In the fast-paced world of memecoins, Iris provides a cutting-edge advantage for traders and enthusiasts. By combining TikTok's viral potential with on-chain data from Pump.fun, Iris delivers actionable insights and real-time updates, empowering users to capitalize on emerging trends.
+In the fast-paced world of memecoins, Wojat provides a cutting-edge advantage for traders and enthusiasts. By combining TikTok's viral potential with on-chain data from Pump.fun, Wojat delivers actionable insights and real-time updates, empowering users to capitalize on emerging trends.
 
 ---
 

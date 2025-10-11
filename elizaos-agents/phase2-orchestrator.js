@@ -1,4 +1,4 @@
-// Phase 2 Orchestrator - Twitter-Only Social Media Automation
+// Wojat Phase 2 Orchestrator - Twitter-Only Social Media Automation
 import MasterSchedulerAgent from './agents/master-scheduler-agent.js';
 import ContentGeneratorAgent from './agents/content-generator-agent.js';
 import TwitterManagerAgent from './agents/twitter-manager-agent.js';
@@ -8,7 +8,7 @@ dotenv.config();
 
 export class Phase2Orchestrator {
   constructor() {
-    this.name = 'Phase 2 Orchestrator';
+    this.name = 'Wojat Phase 2 Orchestrator';
     this.description = 'Twitter-Only Social Media Automation System';
     this.version = '2.1.0';
     
@@ -31,22 +31,22 @@ export class Phase2Orchestrator {
   // Initialize Phase 2 system
   async initialize() {
     try {
-      console.log('🚀 Initializing Phase 2: Twitter-Only Social Media Automation...\n');
+      console.log('🚀 Initializing Wojat Phase 2: Twitter-Only Social Media Automation...\n');
       
       // Initialize master scheduler (which initializes Twitter agents only)
       const initialized = await this.masterScheduler.initializeTwitterOnly();
       
       if (initialized) {
-        console.log('✅ Phase 2 system initialized successfully');
+        console.log('✅ Wojat Phase 2 system initialized successfully');
         console.log('🐦 Platform: Twitter only');
         console.log('🤖 Active agents: Content Generator, Twitter Manager, Master Scheduler');
         return true;
       } else {
-        console.log('⚠️ Phase 2 system initialized with limited functionality');
+        console.log('⚠️ Wojat Phase 2 system initialized with limited functionality');
         return false;
       }
     } catch (error) {
-      console.error('❌ Failed to initialize Phase 2 system:', error);
+      console.error('❌ Failed to initialize Wojat Phase 2 system:', error);
       return false;
     }
   }
@@ -105,7 +105,7 @@ export class Phase2Orchestrator {
 
   // Test all agents individually
   async testAllAgents() {
-    console.log('🧪 Testing all Phase 2 agents...\n');
+    console.log('🧪 Testing all Wojat Phase 2 agents...\n');
     
     const testResults = {};
     
@@ -265,7 +265,7 @@ export class Phase2Orchestrator {
 
 // Main execution function
 export async function main() {
-  console.log('🚀 Starting Phase 2: Enhanced Social Media Automation...\n');
+  console.log('🚀 Starting Wojat Phase 2: Enhanced Social Media Automation...\n');
 
   try {
     // Create orchestrator
@@ -284,14 +284,14 @@ export async function main() {
     const campaignResults = await orchestrator.runSocialMediaCampaign(sampleCampaign);
     
     // Display results
-    console.log('\n📊 Phase 2 System Status:');
+    console.log('\n📊 Wojat Phase 2 System Status:');
     const status = orchestrator.getSystemStatus();
     console.log(`   Name: ${status.name}`);
     console.log(`   Version: ${status.version}`);
     console.log(`   Running: ${status.isRunning ? 'Yes' : 'No'}`);
     console.log(`   Agents: ${Object.keys(status.agents).length} active`);
     
-    console.log('\n🎉 Phase 2 implementation complete!');
+    console.log('\n🎉 Wojat Phase 2 implementation complete!');
     console.log('\nNext steps:');
     console.log('1. Configure platform credentials in .env file');
     console.log('2. Start continuous automation with: orchestrator.startAutomation()');
@@ -299,7 +299,7 @@ export async function main() {
     console.log('4. Run custom campaigns with: orchestrator.runSocialMediaCampaign(data)');
     
   } catch (error) {
-    console.error('❌ Fatal error in Phase 2:', error);
+    console.error('❌ Fatal error in Wojat Phase 2:', error);
     process.exit(1);
   }
 }

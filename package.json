@@ -1,5 +1,5 @@
 {
-  "name": "bimboh-memecoin-hunter",
+  "name": "wojat-memecoin-hunter",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -9,7 +9,7 @@
     "install:frontend": "cd frontend && yarn install",
     "install:all": "yarn install && cd frontend && yarn install",
     "postinstall": "cd frontend && yarn install",
-    "iris": "node start-iris.js",
+    "wojat": "node start-iris.js",
     "start:all": "node start-iris.js",
     "start:phases": "node start-iris.js",
     "run:all": "node start-iris.js",
