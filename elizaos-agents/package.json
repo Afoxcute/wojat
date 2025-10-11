@@ -21,7 +21,12 @@
   "dependencies": {
     "@elizaos/core": "^0.1.0",
     "@elizaos/plugin-solana": "^0.1.0",
+    "@solana/spl-token": "^0.4.9",
+    "@solana/web3.js": "^1.95.8",
+    "@supabase/supabase-js": "^2.47.5",
     "amqplib": "^0.10.9",
+    "axios": "^1.7.9",
+    "bs58": "^4.0.1",
     "dotenv": "^16.4.5",
     "sharp": "^0.34.4",
     "twitter-api-v2": "^1.27.0"

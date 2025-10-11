@@ -6,6 +6,10 @@ const nextConfig = {
   output: 'export',
   trailingSlash: true,
   distDir: 'out',
+  // Disable API routes for static export
+  async rewrites() {
+    return [];
+  },
   async headers() {
     return [
       {

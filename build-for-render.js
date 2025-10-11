@@ -64,7 +64,10 @@ async function buildForRender() {
     // Step 3: Install ElizaOS agents dependencies
     log('🤖 Installing ElizaOS agents dependencies...', 'yellow');
     if (!runCommand('npm install --legacy-peer-deps', path.join(__dirname, 'elizaos-agents'))) {
-      throw new Error('Failed to install ElizaOS agents dependencies');
+      log('⚠️ ElizaOS agents dependencies failed, trying without legacy flag...', 'warning');
+      if (!runCommand('npm install', path.join(__dirname, 'elizaos-agents'))) {
+        throw new Error('Failed to install ElizaOS agents dependencies');
+      }
     }
 
     // Step 4: Install JS scraper dependencies

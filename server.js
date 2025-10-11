@@ -16,19 +16,6 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(express.json());
 
-// Serve static files from frontend build
-const frontendPath = path.join(__dirname, 'frontend/out');
-if (fs.existsSync(frontendPath)) {
-  app.use(express.static(frontendPath));
-  log('SERVER', `Serving static files from: ${frontendPath}`, 'success');
-} else {
-  log('SERVER', `Frontend build not found at: ${frontendPath}`, 'warning');
-  log('SERVER', 'Frontend will not be available until build completes', 'warning');
-}
-
-// Store running processes
-const processes = new Map();
-
 // Colors for console output
 const colors = {
   reset: '\x1b[0m',
@@ -58,6 +45,19 @@ function log(service, message, type = 'info') {
   
   console.log(`${colors.cyan}${timestamp}${colors.reset} ${prefix} ${serviceName} ${message}`);
 }
+
+// Serve static files from frontend build
+const frontendPath = path.join(__dirname, 'frontend/out');
+if (fs.existsSync(frontendPath)) {
+  app.use(express.static(frontendPath));
+  log('SERVER', `Serving static files from: ${frontendPath}`, 'success');
+} else {
+  log('SERVER', `Frontend build not found at: ${frontendPath}`, 'warning');
+  log('SERVER', 'Frontend will not be available until build completes', 'warning');
+}
+
+// Store running processes
+const processes = new Map();
 
 // Start a service
 async function startService(serviceName, config) {
