@@ -5,12 +5,11 @@ const nextConfig = {
   },
   output: 'standalone',
   trailingSlash: true,
-  // Disable static generation completely
+  // Completely disable static generation
   generateBuildId: async () => {
     return 'build-' + Date.now();
   },
   // Force all pages to be server-side rendered
-  // Disable static optimization
   staticPageGenerationTimeout: 1000,
   // Disable static optimization completely
   images: {
@@ -43,15 +42,15 @@ const nextConfig = {
       },
     ],
   },
-  // Completely disable static generation
-  distDir: '.next',
-  generateEtags: false,
   // Force all pages to be dynamic
   generateStaticParams: false,
   // Disable static optimization
   swcMinify: true,
   // Completely disable static generation
   outputFileTracing: false,
+  // Force all pages to be server-side rendered
+  distDir: '.next',
+  generateEtags: false,
   async headers() {
     return [
       {
