@@ -46,6 +46,12 @@ const nextConfig = {
   // Completely disable static generation
   distDir: '.next',
   generateEtags: false,
+  // Force all pages to be dynamic
+  generateStaticParams: false,
+  // Disable static optimization
+  swcMinify: true,
+  // Completely disable static generation
+  outputFileTracing: false,
   async headers() {
     return [
       {
