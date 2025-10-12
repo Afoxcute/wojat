@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "@solana/wallet-adapter-react-ui/styles.css";
 import "./globals.css";
-import dynamicImport from 'next/dynamic';
+import dynamic from 'next/dynamic';
 
-const ClientLayout = dynamicImport(() => import("@/components/providers/ssr-safe-provider"), {
+const ClientLayout = dynamic(() => import("@/components/providers/ssr-safe-provider"), {
   ssr: false,
   loading: () => (
     <div className="min-h-screen flex items-center justify-center bg-background">
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "player",
-    site: "https://x.com/wojat118721",
+    site: "https://x.com/iris_internet",
     title: "Wojat | World's Best Memecoin Hunter",
     images: ["/wojat.png"],
     description:
@@ -68,10 +68,6 @@ export const metadata: Metadata = {
     ],
   },
 };
-
-// Force dynamic rendering
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
 
 export default function RootLayout({
   children,

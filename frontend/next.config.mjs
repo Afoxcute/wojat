@@ -4,14 +4,31 @@ const nextConfig = {
     esmExternals: "loose",
   },
   output: 'standalone',
-  trailingSlash: true,
-  // Completely disable static generation
-  generateBuildId: async () => {
-    return 'build-' + Date.now();
+  async headers() {
+    return [
+      {
+        source: "/embed/:id*", // Handle /embed and /embed/[id]
+        headers: [
+          {
+            key: "X-Frame-Options",
+            value: "ALLOWALL",
+          },
+          {
+            key: "Content-Security-Policy",
+            value: "frame-ancestors *;",
+          },
+        ],
+      },
+    ];
   },
-  // Force all pages to be server-side rendered
-  staticPageGenerationTimeout: 1000,
-  // Disable static optimization completely
+  async rewrites() {
+    return [
+      {
+        source: "/ipfs/:path*",
+        destination: "https://ipfs.io/ipfs/:path*",
+      },
+    ];
+  },
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -41,40 +58,6 @@ const nextConfig = {
         port: "",
       },
     ],
-  },
-  // Force all pages to be dynamic
-  generateStaticParams: false,
-  // Disable static optimization
-  swcMinify: true,
-  // Completely disable static generation
-  outputFileTracing: false,
-  // Force all pages to be server-side rendered
-  distDir: '.next',
-  generateEtags: false,
-  async headers() {
-    return [
-      {
-        source: "/embed/:id*", // Handle /embed and /embed/[id]
-        headers: [
-          {
-            key: "X-Frame-Options",
-            value: "ALLOWALL",
-          },
-          {
-            key: "Content-Security-Policy",
-            value: "frame-ancestors *;",
-          },
-        ],
-      },
-    ];
-  },
-  async rewrites() {
-    return [
-      {
-        source: "/ipfs/:path*",
-        destination: "https://ipfs.io/ipfs/:path*",
-      },
-    ];
   },
 };
 

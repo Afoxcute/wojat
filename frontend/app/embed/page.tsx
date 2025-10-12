@@ -1,9 +1,5 @@
 'use client';
 
-// Force dynamic rendering
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-
 export default function EmbedPage() {
   return (
     <div style={{ width: "100%", height: "100%", backgroundColor: "#000" }}>

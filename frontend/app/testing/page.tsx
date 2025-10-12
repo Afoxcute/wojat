@@ -1,10 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-
-// Force dynamic rendering
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
 import { createChart, Time } from "lightweight-charts";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";

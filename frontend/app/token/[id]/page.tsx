@@ -1,22 +1,14 @@
-'use client';
+import Ticker from "@/components/sections/ticker";
 
-import dynamicImport from 'next/dynamic';
-
-// Force dynamic rendering
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-
-const Ticker = dynamicImport(() => import("@/components/sections/ticker"), {
-  ssr: false,
-  loading: () => (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <div className="w-16 h-16 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-muted-foreground">Loading token data...</p>
-      </div>
-    </div>
-  )
-});
+export async function generateStaticParams() {
+  // For static export, we'll generate a few common token IDs
+  // In a real app, you might want to fetch this from your database
+  return [
+    { id: '189229' },
+    { id: '123456' },
+    { id: '789012' },
+  ];
+}
 
 export default function Page({ params }: { params: { id: string } }) {
   return <Ticker params={params} />;
