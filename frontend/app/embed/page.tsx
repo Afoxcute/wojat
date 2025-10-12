@@ -1,7 +1,6 @@
 'use client';
 
-// Disable static generation for this page
-export const dynamic = 'force-dynamic';
+// Static export compatible
 
 export default function EmbedPage() {
   return (

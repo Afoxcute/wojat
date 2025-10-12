@@ -1,10 +1,9 @@
 "use client";
 
 import Image from "next/image";
-
-// Force dynamic rendering
-export const dynamic = 'force-dynamic';
 import { useRouter } from "next/navigation";
+
+// Static export compatible
 
 export default function Custom404() {
   const router = useRouter();

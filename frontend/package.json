@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:static": "next build --config next.config.build.mjs",
+    "build:dynamic": "next build --config next.config.dynamic.mjs",
+    "build:static": "next build",
     "build:production": "node build-production.js",
     "start": "next start",
     "lint": "next lint",

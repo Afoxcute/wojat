@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-// Disable static generation for this page
-export const dynamic = 'force-dynamic';
+// Static export compatible
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';

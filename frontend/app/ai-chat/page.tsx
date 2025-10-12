@@ -21,8 +21,7 @@ import { aiAgentService, ChatMessage } from '@/lib/services/ai-agent-service';
 import { personalizationService, PersonalizedRecommendation } from '@/lib/services/personalization-service';
 import { realtimeService, RealtimeUpdate } from '@/lib/services/realtime-service';
 
-// Disable static generation for this page
-export const dynamic = 'force-dynamic';
+// Static export compatible
 
 export default function AIChatPage() {
   const [isInitialized, setIsInitialized] = useState(false);

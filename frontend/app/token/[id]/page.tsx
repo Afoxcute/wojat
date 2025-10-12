@@ -1,9 +1,14 @@
 import Ticker from "@/components/sections/ticker";
 
-// Disable static generation for this page
-export const dynamic = 'force-dynamic';
-
-// Remove generateStaticParams to prevent static generation issues
+// Static export compatible
+export async function generateStaticParams() {
+  // Generate static params for common token IDs
+  return [
+    { id: '189229' },
+    { id: '123456' },
+    { id: '789012' },
+  ];
+}
 
 export default function Page({ params }: { params: { id: string } }) {
   return <Ticker params={params} />;

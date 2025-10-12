@@ -1,12 +1,11 @@
 'use client';
 
 import { useEffect } from 'react';
-
-// Force dynamic rendering
-export const dynamic = 'force-dynamic';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
+
+// Static export compatible
 
 export default function GlobalError({
   error,

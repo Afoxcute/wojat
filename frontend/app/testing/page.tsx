@@ -2,8 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
-// Disable static generation for this page
-export const dynamic = 'force-dynamic';
+// Static export compatible
 import { createChart, Time } from "lightweight-charts";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
