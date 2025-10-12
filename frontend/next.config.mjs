@@ -12,31 +12,7 @@ const nextConfig = {
   // Force all pages to be server-side rendered
   // Disable static optimization
   staticPageGenerationTimeout: 1000,
-  async headers() {
-    return [
-      {
-        source: "/embed/:id*", // Handle /embed and /embed/[id]
-        headers: [
-          {
-            key: "X-Frame-Options",
-            value: "ALLOWALL",
-          },
-          {
-            key: "Content-Security-Policy",
-            value: "frame-ancestors *;",
-          },
-        ],
-      },
-    ];
-  },
-  async rewrites() {
-    return [
-      {
-        source: "/ipfs/:path*",
-        destination: "https://ipfs.io/ipfs/:path*",
-      },
-    ];
-  },
+  // Disable static optimization completely
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -66,6 +42,34 @@ const nextConfig = {
         port: "",
       },
     ],
+  },
+  // Completely disable static generation
+  distDir: '.next',
+  generateEtags: false,
+  async headers() {
+    return [
+      {
+        source: "/embed/:id*", // Handle /embed and /embed/[id]
+        headers: [
+          {
+            key: "X-Frame-Options",
+            value: "ALLOWALL",
+          },
+          {
+            key: "Content-Security-Policy",
+            value: "frame-ancestors *;",
+          },
+        ],
+      },
+    ];
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/ipfs/:path*",
+        destination: "https://ipfs.io/ipfs/:path*",
+      },
+    ];
   },
 };
 
