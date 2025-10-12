@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import dynamicImport from 'next/dynamic';
 import { AIChatInterface } from '@/components/ai-chat/ai-chat-interface';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -19,6 +20,9 @@ import {
 import { aiAgentService, ChatMessage } from '@/lib/services/ai-agent-service';
 import { personalizationService, PersonalizedRecommendation } from '@/lib/services/personalization-service';
 import { realtimeService, RealtimeUpdate } from '@/lib/services/realtime-service';
+
+// Disable static generation for this page
+export const dynamic = 'force-dynamic';
 
 export default function AIChatPage() {
   const [isInitialized, setIsInitialized] = useState(false);

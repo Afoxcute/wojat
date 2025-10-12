@@ -1,8 +1,11 @@
 'use client';
 
-import dynamic from 'next/dynamic';
+import dynamicImport from 'next/dynamic';
 
-const Home = dynamic(() => import("@/components/sections/home"), {
+// Disable static generation for this page
+export const dynamic = 'force-dynamic';
+
+const Home = dynamicImport(() => import("@/components/sections/home"), {
   ssr: false,
   loading: () => (
     <div className="min-h-screen flex items-center justify-center bg-background">

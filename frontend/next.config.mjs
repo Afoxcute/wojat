@@ -4,6 +4,17 @@ const nextConfig = {
     esmExternals: "loose",
   },
   output: 'standalone',
+  // Disable static optimization for pages with dynamic content
+  trailingSlash: false,
+  // Handle build issues
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+  // Disable static generation for problematic pages
+  // generateStaticParams: false, // This is not a valid Next.js config option
   async headers() {
     return [
       {

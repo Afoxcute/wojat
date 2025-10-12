@@ -1,5 +1,8 @@
 'use client';
 
+// Disable static generation for this page
+export const dynamic = 'force-dynamic';
+
 export default function EmbedPage() {
   return (
     <div style={{ width: "100%", height: "100%", backgroundColor: "#000" }}>
