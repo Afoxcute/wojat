@@ -4,7 +4,7 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 import "./globals.css";
 import dynamic from 'next/dynamic';
 
-const ClientLayout = dynamic(() => import("@/components/providers/ssr-safe-provider"), {
+const ClientLayout = dynamic(() => import("@/components/providers/build-safe-provider"), {
   ssr: false,
   loading: () => (
     <div className="min-h-screen flex items-center justify-center bg-background">

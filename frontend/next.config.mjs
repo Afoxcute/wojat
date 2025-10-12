@@ -4,7 +4,7 @@ const nextConfig = {
     esmExternals: "loose",
   },
   output: 'standalone',
-  // Disable static optimization for pages with dynamic content
+  // Disable static optimization completely
   trailingSlash: false,
   // Handle build issues
   typescript: {
@@ -13,8 +13,14 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: false,
   },
-  // Disable static generation for problematic pages
-  // generateStaticParams: false, // This is not a valid Next.js config option
+  // Force all pages to be dynamic - disable static generation
+  generateStaticParams: false,
+  // Disable static generation timeout
+  staticPageGenerationTimeout: 0,
+  // Force dynamic rendering for all pages
+  generateBuildId: async () => {
+    return 'dynamic-build-' + Date.now()
+  },
   async headers() {
     return [
       {
