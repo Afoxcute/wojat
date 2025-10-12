@@ -4,6 +4,12 @@ const nextConfig = {
     esmExternals: "loose",
   },
   output: 'standalone',
+  trailingSlash: true,
+  generateStaticParams: false,
+  // Disable static generation for all pages
+  generateBuildId: async () => {
+    return 'build-' + Date.now();
+  },
   async headers() {
     return [
       {

@@ -8,9 +8,26 @@ import TiktokSection from "./tiktok";
 import GraphPreview from "./graph-preview";
 import ScraperStatus from "./tiktok/scraper-status";
 import TelegramChannelsHome from "./telegram-channels";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [isClient, setIsClient] = useState(false);
   const { paid } = useEnvironmentStore((store) => store);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return (
+      <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+          <div className="w-16 h-16 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading Wojat...</p>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
       {/* Hero Section */}
@@ -59,7 +76,7 @@ export default function Home() {
       
       {!paid && (
         <div className="mb-8 sm:mb-12 lg:mb-16">
-          <UnlockNow text="Unlock All Bimboh features now" />
+          <UnlockNow text="Unlock All Wojat features now" />
         </div>
       )}
       
