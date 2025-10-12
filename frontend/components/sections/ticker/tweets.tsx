@@ -131,7 +131,7 @@ export default function Tweets({
                 onClick={() => {
                   console.log("tweet", tweet);
                   window.open(
-                    "https://x.com/iris_internet/status/1867331863993627085",
+                    "https://x.com/wojat118721/status/1867331863993627085",
                     "_blank"
                   );
                 }}

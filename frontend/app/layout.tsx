@@ -53,7 +53,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "player",
-    site: "https://x.com/iris_internet",
+    site: "https://x.com/wojat118721",
     title: "Wojat | World's Best Memecoin Hunter",
     images: ["/wojat.png"],
     description:

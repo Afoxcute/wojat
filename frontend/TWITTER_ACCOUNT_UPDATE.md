@@ -18,7 +18,7 @@ onClick={() => {
 
 // After:
 onClick={() => {
-  window.open("https://x.com/iris_internet", "_blank");
+  window.open("https://x.com/wojat118721", "_blank");
 }}
 ```
 
@@ -37,7 +37,7 @@ window.open(
 
 // After:
 window.open(
-  "https://x.com/iris_internet/status/1867331863993627085",
+  "https://x.com/wojat118721/status/1867331863993627085",
   "_blank"
 );
 ```
@@ -68,7 +68,7 @@ window.open(
 **Twitter** | https://x.com/TokenHunterZoro
 
 # After:
-**Twitter** | https://x.com/iris_internet
+**Twitter** | https://x.com/wojat118721
 ```
 
 **Location**: Line 93 - Social media links section
