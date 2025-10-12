@@ -1,6 +1,10 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 import { AIChatInterface } from '@/components/ai-chat/ai-chat-interface';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';

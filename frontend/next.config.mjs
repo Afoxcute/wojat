@@ -5,11 +5,13 @@ const nextConfig = {
   },
   output: 'standalone',
   trailingSlash: true,
-  generateStaticParams: false,
-  // Disable static generation for all pages
+  // Disable static generation completely
   generateBuildId: async () => {
     return 'build-' + Date.now();
   },
+  // Force all pages to be server-side rendered
+  // Disable static optimization
+  staticPageGenerationTimeout: 1000,
   async headers() {
     return [
       {

@@ -1,8 +1,12 @@
 'use client';
 
-import dynamic from 'next/dynamic';
+import dynamicImport from 'next/dynamic';
 
-const DashboardClient = dynamic(() => import('./dashboard-client'), {
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+const DashboardClient = dynamicImport(() => import('./dashboard-client'), {
   ssr: false,
   loading: () => (
     <div className="min-h-screen flex items-center justify-center bg-background">

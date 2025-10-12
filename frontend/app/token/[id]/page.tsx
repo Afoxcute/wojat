@@ -1,8 +1,12 @@
 'use client';
 
-import dynamic from 'next/dynamic';
+import dynamicImport from 'next/dynamic';
 
-const Ticker = dynamic(() => import("@/components/sections/ticker"), {
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+const Ticker = dynamicImport(() => import("@/components/sections/ticker"), {
   ssr: false,
   loading: () => (
     <div className="min-h-screen flex items-center justify-center bg-background">
