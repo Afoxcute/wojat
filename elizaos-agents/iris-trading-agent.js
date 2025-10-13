@@ -1,5 +1,4 @@
 import { AgentRuntime } from '@elizaos/core';
-import { solanaPlugin } from '@elizaos/plugin-solana';
 import dotenv from 'dotenv';
 
 // Load environment variables
@@ -33,7 +32,7 @@ export async function createIrisTradingAgent() {
     
     const runtime = new AgentRuntime({
       character: irisCharacter,
-      plugins: [solanaPlugin],
+      plugins: [], // Removed Solana plugin for Railway compatibility
       modelProvider: {
         name: 'openai',
         apiKey: process.env.OPENAI_API_KEY,
@@ -89,15 +88,22 @@ export class IrisTradingFunctions {
     }
   }
 
-  // Get portfolio balance and performance
+  // Get portfolio balance and performance (Railway-compatible version)
   async getPortfolioBalance() {
     try {
       console.log('💰 Checking portfolio balance...');
       
-      // Use ElizaOS Solana plugin to get balance
-      const balance = await this.runtime.callTool('get_balance', {
-        address: process.env.SOLANA_PUBLIC_KEY
-      });
+      // Mock balance for Railway deployment (no Solana plugin)
+      const balance = {
+        sol: 0.5,
+        usd: 25.00,
+        tokens: [
+          { symbol: 'BONK', amount: 1000000, value: 15.00 },
+          { symbol: 'WIF', amount: 10, value: 25.00 }
+        ],
+        totalValue: 50.00,
+        lastUpdated: new Date().toISOString()
+      };
 
       return balance;
     } catch (error) {
