@@ -14,7 +14,10 @@
     "start:phases": "node start-iris.js",
     "run:all": "node start-iris.js",
     "twitter": "node start-twitter-only.js",
-    "start:twitter": "node start-twitter-only.js"
+    "start:twitter": "node start-twitter-only.js",
+    "start:railway": "node start-railway.js",
+    "build:railway": "npm run build && cd frontend && npm run build",
+    "test:railway": "node test-railway-config.js"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.2",
