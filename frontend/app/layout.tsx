@@ -7,6 +7,7 @@ import dynamicImport from 'next/dynamic';
 // Force dynamic rendering for all pages to prevent SSR issues
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
+export const revalidate = 0;
 
 const ClientLayout = dynamicImport(() => import("@/components/providers/ssr-safe-provider"), {
   ssr: false,

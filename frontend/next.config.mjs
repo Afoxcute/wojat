@@ -3,6 +3,27 @@ const nextConfig = {
   experimental: {
     esmExternals: "loose",
   },
+  // Completely disable static generation
+  output: 'standalone',
+  distDir: '.next',
+  webpack: (config, { isServer }) => {
+    // Prevent Html import errors during build
+    if (isServer) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        'next/document': false,
+        'next/head': false,
+      };
+      
+      // Ignore modules that might import Html
+      config.externals = config.externals || [];
+      config.externals.push({
+        'next/document': 'commonjs next/document',
+        'next/head': 'commonjs next/head',
+      });
+    }
+    return config;
+  },
   async headers() {
     return [
       {
