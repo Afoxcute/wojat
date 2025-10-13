@@ -1,0 +1,32 @@
+# Railway ignore file to prevent Nixpacks from being used
+# This forces Railway to use Dockerfile instead
+
+# Ignore nixpacks files
+.nixpacks.toml
+nixpacks.toml
+
+# Ignore package manager files that might trigger Nixpacks
+package-lock.json
+yarn.lock
+
+# Keep only the essential files for Docker build
+!package.json
+!Dockerfile-telegram
+!Dockerfile-outlight
+!Dockerfile-tiktok
+!telegram-server.mjs
+!outlight-server.mjs
+!tiktok-server.mjs
+!server.mjs
+!index.mjs
+!*.mjs
+!*.js
+!*.ts
+!*.tsx
+!*.json
+!*.md
+!*.sql
+!*.txt
+!*.toml
+!*.yml
+!*.yaml
