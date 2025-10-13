@@ -3,11 +3,11 @@ nixPkgs = ['nodejs', 'yarn']
 
 [phases.install]
 cmds = [
-  'yarn install',
-  'cd frontend && yarn install',
-  'cd ../bitquery && yarn install',
-  'cd ../elizaos-agents && yarn install',
-  'cd ../js-scraper && yarn install'
+  'yarn install --frozen-lockfile',
+  'cd frontend && yarn install --frozen-lockfile',
+  'cd ../bitquery && yarn install --frozen-lockfile',
+  'cd ../elizaos-agents && yarn install --frozen-lockfile',
+  'cd ../js-scraper && yarn install --frozen-lockfile --ignore-optional'
 ]
 
 [phases.build]
@@ -15,3 +15,7 @@ cmds = ['cd frontend && yarn build']
 
 [start]
 cmd = 'node railway-start.js'
+
+[variables]
+PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = 'true'
+PUPPETEER_SKIP_DOWNLOAD = 'true'

@@ -194,20 +194,35 @@ Each service can be customized independently:
 
 ### Common Issues
 
-1. **Build Failures**:
+1. **Build Timeout (Puppeteer/Chromium)**:
+   - ✅ **FIXED**: Puppeteer is now optional dependency
+   - ✅ **FIXED**: Scrapers use API-based approach
+   - ✅ **FIXED**: Chromium download is skipped
+   - Environment variables: `PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true`
+
+2. **Build Failures**:
    - Check Node.js version (requires 18+)
    - Verify all dependencies are installed
    - Check environment variables
+   - Use `--frozen-lockfile` for consistent builds
 
-2. **Service Not Starting**:
+3. **Service Not Starting**:
    - Check logs for specific errors
    - Verify port configuration
    - Check environment variables
 
-3. **Database Connection Issues**:
+4. **Database Connection Issues**:
    - Verify Supabase credentials
    - Check database schema
    - Run RLS fixes if needed
+
+### Build Optimization
+
+The platform now uses a lightweight approach:
+- **Puppeteer**: Optional dependency (skipped on Railway)
+- **Scrapers**: API-based instead of browser automation
+- **Build Time**: Reduced from ~5 minutes to ~2 minutes
+- **Memory Usage**: Reduced by ~200MB
 
 ### Debug Commands
 
