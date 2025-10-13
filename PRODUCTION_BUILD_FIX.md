@@ -3,8 +3,9 @@
 ## Issues Resolved
 
 ### 1. **Html Import Error** (`/404` and `/500` pages)
-- **Problem**: Next.js was trying to statically prerender error pages that use client-side features
-- **Solution**: Configured dynamic rendering for all pages
+- **Problem**: Next.js was trying to statically prerender pages due to `generateStaticParams` function
+- **Root Cause**: The `generateStaticParams` function in `frontend/app/token/[id]/page.tsx` was forcing static generation
+- **Solution**: Removed `generateStaticParams` function and configured dynamic rendering for all pages
 
 ### 2. **useContext Null Reference Errors During SSR**
 - **Problem**: React contexts were returning `null` during server-side rendering
@@ -19,6 +20,26 @@
 - **Status**: Warning appears but build completes successfully
 
 ## Files Modified
+
+### **frontend/app/token/[id]/page.tsx**
+```typescript
+// Force dynamic rendering for token page
+export const dynamic = 'force-dynamic';
+
+import Ticker from "@/components/sections/ticker";
+
+// ❌ REMOVED: generateStaticParams function that was causing static generation
+// export async function generateStaticParams() { ... }
+
+export default function Page({ params }: { params: { id: string } }) {
+  return <Ticker params={params} />;
+}
+```
+
+**Key Changes:**
+- Removed `generateStaticParams` function that was forcing static generation
+- Added `export const dynamic = 'force-dynamic'` to ensure dynamic rendering
+- This was the root cause of the Html import errors during build
 
 ### **frontend/app/layout.tsx**
 ```typescript
@@ -134,20 +155,24 @@ export default function SSRSafeProvider({ children }: { children: React.ReactNod
 ### ✅ **Successful Build Output:**
 ```
 Route (app)                              Size     First Load JS
-┌ ƒ /                                    1.39 kB        89.2 kB
+┌ ƒ /                                    1.41 kB        89.2 kB
 ├ ƒ /_not-found                          139 B          87.9 kB
 ├ ƒ /ai-chat                             15.3 kB         115 kB
-├ ƒ /dashboard                           1.39 kB        89.2 kB
-├ ƒ /embed                               385 B          88.2 kB
+├ ƒ /dashboard                           1.41 kB        89.2 kB
+├ ƒ /embed                               406 B          88.2 kB
 ├ ƒ /testing                             53.1 kB         154 kB
-├ ● /token/[id]                          111 kB          360 kB
+├ ƒ /token/[id]                          111 kB          360 kB
 └ ƒ /trending-coins                      11.3 kB         137 kB
 
 Legend:
 ○  (Static)   prerendered as static content
-●  (SSG)      prerendered as static HTML (uses getStaticProps)
 ƒ  (Dynamic)  server-rendered on demand
 ```
+
+**Key Improvement:**
+- **Before**: `Generating static pages (14/14)` with Html import errors
+- **After**: `Generating static pages (11/11)` with all pages using dynamic rendering
+- **All pages now use `ƒ (Dynamic)`** - no more static generation conflicts
 
 ### Key Observations:
 - ✅ All pages now use dynamic rendering (`ƒ` symbol)
