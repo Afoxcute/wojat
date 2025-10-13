@@ -200,17 +200,28 @@ Railway automatically redeploys when you push to your main branch:
 
 ### **Common Issues**
 
-1. **Service Won't Start**
+1. **Node.js Version Compatibility**
+   - **Issue**: `@solana/codecs-numbers@2.3.0: The engine "node" is incompatible with this module. Expected version ">=20.18.0". Got "18.20.5"`
+   - **Solution**: All services now use Node.js 20+ via Nixpacks configuration
+   - **Files**: `.nixpacks.toml` and `railway.json` specify `nodejs_20`
+
+2. **TypeScript Compilation Errors**
+   - **Issue**: `'error' is of type 'unknown'` in health check routes
+   - **Solution**: Fixed error handling with proper type checking
+   - **Files**: `frontend/app/api/health/route.ts`
+
+3. **Service Won't Start**
    - Check logs for missing dependencies
    - Verify environment variables
    - Ensure correct start command
+   - Verify Node.js version compatibility
 
-2. **Health Check Fails**
+4. **Health Check Fails**
    - Verify health endpoint exists
    - Check if service is listening on correct port
    - Review service initialization
 
-3. **Database Connection Issues**
+5. **Database Connection Issues**
    - Verify Supabase credentials
    - Check RLS policies
    - Ensure database is accessible
