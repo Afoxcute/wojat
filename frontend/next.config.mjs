@@ -3,13 +3,32 @@ const nextConfig = {
   experimental: {
     esmExternals: "loose",
   },
-  output: 'export',
-  trailingSlash: true,
-  // Disable static generation completely
-  distDir: 'dist',
-  // Skip static generation
-  skipTrailingSlashRedirect: true,
-  // Disable image optimization for static export
+  output: 'standalone',
+  async headers() {
+    return [
+      {
+        source: "/embed/:id*", // Handle /embed and /embed/[id]
+        headers: [
+          {
+            key: "X-Frame-Options",
+            value: "ALLOWALL",
+          },
+          {
+            key: "Content-Security-Policy",
+            value: "frame-ancestors *;",
+          },
+        ],
+      },
+    ];
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/ipfs/:path*",
+        destination: "https://ipfs.io/ipfs/:path*",
+      },
+    ];
+  },
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -40,13 +59,6 @@ const nextConfig = {
       },
     ],
   },
-  // Disable static optimization
-  staticPageGenerationTimeout: 0,
-  // Force all pages to be dynamic
-  generateBuildId: async () => {
-    return 'static-build-' + Date.now()
-  },
-  // Static export configuration
 };
 
 export default nextConfig;

@@ -3,8 +3,6 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-// Static export compatible
-
 export default function Custom404() {
   const router = useRouter();
   return (
