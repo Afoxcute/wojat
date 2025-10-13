@@ -21,17 +21,7 @@ export default function SSRSafeProvider({ children }: { children: React.ReactNod
     return () => clearTimeout(timer);
   }, []);
 
-  if (!isClient || !isMounted) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading Bimboh...</p>
-        </div>
-      </div>
-    );
-  }
-
+  // Always render the theme provider to prevent hydration mismatches
   return (
     <ThemeProvider
       attribute="class"
@@ -39,12 +29,21 @@ export default function SSRSafeProvider({ children }: { children: React.ReactNod
       enableSystem={false}
       disableTransitionOnChange
     >
-      <EnvironmentStoreProvider>
-        <SolanaWalletProvider>
-          <Layout>{children}</Layout>
-          <Toaster />
-        </SolanaWalletProvider>
-      </EnvironmentStoreProvider>
+      {!isClient || !isMounted ? (
+        <div className="min-h-screen flex items-center justify-center bg-background">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading Wojat...</p>
+          </div>
+        </div>
+      ) : (
+        <EnvironmentStoreProvider>
+          <SolanaWalletProvider>
+            <Layout>{children}</Layout>
+            <Toaster />
+          </SolanaWalletProvider>
+        </EnvironmentStoreProvider>
+      )}
     </ThemeProvider>
   );
 }
