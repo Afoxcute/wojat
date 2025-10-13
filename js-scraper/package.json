@@ -1,14 +1,9 @@
 {
-  "name": "wojat-scraper-services",
+  "name": "zoro-telegram-scraper",
   "version": "1.0.0",
-  "description": "Scraper services for Wojat memecoin hunting platform",
   "type": "module",
   "scripts": {
-    "start": "node telegram-server.mjs",
-    "start-telegram": "node telegram-server.mjs",
-    "start-outlight": "node outlight-server.mjs",
-    "start-tiktok": "node tiktok-server.mjs",
-    "dev": "node --watch telegram-server.mjs",
+    "start": "node telegram_scraper.mjs",
     "scrape": "node telegram_scraper.mjs",
     "test": "node test_web_scraping.mjs",
     "analyze": "node pattern_analysis.mjs",
@@ -54,7 +49,6 @@
     "axios": "^1.6.2",
     "cheerio": "^1.0.0-rc.12",
     "dotenv": "^16.3.1",
-    "express": "^4.18.2",
     "node-cron": "^3.0.3",
     "node-fetch": "^3.3.2",
     "node-telegram-bot-api": "^0.64.0",
@@ -62,9 +56,5 @@
     "puppeteer": "^24.17.1",
     "twitter-api-v2": "^1.15.2"
   },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
-  "engines": {
-    "node": ">=22.0.0",
-    "yarn": ">=1.22.0"
-  }
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
