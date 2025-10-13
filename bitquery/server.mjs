@@ -1,7 +1,4 @@
 import express from 'express';
-import { fetchAndPushMemecoins } from "./scripts/memecoins.mjs";
-import { fetchAndPushPrices } from "./scripts/prices.mjs";
-import { fetchMarketData, updateTokenMarketData } from "./scripts/market-data.mjs";
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -11,6 +8,15 @@ const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(express.json());
+
+// Basic root endpoint
+app.get('/', (req, res) => {
+  res.json({ 
+    service: 'wojat-bitquery-service',
+    status: 'running',
+    message: 'Bitquery service is operational'
+  });
+});
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -41,6 +47,7 @@ app.get('/status', (req, res) => {
 app.post('/collect-memecoins', async (req, res) => {
   try {
     console.log('📈 Collecting memecoins...');
+    const { fetchAndPushMemecoins } = await import("./scripts/memecoins.mjs");
     await fetchAndPushMemecoins();
     res.json({ success: true, message: 'Memecoins collected successfully' });
   } catch (error) {
@@ -53,6 +60,7 @@ app.post('/collect-memecoins', async (req, res) => {
 app.post('/collect-prices', async (req, res) => {
   try {
     console.log('💰 Collecting prices...');
+    const { fetchAndPushPrices } = await import("./scripts/prices.mjs");
     await fetchAndPushPrices();
     res.json({ success: true, message: 'Prices collected successfully' });
   } catch (error) {
@@ -65,6 +73,7 @@ app.post('/collect-prices', async (req, res) => {
 app.post('/collect-market-data', async (req, res) => {
   try {
     console.log('📊 Collecting market data...');
+    const { fetchMarketData, updateTokenMarketData } = await import("./scripts/market-data.mjs");
     await fetchAndPushMarketData();
     res.json({ success: true, message: 'Market data collected successfully' });
   } catch (error) {
@@ -77,6 +86,10 @@ app.post('/collect-market-data', async (req, res) => {
 app.post('/collect-all', async (req, res) => {
   try {
     console.log('🚀 Starting full data collection...');
+    
+    // Import modules dynamically
+    const { fetchAndPushMemecoins } = await import("./scripts/memecoins.mjs");
+    const { fetchAndPushPrices } = await import("./scripts/prices.mjs");
     
     // Step 1: Fetch and push memecoins
     console.log('📈 Step 1: Fetching and pushing memecoins...');
@@ -99,6 +112,9 @@ app.post('/collect-all', async (req, res) => {
 
 async function fetchAndPushMarketData() {
   try {
+    // Import modules dynamically
+    const { fetchMarketData, updateTokenMarketData } = await import("./scripts/market-data.mjs");
+    
     // Get tokens from Supabase that need market data updates
     const tokens = await getTokensForMarketDataUpdate();
     
