@@ -1,8 +1,5 @@
 'use client';
 
-// Force dynamic rendering for AI chat page
-export const dynamic = 'force-dynamic';
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { AIChatInterface } from '@/components/ai-chat/ai-chat-interface';
 import { Card } from '@/components/ui/card';

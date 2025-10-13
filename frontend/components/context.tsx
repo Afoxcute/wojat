@@ -32,13 +32,6 @@ export const useEnvironmentStore = <T,>(
 ): T => {
   const environmentStoreContext = useContext(EnvironmentStoreContext);
   
-  // During SSR, return a default value to prevent errors
-  if (typeof window === 'undefined') {
-    // Return a default store state for SSR
-    const defaultStore = createEnvironmentStore();
-    return selector(defaultStore.getState());
-  }
-  
   if (!environmentStoreContext) {
     throw new Error(
       "useEnvironmentStore must be used within a EnvironmentStoreProvider"
