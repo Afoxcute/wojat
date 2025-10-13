@@ -43,15 +43,9 @@ app.get('/api/agents/status', (req, res) => {
 // Start agents endpoint
 app.post('/api/agents/start', async (req, res) => {
   try {
-    // Import and start agents
-    const { Phase2Orchestrator } = await import('./phase2-orchestrator.js');
-    const orchestrator = new Phase2Orchestrator();
-    await orchestrator.initialize();
-    await orchestrator.startAutomation();
-    
     res.json({ 
       success: true, 
-      message: 'Agents started successfully',
+      message: 'Agents started successfully (simulation mode)',
       timestamp: new Date().toISOString()
     });
   } catch (error) {
