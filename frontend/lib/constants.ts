@@ -1,8 +1,6 @@
 import { DocsConfig } from "./types";
-import {
-  PhantomWalletAdapter,
-  SolflareWalletAdapter,
-} from "@solana/wallet-adapter-wallets";
+import { PhantomWalletAdapter } from "@solana/wallet-adapter-phantom";
+import { SolflareWalletAdapter } from "@solana/wallet-adapter-solflare";
 const TEST_BONK_TOKEN_MINT_ADDRESS =
   "J5xh6VWTmNmgVmhgGqEd6fgzZunt2hPqLmiXB85C5Wna";
 
