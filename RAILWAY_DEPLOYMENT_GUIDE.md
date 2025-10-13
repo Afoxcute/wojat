@@ -223,6 +223,9 @@ The platform now uses a lightweight approach:
 - **Scrapers**: API-based instead of browser automation
 - **Build Time**: Reduced from ~5 minutes to ~2 minutes
 - **Memory Usage**: Reduced by ~200MB
+- **Native Dependencies**: Excluded problematic packages (USB, Trezor, Ledger)
+- **Python Support**: Added for any remaining native builds
+- **Build Flags**: Configured to skip optional dependencies
 
 ### Debug Commands
 
