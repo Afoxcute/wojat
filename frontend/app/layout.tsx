@@ -2,9 +2,13 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "@solana/wallet-adapter-react-ui/styles.css";
 import "./globals.css";
-import dynamic from 'next/dynamic';
+import dynamicImport from 'next/dynamic';
 
-const ClientLayout = dynamic(() => import("@/components/providers/ssr-safe-provider"), {
+// Force dynamic rendering for all pages to prevent SSR issues
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
+
+const ClientLayout = dynamicImport(() => import("@/components/providers/ssr-safe-provider"), {
   ssr: false,
   loading: () => (
     <div className="min-h-screen flex items-center justify-center bg-background">
