@@ -13,7 +13,10 @@ RUN apk add --no-cache \
     python3 \
     make \
     g++ \
-    py3-pip
+    py3-pip \
+    linux-headers \
+    libusb-dev \
+    eudev-dev
 
 # Set Puppeteer to use installed Chromium
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \

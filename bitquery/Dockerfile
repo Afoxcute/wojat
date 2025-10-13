@@ -6,7 +6,10 @@ RUN apk add --no-cache \
     python3 \
     make \
     g++ \
-    py3-pip
+    py3-pip \
+    linux-headers \
+    libusb-dev \
+    eudev-dev
 
 # Set working directory
 WORKDIR /app
