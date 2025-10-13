@@ -202,8 +202,9 @@ Railway automatically redeploys when you push to your main branch:
 
 1. **Node.js Version Compatibility**
    - **Issue**: `@solana/codecs-numbers@2.3.0: The engine "node" is incompatible with this module. Expected version ">=20.18.0". Got "18.20.5"`
-   - **Solution**: All services now use Node.js 20+ via Nixpacks configuration
-   - **Files**: `.nixpacks.toml` and `railway.json` specify `nodejs_20`
+   - **Solution**: All services now use Node.js 20+ via Dockerfiles
+   - **Files**: `Dockerfile` files explicitly specify `FROM node:20-alpine`
+   - **Railway Config**: `railway.json` files use `"builder": "DOCKERFILE"`
 
 2. **TypeScript Compilation Errors**
    - **Issue**: `'error' is of type 'unknown'` in health check routes
@@ -236,7 +237,26 @@ curl -v https://your-service.railway.app/status
 
 # View logs
 # Use Railway dashboard logs tab
+
+# Check Node.js version in container
+docker exec -it <container_id> node --version
 ```
+
+### **Dockerfile Deployment**
+All services now use Dockerfiles to ensure Node.js 20 compatibility:
+
+- **Frontend**: `frontend/Dockerfile`
+- **Bitquery**: `bitquery/Dockerfile`
+- **ElizaOS Agents**: `elizaos-agents/Dockerfile`
+- **Telegram Scraper**: `js-scraper/Dockerfile-telegram`
+- **Outlight Scraper**: `js-scraper/Dockerfile-outlight`
+- **TikTok Scraper**: `js-scraper/Dockerfile-tiktok`
+
+Each Dockerfile:
+- Uses `FROM node:20-alpine` to ensure Node.js 20
+- Includes health checks
+- Optimizes for production deployment
+- Handles dependencies properly
 
 ## 📈 Performance Optimization
 
