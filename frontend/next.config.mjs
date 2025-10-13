@@ -26,12 +26,27 @@ const nextConfig = {
         'next/document': false,
         'next/head': false,
         'next/error': false,
+        'next/server': false,
       };
       
-      // Add a plugin to completely ignore Html imports
+      // Add multiple plugins to completely ignore Html imports
       config.plugins.push(
         new webpack.IgnorePlugin({
           resourceRegExp: /next\/document/,
+          contextRegExp: /.*/,
+        })
+      );
+      
+      config.plugins.push(
+        new webpack.IgnorePlugin({
+          resourceRegExp: /next\/head/,
+          contextRegExp: /.*/,
+        })
+      );
+      
+      config.plugins.push(
+        new webpack.IgnorePlugin({
+          resourceRegExp: /next\/error/,
           contextRegExp: /.*/,
         })
       );
@@ -44,13 +59,42 @@ const nextConfig = {
         )
       );
       
+      config.plugins.push(
+        new webpack.NormalModuleReplacementPlugin(
+          /next\/head/,
+          './webpack-utils/empty-module.js'
+        )
+      );
+      
+      config.plugins.push(
+        new webpack.NormalModuleReplacementPlugin(
+          /next\/error/,
+          './webpack-utils/empty-module.js'
+        )
+      );
+      
       // Ignore modules that might import Html
       config.externals = config.externals || [];
       config.externals.push({
         'next/document': 'commonjs next/document',
         'next/head': 'commonjs next/head',
         'next/error': 'commonjs next/error',
+        'next/server': 'commonjs next/server',
       });
+      
+      // Add a plugin to completely disable static generation
+      config.plugins.push(
+        new webpack.DefinePlugin({
+          'process.env.NEXT_PRIVATE_STATIC_GENERATION': 'false',
+        })
+      );
+      
+      // Add a plugin to prevent Html component usage
+      config.plugins.push(
+        new webpack.DefinePlugin({
+          'process.env.NEXT_PRIVATE_DISABLE_HTML': 'true',
+        })
+      );
     }
     return config;
   },
