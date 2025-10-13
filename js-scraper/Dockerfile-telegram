@@ -1,7 +1,7 @@
 # Use Node.js 20 LTS
 FROM node:20-alpine
 
-# Install system dependencies for Puppeteer
+# Install system dependencies for Puppeteer and build tools
 RUN apk add --no-cache \
     chromium \
     nss \
@@ -9,7 +9,11 @@ RUN apk add --no-cache \
     freetype-dev \
     harfbuzz \
     ca-certificates \
-    ttf-freefont
+    ttf-freefont \
+    python3 \
+    make \
+    g++ \
+    py3-pip
 
 # Set Puppeteer to use installed Chromium
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
