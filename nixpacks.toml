@@ -1,0 +1,17 @@
+[phases.setup]
+nixPkgs = ['nodejs', 'yarn']
+
+[phases.install]
+cmds = [
+  'yarn install',
+  'cd frontend && yarn install',
+  'cd ../bitquery && yarn install',
+  'cd ../elizaos-agents && yarn install',
+  'cd ../js-scraper && yarn install'
+]
+
+[phases.build]
+cmds = ['cd frontend && yarn build']
+
+[start]
+cmd = 'node railway-start.js'

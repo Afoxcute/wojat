@@ -1,8 +1,0 @@
-[phases.setup]
-nixPkgs = ["nodejs_20", "yarn"]
-
-[phases.build]
-cmds = ["yarn install --frozen-lockfile"]
-
-[phases.start]
-cmd = "node tiktok-server.mjs"
