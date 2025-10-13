@@ -5,8 +5,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "dev": "node --watch index.js",
+    "start": "node server.mjs",
+    "dev": "node --watch server.mjs",
+    "phase2": "node phase2-orchestrator.js",
+    "phase4": "node phase4-orchestrator.js",
+    "twitter-only": "node twitter-only-orchestrator.js",
     "test": "node test-agent.js"
   },
   "keywords": [
@@ -16,13 +19,14 @@
     "trading",
     "ai"
   ],
-  "author": "Iris Team",
+  "author": "Wojat Team",
   "license": "MIT",
   "dependencies": {
     "@elizaos/core": "^0.1.0",
     "@elizaos/plugin-solana": "^0.1.0",
     "amqplib": "^0.10.9",
     "dotenv": "^16.4.5",
+    "express": "^4.18.2",
     "sharp": "^0.34.4",
     "twitter-api-v2": "^1.27.0"
   }

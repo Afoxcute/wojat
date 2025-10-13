@@ -2,23 +2,13 @@
 
 ## 🚀 **Single Command to Run All Phases**
 
-### Local Development
 ```bash
 # Install dependencies and start everything
-npm run wojat
+npm run iris
 # or
-yarn wojat
+yarn iris
 # or
 node start-iris.js
-```
-
-### Railway Deployment
-```bash
-# Deploy to Railway (one-click)
-# 1. Push to GitHub
-# 2. Connect to Railway
-# 3. Set environment variables
-# 4. Deploy!
 ```
 
 **What this runs:**
@@ -28,10 +18,9 @@ node start-iris.js
 - **Phase 4**: Advanced AI Trading (ElizaOS Agents)
 
 **Access Points:**
-- **Local**: Main App: http://localhost:3000
-- **Local**: AI Chat: http://localhost:3000/ai-chat
-- **Local**: Dashboard: http://localhost:3000/dashboard
-- **Railway**: https://your-app.railway.app
+- Main App: http://localhost:3000
+- AI Chat: http://localhost:3000/ai-chat
+- Dashboard: http://localhost:3000/dashboard
 
 ---
 
@@ -116,28 +105,4 @@ In the fast-paced world of memecoins, Wojat provides a cutting-edge advantage fo
 ## Tagline
 
 _"An Autonomous AI Agent that browses TikTok to help you find the hottest memecoins before they pump."_
-
----
-
-## 🚂 Railway Deployment
-
-### Quick Deploy
-1. **Push to GitHub**: Ensure your code is in a GitHub repository
-2. **Connect to Railway**: Go to [railway.app](https://railway.app) and deploy from GitHub
-3. **Set Environment Variables**: Add your API keys in Railway dashboard
-4. **Deploy**: Railway will automatically build and deploy your app
-
-### Required Environment Variables
-```env
-SUPABASE_URL=your_supabase_project_url
-SUPABASE_ANON_KEY=your_supabase_anon_key
-OPENAI_API_KEY=your_openai_api_key
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
-
-### Documentation
-- 📖 **Railway Guide**: See `RAILWAY_DEPLOYMENT_GUIDE.md` for detailed instructions
-- ⚡ **Quick Start**: See `RAILWAY_QUICK_START.md` for one-click deployment
-- 🔧 **Test Config**: Run `npm run test:railway` to validate setup
 

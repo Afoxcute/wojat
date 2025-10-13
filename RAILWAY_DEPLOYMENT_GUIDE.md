@@ -1,258 +1,271 @@
-# 🚂 Railway Deployment Guide for Wojat Platform
+# 🚀 Wojat Platform - Railway Deployment Guide
 
-This guide will help you deploy the Wojat memecoin hunting platform on Railway.
+Complete guide for deploying all Wojat services on Railway.
 
-## 📋 Prerequisites
+## 📋 Services Overview
+
+| Service | Port | Railway Config | Description |
+|---------|------|---------------|-------------|
+| **Frontend** | 3000 | `frontend/railway.json` | Next.js web application |
+| **Bitquery** | 3001 | `bitquery/railway.json` | Blockchain data service |
+| **ElizaOS Agents** | 3002 | `elizaos-agents/railway.json` | AI agents and automation |
+| **Telegram Scraper** | 3003 | `js-scraper/telegram-railway.json` | Telegram data collection |
+| **Outlight Scraper** | 3004 | `js-scraper/outlight-railway.json` | Outlight data collection |
+| **TikTok Scraper** | 3005 | `js-scraper/tiktok-railway.json` | TikTok data collection |
+
+## 🛠️ Prerequisites
 
 1. **Railway Account**: Sign up at [railway.app](https://railway.app)
-2. **GitHub Repository**: Your Wojat code should be in a GitHub repository
-3. **Environment Variables**: Prepare your API keys and configuration
+2. **GitHub Repository**: Push your Wojat code to GitHub
+3. **Environment Variables**: Prepare all required API keys and secrets
 
-## 🚀 Quick Deployment
+## 🚀 Deployment Steps
 
-### Step 1: Connect to Railway
+### 1. **Deploy Frontend Service**
 
-1. Go to [railway.app](https://railway.app) and sign in
-2. Click "New Project"
-3. Select "Deploy from GitHub repo"
-4. Choose your Wojat repository
-5. Railway will automatically detect the project structure
+```bash
+# In Railway Dashboard:
+1. Click "New Project"
+2. Select "Deploy from GitHub repo"
+3. Choose your Wojat repository
+4. Select "frontend" folder as root directory
+5. Railway will auto-detect Next.js and deploy
+```
 
-### Step 2: Configure Environment Variables
-
-In your Railway project dashboard:
-
-1. Go to the "Variables" tab
-2. Add the following required variables:
-
+**Environment Variables:**
 ```env
-# Required
-SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+NEXT_PUBLIC_SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
+NEXT_PUBLIC_OPENAI_API_KEY=your_openai_api_key
+NODE_ENV=production
+```
+
+### 2. **Deploy Bitquery Service**
+
+```bash
+# In Railway Dashboard:
+1. Click "New Service"
+2. Select "Deploy from GitHub repo"
+3. Choose your Wojat repository
+4. Select "bitquery" folder as root directory
+5. Railway will auto-detect Node.js and deploy
+```
+
+**Environment Variables:**
+```env
+BITQUERY_API_KEY=your_bitquery_api_key
+ACCESS_TOKEN=your_bitquery_access_token
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_supabase_anon_key
+SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
+NODE_ENV=production
+```
+
+### 3. **Deploy ElizaOS Agents Service**
+
+```bash
+# In Railway Dashboard:
+1. Click "New Service"
+2. Select "Deploy from GitHub repo"
+3. Choose your Wojat repository
+4. Select "elizaos-agents" folder as root directory
+5. Railway will auto-detect Node.js and deploy
+```
+
+**Environment Variables:**
+```env
+OPENAI_API_KEY=your_openai_api_key
+SOLANA_PRIVATE_KEY=your_base58_private_key
+SOLANA_PUBLIC_KEY=your_public_key
+SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_supabase_anon_key
+CONSUMER_KEY=your_twitter_consumer_key
+CONSUMER_SECRET=your_twitter_consumer_secret
+ZORO_ACCESS_TOKEN=your_twitter_access_token
+ZORO_ACCESS_TOKEN_SECRET=your_twitter_access_token_secret
+NODE_ENV=production
+```
+
+### 4. **Deploy Scraper Services**
+
+#### **Telegram Scraper**
+```bash
+# In Railway Dashboard:
+1. Click "New Service"
+2. Select "Deploy from GitHub repo"
+3. Choose your Wojat repository
+4. Select "js-scraper" folder as root directory
+5. Set start command: node telegram-server.mjs
+6. Railway will auto-detect Node.js and deploy
+```
+
+#### **Outlight Scraper**
+```bash
+# In Railway Dashboard:
+1. Click "New Service"
+2. Select "Deploy from GitHub repo"
+3. Choose your Wojat repository
+4. Select "js-scraper" folder as root directory
+5. Set start command: node outlight-server.mjs
+6. Railway will auto-detect Node.js and deploy
+```
+
+#### **TikTok Scraper**
+```bash
+# In Railway Dashboard:
+1. Click "New Service"
+2. Select "Deploy from GitHub repo"
+3. Choose your Wojat repository
+4. Select "js-scraper" folder as root directory
+5. Set start command: node tiktok-server.mjs
+6. Railway will auto-detect Node.js and deploy
+```
+
+**Environment Variables (All Scrapers):**
+```env
+SUPABASE_URL=your_supabase_url
 SUPABASE_ANON_KEY=your_supabase_anon_key
 OPENAI_API_KEY=your_openai_api_key
-
-# Frontend
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-NEXT_PUBLIC_WS_URL=wss://your-railway-app.railway.app/ws
+CONSUMER_KEY=your_twitter_consumer_key
+CONSUMER_SECRET=your_twitter_consumer_secret
+ZORO_ACCESS_TOKEN=your_twitter_access_token
+ZORO_ACCESS_TOKEN_SECRET=your_twitter_access_token_secret
+TELEGRAM_BOT_TOKEN=your_telegram_bot_token
+TELEGRAM_CHANNEL_ID=your_telegram_channel_id
+NODE_ENV=production
 ```
 
-3. Add optional variables as needed (see `railway.env.example`)
+## 🔧 Service Configuration
 
-### Step 3: Deploy
+### **Health Checks**
+All services include health check endpoints:
+- Frontend: `https://your-frontend.railway.app/api/health`
+- Bitquery: `https://your-bitquery.railway.app/health`
+- ElizaOS: `https://your-elizaos.railway.app/health`
+- Scrapers: `https://your-scraper.railway.app/health`
 
-1. Railway will automatically start the build process
-2. The deployment will use the `start:railway` command
-3. Monitor the build logs for any issues
-
-## 🔧 Configuration Files
-
-The following files are configured for Railway deployment:
-
-### `railway.json`
-```json
-{
-  "build": {
-    "builder": "NIXPACKS"
-  },
-  "deploy": {
-    "startCommand": "npm run start:railway",
-    "healthcheckPath": "/",
-    "healthcheckTimeout": 100,
-    "restartPolicyType": "ON_FAILURE",
-    "restartPolicyMaxRetries": 10
-  }
-}
+### **Service URLs**
+After deployment, update your frontend environment variables with the Railway URLs:
+```env
+NEXT_PUBLIC_BITQUERY_SERVICE_URL=https://your-bitquery-service.railway.app
+NEXT_PUBLIC_ELIZAOS_SERVICE_URL=https://your-elizaos-service.railway.app
+NEXT_PUBLIC_SCRAPER_SERVICE_URL=https://your-scraper-service.railway.app
 ```
 
-### `nixpacks.toml`
-```toml
-[phases.setup]
-nixPkgs = ['nodejs_18', 'yarn']
+## 📊 Monitoring & Management
 
-[phases.install]
-cmds = ['yarn install --frozen-lockfile']
-
-[phases.build]
-cmds = [
-  'cd frontend && yarn install --frozen-lockfile',
-  'cd frontend && yarn build',
-  'cd elizaos-agents && yarn install --frozen-lockfile'
-]
-
-[start]
-cmd = 'npm run start:railway'
-```
-
-### `Procfile`
-```
-web: npm run start:railway
-```
-
-## 🌐 Environment Variables
-
-### Required Variables
-
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `SUPABASE_URL` | Your Supabase project URL | `https://xxx.supabase.co` |
-| `SUPABASE_ANON_KEY` | Your Supabase anonymous key | `eyJ...` |
-| `OPENAI_API_KEY` | Your OpenAI API key | `sk-...` |
-| `NEXT_PUBLIC_SUPABASE_URL` | Same as SUPABASE_URL | `https://xxx.supabase.co` |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Same as SUPABASE_ANON_KEY | `eyJ...` |
-
-### Optional Variables
-
-| Variable | Description | Required For |
-|----------|-------------|--------------|
-| `SOLANA_PRIVATE_KEY` | Base58 private key | Trading features |
-| `SOLANA_PUBLIC_KEY` | Public key | Trading features |
-| `CONSUMER_KEY` | Twitter API key | Social media automation |
-| `CONSUMER_SECRET` | Twitter API secret | Social media automation |
-| `ZORO_ACCESS_TOKEN` | Twitter access token | Social media automation |
-| `ZORO_ACCESS_TOKEN_SECRET` | Twitter access token secret | Social media automation |
-| `BITQUERY_API_KEY` | Bitquery API key | Blockchain data |
-| `ACCESS_TOKEN` | Bitquery access token | Blockchain data |
-
-## 🏗️ Build Process
-
-Railway will automatically:
-
-1. **Install Dependencies**: Install root and frontend dependencies
-2. **Build Frontend**: Run `npm run build` in the frontend directory
-3. **Start Services**: Run the Railway startup script
-
-## 📊 Monitoring
-
-### Health Checks
-
-- **Health Check Path**: `/`
-- **Health Check Timeout**: 100ms
-- **Restart Policy**: Restart on failure (max 10 retries)
-
-### Logs
-
-Monitor your deployment logs in the Railway dashboard:
-- Build logs show the installation and build process
-- Runtime logs show application output and errors
-
-## 🔧 Troubleshooting
-
-### Common Issues
-
-1. **Build Failures**
-   - Check that all dependencies are properly listed in package.json
-   - Ensure Node.js version compatibility (18+)
-
-2. **Environment Variables**
-   - Verify all required variables are set
-   - Check variable names for typos
-
-3. **Port Issues**
-   - Railway automatically sets the PORT environment variable
-   - The application listens on `process.env.PORT || 3000`
-
-4. **Memory Issues**
-   - Railway provides different plan tiers with varying memory limits
-   - Monitor memory usage in the Railway dashboard
-
-### Debug Commands
-
+### **Service Status**
+Check service health:
 ```bash
-# Check environment variables
-echo $SUPABASE_URL
-echo $OPENAI_API_KEY
-
-# Check Node.js version
-node --version
-
-# Check if services are running
-ps aux | grep node
+curl https://your-service.railway.app/health
+curl https://your-service.railway.app/status
 ```
 
-## 🚀 Deployment Commands
+### **Logs**
+Monitor logs in Railway dashboard:
+1. Go to your service
+2. Click "Logs" tab
+3. View real-time logs
 
-### Manual Deployment
+### **Scaling**
+Railway automatically scales based on traffic. For manual scaling:
+1. Go to service settings
+2. Adjust resource allocation
+3. Set scaling policies
 
-If you need to deploy manually:
+## 🔄 Continuous Deployment
 
-```bash
-# Install dependencies
-npm install
-cd frontend && npm install
-cd ../elizaos-agents && npm install
+Railway automatically redeploys when you push to your main branch:
+1. Make changes to your code
+2. Push to GitHub
+3. Railway detects changes and redeploys
+4. Services restart automatically
 
-# Build frontend
-cd ../frontend && npm run build
+## 🛡️ Security & Environment
 
-# Start application
-cd .. && npm run start:railway
-```
-
-### Local Testing
-
-Test the Railway configuration locally:
-
-```bash
-# Set environment variables
-export PORT=3000
-export NODE_ENV=production
-
-# Start with Railway script
-npm run start:railway
-```
-
-## 📈 Scaling
-
-### Railway Plans
-
-- **Hobby**: $5/month - Good for development and testing
-- **Pro**: $20/month - Better for production with more resources
-- **Team**: Custom pricing - For teams and enterprise
-
-### Performance Optimization
-
-1. **Enable Caching**: Use Railway's built-in caching
-2. **Optimize Builds**: Minimize build time with proper dependency management
-3. **Monitor Resources**: Use Railway's metrics to optimize resource usage
-
-## 🔒 Security
-
-### Environment Variables
-
-- Never commit sensitive keys to your repository
-- Use Railway's secure environment variable system
+### **Environment Variables**
+- Never commit `.env` files to Git
+- Use Railway's environment variable management
 - Rotate API keys regularly
+- Use different keys for production/staging
 
-### HTTPS
+### **Database Security**
+- Enable RLS policies in Supabase
+- Use service role keys only in backend services
+- Implement proper authentication
 
-- Railway automatically provides HTTPS
-- Your app will be available at `https://your-app.railway.app`
+## 🚨 Troubleshooting
+
+### **Common Issues**
+
+1. **Service Won't Start**
+   - Check logs for missing dependencies
+   - Verify environment variables
+   - Ensure correct start command
+
+2. **Health Check Fails**
+   - Verify health endpoint exists
+   - Check if service is listening on correct port
+   - Review service initialization
+
+3. **Database Connection Issues**
+   - Verify Supabase credentials
+   - Check RLS policies
+   - Ensure database is accessible
+
+### **Debug Commands**
+```bash
+# Check service health
+curl -v https://your-service.railway.app/health
+
+# Check service status
+curl -v https://your-service.railway.app/status
+
+# View logs
+# Use Railway dashboard logs tab
+```
+
+## 📈 Performance Optimization
+
+### **Frontend**
+- Enable Next.js optimizations
+- Use CDN for static assets
+- Implement caching strategies
+
+### **Backend Services**
+- Use connection pooling
+- Implement rate limiting
+- Optimize database queries
+
+### **Scrapers**
+- Implement proper delays
+- Use batch processing
+- Monitor API rate limits
+
+## 🎯 Production Checklist
+
+- [ ] All services deployed successfully
+- [ ] Environment variables configured
+- [ ] Health checks passing
+- [ ] Database connections working
+- [ ] API integrations functional
+- [ ] Monitoring set up
+- [ ] Security measures in place
+- [ ] Performance optimized
+- [ ] Backup strategy implemented
+- [ ] Documentation updated
 
 ## 📞 Support
 
-### Railway Support
+For Railway-specific issues:
+- [Railway Documentation](https://docs.railway.app)
+- [Railway Discord](https://discord.gg/railway)
+- [Railway GitHub](https://github.com/railwayapp)
 
-- **Documentation**: [docs.railway.app](https://docs.railway.app)
-- **Community**: [Railway Discord](https://discord.gg/railway)
-- **Status**: [status.railway.app](https://status.railway.app)
-
-### Wojat Support
-
-- Check the main README.md for general setup
-- Review the QUICK_START.md for local development
-- Check the SUPABASE_SETUP_GUIDE.md for database setup
-
-## 🎉 Success!
-
-Once deployed, your Wojat platform will be available at:
-`https://your-app-name.railway.app`
-
-The platform includes:
-- ✅ Frontend web interface
-- ✅ AI chat system
-- ✅ Twitter automation
-- ✅ Data collection services
-- ✅ Trading system (if configured)
-
-Happy memecoin hunting! 🚀
+For Wojat platform issues:
+- Check service logs
+- Review environment configuration
+- Verify API credentials
+- Test health endpoints
