@@ -1,4 +1,4 @@
-# Wojat Platform Dockerfile for Railway (NPM Simple Fast)
+# Wojat Platform Dockerfile for Railway (Pure Yarn)
 FROM node:22-alpine
 
 # Install only essential build dependencies (no USB libs)
@@ -14,13 +14,13 @@ RUN apk add --no-cache \
 WORKDIR /app
 
 # Copy package files for better caching
-COPY package.json package-lock.json ./
+COPY package.json yarn.lock ./
 COPY frontend/package.json frontend/yarn.lock ./frontend/
 
-# Install root dependencies using npm (better handling of optional dependencies)
-RUN npm ci --only=production --ignore-scripts
+# Install root dependencies using yarn
+RUN yarn install --production --ignore-optional --ignore-engines --ignore-platform
 
-# Install frontend dependencies (frontend uses yarn)
+# Install frontend dependencies
 WORKDIR /app/frontend
 RUN yarn install --production --ignore-optional --ignore-engines --ignore-platform
 
@@ -31,7 +31,7 @@ RUN rm -rf frontend/node_modules frontend/.next frontend/dist 2>/dev/null || tru
 
 # Build frontend (skip ESLint and type checking for speed)
 WORKDIR /app/frontend
-RUN DISABLE_ESLINT_PLUGIN=true SKIP_TYPE_CHECK=true npm run build
+RUN DISABLE_ESLINT_PLUGIN=true SKIP_TYPE_CHECK=true yarn build
 
 # Copy essential runtime files
 WORKDIR /app
@@ -41,4 +41,4 @@ COPY railway-start.js ./
 EXPOSE 3000
 
 # Start the application
-CMD ["npm", "run", "wojat:railway"]
+CMD ["yarn", "wojat:railway"]

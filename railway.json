@@ -2,10 +2,10 @@
   "build": {
     "builder": "DOCKERFILE",
     "buildCommand": "docker build -t wojat-platform .",
-    "dockerfilePath": "Dockerfile.npm-simple"
+    "dockerfilePath": "Dockerfile.yarn-simple"
   },
   "deploy": {
-    "startCommand": "npm run wojat:railway",
+    "startCommand": "yarn wojat:railway",
     "healthcheckPath": "/",
     "healthcheckTimeout": 100,
     "restartPolicyType": "ON_FAILURE",
