@@ -67,8 +67,12 @@ try {
   console.log('   ❌ @elizaos/core: Not available');
 }
 
-// Solana plugin removed for Railway compatibility
-console.log('   ⏭️ @elizaos/plugin-solana: Skipped (Railway compatibility)');
+try {
+  const { solanaPlugin } = await import('@elizaos/plugin-solana');
+  console.log('   ✅ @elizaos/plugin-solana: Available');
+} catch (error) {
+  console.log('   ❌ @elizaos/plugin-solana: Not available');
+}
 
 try {
   const { TwitterApi } = await import('twitter-api-v2');

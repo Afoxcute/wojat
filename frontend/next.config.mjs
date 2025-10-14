@@ -3,7 +3,7 @@ const nextConfig = {
   experimental: {
     esmExternals: "loose",
   },
-  // Removed standalone output for Railway compatibility
+  output: 'standalone',
   async headers() {
     return [
       {
