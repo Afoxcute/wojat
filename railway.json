@@ -2,7 +2,7 @@
   "build": {
     "builder": "DOCKERFILE",
     "buildCommand": "docker build -t wojat-platform .",
-    "dockerfilePath": "Dockerfile.fast"
+    "dockerfilePath": "Dockerfile.simple-fast"
   },
   "deploy": {
     "startCommand": "yarn wojat:railway",

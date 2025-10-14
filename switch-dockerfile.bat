@@ -13,10 +13,12 @@ echo 4. Multi-stage (smaller final image, removes build deps)
 echo 5. Lightweight (excludes USB package, faster build)
 echo 6. Fast (optimized for Railway, minimal dependencies)
 echo 7. Frontend Only (fastest, frontend only)
-echo 8. Test current Dockerfile locally
+echo 8. Simple Fast (copies entire frontend, handles missing files)
+echo 9. Robust Fast (handles missing config files gracefully)
+echo 10. Test current Dockerfile locally
 echo.
 
-set /p choice="Enter your choice (1-8): "
+set /p choice="Enter your choice (1-10): "
 
 if "%choice%"=="1" (
     echo 📦 Using standard Dockerfile...
@@ -53,6 +55,16 @@ if "%choice%"=="1" (
     move Dockerfile.frontend-only Dockerfile
     echo ✅ Frontend-only Dockerfile is now active
 ) else if "%choice%"=="8" (
+    echo 📦 Switching to simple fast Dockerfile...
+    if exist Dockerfile move Dockerfile Dockerfile.yarn
+    move Dockerfile.simple-fast Dockerfile
+    echo ✅ Simple fast Dockerfile is now active
+) else if "%choice%"=="9" (
+    echo 📦 Switching to robust fast Dockerfile...
+    if exist Dockerfile move Dockerfile Dockerfile.yarn
+    move Dockerfile.robust-fast Dockerfile
+    echo ✅ Robust fast Dockerfile is now active
+) else if "%choice%"=="10" (
     echo 🧪 Testing current Dockerfile...
     docker build -t wojat-test .
     if %errorlevel% equ 0 (

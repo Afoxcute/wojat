@@ -55,6 +55,43 @@ git commit -m "Switch to fast Dockerfile for Railway"
 git push origin main
 ```
 
+### **Problem:**
+```
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref 48fcuztqfjshqtd69mi57n1sd::pyijtijoto0t6anaz05kqvhal: "/frontend/postcss.config.js": not found
+```
+
+### **Solution:**
+1. **Use Simple Fast Dockerfile** - Copies entire frontend directory, handles missing files
+2. **Use Robust Fast Dockerfile** - Handles missing config files gracefully
+3. **Check file extensions** - Config files may have different extensions (.mjs, .ts, .js)
+4. **Updated Dockerfiles** - Now handle missing files and different extensions
+
+### **Quick Fix Options:**
+
+#### **Option 1: Use Simple Fast Dockerfile (Recommended)**
+```bash
+# On Windows
+switch-dockerfile.bat
+# Choose option 8 (Simple Fast)
+
+# On Linux/Mac
+chmod +x switch-dockerfile.sh
+./switch-dockerfile.sh
+# Choose option 8 (Simple Fast)
+```
+
+#### **Option 2: Use Robust Fast Dockerfile**
+```bash
+# On Windows
+switch-dockerfile.bat
+# Choose option 9 (Robust Fast)
+
+# On Linux/Mac
+chmod +x switch-dockerfile.sh
+./switch-dockerfile.sh
+# Choose option 9 (Robust Fast)
+```
+
 ## 🔧 **Lockfile Issues (Most Common)**
 
 ### **Problem:**

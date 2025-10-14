@@ -14,10 +14,12 @@ echo "4. Multi-stage (smaller final image, removes build deps)"
 echo "5. Lightweight (excludes USB package, faster build)"
 echo "6. Fast (optimized for Railway, minimal dependencies)"
 echo "7. Frontend Only (fastest, frontend only)"
-echo "8. Test current Dockerfile locally"
+echo "8. Simple Fast (copies entire frontend, handles missing files)"
+echo "9. Robust Fast (handles missing config files gracefully)"
+echo "10. Test current Dockerfile locally"
 echo ""
 
-read -p "Enter your choice (1-8): " choice
+read -p "Enter your choice (1-10): " choice
 
 case $choice in
     1)
@@ -64,6 +66,18 @@ case $choice in
         echo "✅ Frontend-only Dockerfile is now active"
         ;;
     8)
+        echo "📦 Switching to simple fast Dockerfile..."
+        mv Dockerfile Dockerfile.yarn 2>/dev/null || true
+        mv Dockerfile.simple-fast Dockerfile
+        echo "✅ Simple fast Dockerfile is now active"
+        ;;
+    9)
+        echo "📦 Switching to robust fast Dockerfile..."
+        mv Dockerfile Dockerfile.yarn 2>/dev/null || true
+        mv Dockerfile.robust-fast Dockerfile
+        echo "✅ Robust fast Dockerfile is now active"
+        ;;
+    10)
         echo "🧪 Testing current Dockerfile..."
         docker build -t wojat-test .
         if [ $? -eq 0 ]; then

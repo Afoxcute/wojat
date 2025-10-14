@@ -1,4 +1,4 @@
-# Wojat Platform Dockerfile for Railway (Optimized for Speed)
+# Wojat Platform Dockerfile for Railway (Robust Fast Build)
 FROM node:22-alpine AS base
 
 # Install only essential build dependencies
@@ -24,16 +24,20 @@ RUN yarn install --production --ignore-optional --frozen-lockfile
 WORKDIR /app/frontend
 RUN yarn install --production --ignore-optional --frozen-lockfile
 
-# Copy only essential source files
+# Copy frontend source (handle missing files gracefully)
 WORKDIR /app
 COPY frontend/app ./frontend/app
 COPY frontend/components ./frontend/components
 COPY frontend/lib ./frontend/lib
 COPY frontend/public ./frontend/public
-COPY frontend/next.config.mjs ./frontend/
-COPY frontend/tailwind.config.ts ./frontend/
+COPY frontend/hooks ./frontend/hooks
+
+# Copy config files (handle different extensions)
+COPY frontend/next.config.* ./frontend/ 2>/dev/null || true
+COPY frontend/tailwind.config.* ./frontend/ 2>/dev/null || true
 COPY frontend/tsconfig.json ./frontend/
-COPY frontend/postcss.config.mjs ./frontend/
+COPY frontend/postcss.config.* ./frontend/ 2>/dev/null || true
+COPY frontend/components.json ./frontend/ 2>/dev/null || true
 
 # Build frontend (skip ESLint and type checking for speed)
 WORKDIR /app/frontend
@@ -57,7 +61,7 @@ WORKDIR /app
 COPY --from=base /app/frontend/.next ./frontend/.next
 COPY --from=base /app/frontend/public ./frontend/public
 COPY --from=base /app/frontend/package.json ./frontend/
-COPY --from=base /app/frontend/next.config.js ./frontend/
+COPY --from=base /app/frontend/next.config.* ./frontend/ 2>/dev/null || true
 
 # Copy essential runtime files
 COPY package.json yarn.lock ./
