@@ -6,7 +6,7 @@ echo 🚀 Starting Wojat Platform build for Railway...
 
 REM Install root dependencies
 echo 📦 Installing root dependencies...
-yarn install --frozen-lockfile
+yarn install
 if %errorlevel% neq 0 (
     echo ❌ Failed to install root dependencies
     exit /b 1
@@ -15,7 +15,7 @@ if %errorlevel% neq 0 (
 REM Install frontend dependencies and build
 echo 🎨 Installing frontend dependencies...
 cd frontend
-yarn install --frozen-lockfile
+yarn install
 if %errorlevel% neq 0 (
     echo ❌ Failed to install frontend dependencies
     exit /b 1
@@ -31,7 +31,7 @@ cd ..
 REM Install elizaos-agents dependencies
 echo 🤖 Installing ElizaOS agents dependencies...
 cd elizaos-agents
-yarn install --frozen-lockfile
+yarn install
 if %errorlevel% neq 0 (
     echo ❌ Failed to install elizaos-agents dependencies
     exit /b 1
@@ -41,7 +41,7 @@ cd ..
 REM Install js-scraper dependencies
 echo 🕷️ Installing scraper dependencies...
 cd js-scraper
-yarn install --frozen-lockfile
+yarn install
 if %errorlevel% neq 0 (
     echo ❌ Failed to install js-scraper dependencies
     exit /b 1
@@ -51,7 +51,7 @@ cd ..
 REM Install bitquery dependencies
 echo 🔗 Installing Bitquery dependencies...
 cd bitquery
-yarn install --frozen-lockfile
+yarn install
 if %errorlevel% neq 0 (
     echo ❌ Failed to install bitquery dependencies
     exit /b 1

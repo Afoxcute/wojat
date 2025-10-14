@@ -12,6 +12,7 @@
     "wojat": "node start-iris.js",
     "wojat:railway": "node railway-start.js",
     "railway": "node railway-start.js",
+    "update-lockfiles": "node -e \"console.log('Run update-lockfiles.sh or update-lockfiles.bat to update lockfiles')\"",
     "start:all": "node start-iris.js",
     "start:phases": "node start-iris.js",
     "run:all": "node start-iris.js",
