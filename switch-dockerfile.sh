@@ -21,11 +21,13 @@ echo "11. Ultra Fast (NPM with ignore-scripts, fastest)"
 echo "12. Selective (installs only essential packages)"
 echo "13. NPM Simple (single-stage NPM build, reliable)"
 echo "14. Hybrid (NPM root + Yarn frontend, handles both)"
-echo "15. Yarn Simple (pure Yarn, fastest and most reliable)"
-echo "16. Test current Dockerfile locally"
+echo "15. Yarn Simple (pure Yarn, includes USB libs)"
+echo "16. Yarn No USB (pure Yarn, excludes wallet adapters)"
+echo "17. Yarn Ignore Scripts (pure Yarn, skips native compilation) ⭐ RECOMMENDED"
+echo "18. Test current Dockerfile locally"
 echo ""
 
-read -p "Enter your choice (1-16): " choice
+read -p "Enter your choice (1-18): " choice
 
 case $choice in
     1)
@@ -120,6 +122,18 @@ case $choice in
         echo "✅ Yarn simple Dockerfile is now active"
         ;;
     16)
+        echo "📦 Switching to Yarn no USB Dockerfile..."
+        mv Dockerfile Dockerfile.yarn 2>/dev/null || true
+        mv Dockerfile.yarn-no-usb Dockerfile
+        echo "✅ Yarn no USB Dockerfile is now active"
+        ;;
+    17)
+        echo "📦 Switching to Yarn ignore scripts Dockerfile..."
+        mv Dockerfile Dockerfile.yarn 2>/dev/null || true
+        mv Dockerfile.yarn-ignore-scripts Dockerfile
+        echo "✅ Yarn ignore scripts Dockerfile is now active"
+        ;;
+    18)
         echo "🧪 Testing current Dockerfile..."
         docker build -t wojat-test .
         if [ $? -eq 0 ]; then
