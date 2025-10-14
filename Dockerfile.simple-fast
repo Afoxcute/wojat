@@ -18,11 +18,11 @@ COPY package.json yarn.lock ./
 COPY frontend/package.json frontend/yarn.lock ./frontend/
 
 # Install root dependencies (skip optional packages)
-RUN yarn install --production --ignore-optional --frozen-lockfile
+RUN yarn install --production --ignore-optional
 
 # Install frontend dependencies
 WORKDIR /app/frontend
-RUN yarn install --production --ignore-optional --frozen-lockfile
+RUN yarn install --production --ignore-optional
 
 # Copy entire frontend directory (exclude node_modules and build artifacts)
 WORKDIR /app
@@ -57,7 +57,7 @@ COPY package.json yarn.lock ./
 COPY railway-start.js ./
 
 # Install only production dependencies
-RUN yarn install --production --ignore-optional --frozen-lockfile
+RUN yarn install --production --ignore-optional
 
 # Expose port
 EXPOSE 3000

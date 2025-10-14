@@ -100,7 +100,8 @@ error Your lockfile needs to be updated, but yarn was run with `--frozen-lockfil
 ```
 
 ### **Solution:**
-1. **Update lockfiles locally:**
+1. **Use updated Dockerfiles** - All Dockerfiles now use `yarn install` without `--frozen-lockfile`
+2. **Update lockfiles locally (optional):**
    ```bash
    # On Windows
    update-lockfiles.bat
@@ -110,16 +111,16 @@ error Your lockfile needs to be updated, but yarn was run with `--frozen-lockfil
    ./update-lockfiles.sh
    ```
 
-2. **Commit updated lockfiles:**
+3. **Commit updated lockfiles (optional):**
    ```bash
    git add yarn.lock frontend/yarn.lock elizaos-agents/yarn.lock js-scraper/yarn.lock bitquery/yarn.lock
    git commit -m "Update lockfiles for Railway deployment"
    git push origin main
    ```
 
-3. **Redeploy on Railway:**
+4. **Redeploy on Railway:**
    - Railway will automatically redeploy when you push changes
-   - The Docker build will now use the updated lockfiles
+   - The Docker build will now work without lockfile issues
 
 ## 🐳 **Docker Build Issues**
 

@@ -10,7 +10,7 @@ WORKDIR /app
 COPY frontend/package.json frontend/yarn.lock ./
 
 # Install frontend dependencies only
-RUN yarn install --production --ignore-optional --frozen-lockfile
+RUN yarn install --production --ignore-optional
 
 # Copy frontend source
 COPY frontend/ ./
