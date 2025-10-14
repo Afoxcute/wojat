@@ -144,6 +144,60 @@ chmod +x switch-dockerfile.sh
 # Choose option 9 (Robust Fast)
 ```
 
+## 🔧 **Package Lock File Issues**
+
+### **Problem:**
+```
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref ... "/package-lock.json": not found
+```
+
+### **Solution:**
+1. **Use NPM Simple Dockerfile** - Single-stage build, no multi-stage complexity ⭐ **RECOMMENDED**
+2. **Use Simple Fast Dockerfile** - Copies entire frontend directory, handles missing files
+3. **Use Robust Fast Dockerfile** - Handles missing config files gracefully
+4. **Check file extensions** - Config files may have different extensions (.mjs, .ts, .js)
+5. **Updated Dockerfiles** - Now handle missing files and different extensions
+
+### **Quick Fix Options:**
+
+#### **Option 1: Use NPM Simple Dockerfile (Recommended)**
+```bash
+# On Windows
+switch-dockerfile.bat
+# Choose option 13 (NPM Simple)
+
+# On Linux/Mac
+chmod +x switch-dockerfile.sh
+./switch-dockerfile.sh
+# Choose option 13 (NPM Simple)
+```
+
+#### **Option 2: Use Simple Fast Dockerfile**
+```bash
+# On Windows
+switch-dockerfile.bat
+# Choose option 8 (Simple Fast)
+
+# On Linux/Mac
+chmod +x switch-dockerfile.sh
+./switch-dockerfile.sh
+# Choose option 8 (Simple Fast)
+```
+
+#### **Option 3: Manual Dockerfile Switch**
+```bash
+# Backup current Dockerfile
+mv Dockerfile Dockerfile.backup
+
+# Use NPM simple Dockerfile
+mv Dockerfile.npm-simple Dockerfile
+
+# Commit and push
+git add Dockerfile railway.json
+git commit -m "Switch to NPM simple Dockerfile for Railway"
+git push origin main
+```
+
 ## 🔧 **Lockfile Issues (Most Common)**
 
 ### **Problem:**

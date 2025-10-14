@@ -19,10 +19,11 @@ echo "9. Robust Fast (handles missing config files gracefully)"
 echo "10. No USB (excludes USB package entirely, ultra fast)"
 echo "11. Ultra Fast (NPM with ignore-scripts, fastest)"
 echo "12. Selective (installs only essential packages)"
-echo "13. Test current Dockerfile locally"
+echo "13. NPM Simple (single-stage NPM build, reliable)"
+echo "14. Test current Dockerfile locally"
 echo ""
 
-read -p "Enter your choice (1-13): " choice
+read -p "Enter your choice (1-14): " choice
 
 case $choice in
     1)
@@ -99,6 +100,12 @@ case $choice in
         echo "✅ Selective Dockerfile is now active"
         ;;
     13)
+        echo "📦 Switching to NPM simple Dockerfile..."
+        mv Dockerfile Dockerfile.yarn 2>/dev/null || true
+        mv Dockerfile.npm-simple Dockerfile
+        echo "✅ NPM simple Dockerfile is now active"
+        ;;
+    14)
         echo "🧪 Testing current Dockerfile..."
         docker build -t wojat-test .
         if [ $? -eq 0 ]; then

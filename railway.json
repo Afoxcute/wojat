@@ -2,7 +2,7 @@
   "build": {
     "builder": "DOCKERFILE",
     "buildCommand": "docker build -t wojat-platform .",
-    "dockerfilePath": "Dockerfile.npm-ultra-fast"
+    "dockerfilePath": "Dockerfile.npm-simple"
   },
   "deploy": {
     "startCommand": "npm run wojat:railway",
