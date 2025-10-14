@@ -1,22 +1,17 @@
-# Wojat Platform Dockerfile for Railway (Robust version)
+# Wojat Platform Dockerfile for Railway (No USB - Lightweight)
 FROM node:22-alpine
 
-# Install build dependencies for native modules
+# Install build dependencies for native modules (excluding USB-specific libs)
 RUN apk add --no-cache \
     python3 \
     make \
     g++ \
     gcc \
     libc-dev \
-    linux-headers \
-    eudev-dev \
-    libusb-dev
+    linux-headers
 
 # Set working directory
 WORKDIR /app
-
-# Install yarn if not present, or use existing
-RUN which yarn || npm install -g yarn@latest
 
 # Copy package files first for better caching
 COPY package.json yarn.lock ./
@@ -25,24 +20,24 @@ COPY elizaos-agents/package.json elizaos-agents/yarn.lock ./elizaos-agents/
 COPY js-scraper/package.json js-scraper/yarn.lock ./js-scraper/
 COPY bitquery/package.json bitquery/yarn.lock ./bitquery/
 
-# Install root dependencies
-RUN yarn install --frozen-lockfile || yarn install
+# Install root dependencies with USB package excluded
+RUN yarn install --ignore-optional
 
 # Install frontend dependencies
 WORKDIR /app/frontend
-RUN yarn install --frozen-lockfile || yarn install
+RUN yarn install --ignore-optional
 
 # Install elizaos-agents dependencies
 WORKDIR /app/elizaos-agents
-RUN yarn install --frozen-lockfile || yarn install
+RUN yarn install --ignore-optional
 
 # Install js-scraper dependencies
 WORKDIR /app/js-scraper
-RUN yarn install --frozen-lockfile || yarn install
+RUN yarn install --ignore-optional
 
 # Install bitquery dependencies
 WORKDIR /app/bitquery
-RUN yarn install --frozen-lockfile || yarn install
+RUN yarn install --ignore-optional
 
 # Copy source code
 WORKDIR /app

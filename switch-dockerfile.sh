@@ -11,10 +11,11 @@ echo "1. Standard (yarn, assumes yarn is pre-installed)"
 echo "2. NPM-based (uses npm instead of yarn)"
 echo "3. Robust (handles yarn installation gracefully)"
 echo "4. Multi-stage (smaller final image, removes build deps)"
-echo "5. Test current Dockerfile locally"
+echo "5. Lightweight (excludes USB package, faster build)"
+echo "6. Test current Dockerfile locally"
 echo ""
 
-read -p "Enter your choice (1-5): " choice
+read -p "Enter your choice (1-6): " choice
 
 case $choice in
     1)
@@ -43,6 +44,12 @@ case $choice in
         echo "✅ Multi-stage Dockerfile is now active"
         ;;
     5)
+        echo "📦 Switching to lightweight Dockerfile..."
+        mv Dockerfile Dockerfile.yarn 2>/dev/null || true
+        mv Dockerfile.lightweight Dockerfile
+        echo "✅ Lightweight Dockerfile is now active"
+        ;;
+    6)
         echo "🧪 Testing current Dockerfile..."
         docker build -t wojat-test .
         if [ $? -eq 0 ]; then

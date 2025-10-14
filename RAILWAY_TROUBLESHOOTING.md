@@ -33,6 +33,28 @@ error Your lockfile needs to be updated, but yarn was run with `--frozen-lockfil
 
 ### **Problem:**
 ```
+fatal error: libudev.h: No such file or directory
+#include <libudev.h>
+compilation terminated.
+```
+
+### **Solution:**
+1. **Use updated Dockerfile** - Now includes libudev development libraries
+2. **USB libraries installed** - Dockerfile includes:
+   ```dockerfile
+   RUN apk add --no-cache \
+       python3 \
+       make \
+       g++ \
+       gcc \
+       libc-dev \
+       linux-headers \
+       eudev-dev \
+       libusb-dev
+   ```
+
+### **Problem:**
+```
 error /app/node_modules/usb: Command failed.
 gyp ERR! find Python Python is not set from command line or npm configuration
 gyp ERR! find Python You need to install the latest version of Python.
@@ -48,7 +70,9 @@ gyp ERR! find Python You need to install the latest version of Python.
        g++ \
        gcc \
        libc-dev \
-       linux-headers
+       linux-headers \
+       eudev-dev \
+       libusb-dev
    ```
 
 ### **Problem:**

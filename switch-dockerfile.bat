@@ -10,10 +10,11 @@ echo 1. Standard (yarn, assumes yarn is pre-installed)
 echo 2. NPM-based (uses npm instead of yarn)
 echo 3. Robust (handles yarn installation gracefully)
 echo 4. Multi-stage (smaller final image, removes build deps)
-echo 5. Test current Dockerfile locally
+echo 5. Lightweight (excludes USB package, faster build)
+echo 6. Test current Dockerfile locally
 echo.
 
-set /p choice="Enter your choice (1-5): "
+set /p choice="Enter your choice (1-6): "
 
 if "%choice%"=="1" (
     echo 📦 Using standard Dockerfile...
@@ -35,6 +36,11 @@ if "%choice%"=="1" (
     move Dockerfile.multistage Dockerfile
     echo ✅ Multi-stage Dockerfile is now active
 ) else if "%choice%"=="5" (
+    echo 📦 Switching to lightweight Dockerfile...
+    if exist Dockerfile move Dockerfile Dockerfile.yarn
+    move Dockerfile.lightweight Dockerfile
+    echo ✅ Lightweight Dockerfile is now active
+) else if "%choice%"=="6" (
     echo 🧪 Testing current Dockerfile...
     docker build -t wojat-test .
     if %errorlevel% equ 0 (
