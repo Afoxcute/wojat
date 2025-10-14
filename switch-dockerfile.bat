@@ -15,10 +15,11 @@ echo 6. Fast (optimized for Railway, minimal dependencies)
 echo 7. Frontend Only (fastest, frontend only)
 echo 8. Simple Fast (copies entire frontend, handles missing files)
 echo 9. Robust Fast (handles missing config files gracefully)
-echo 10. Test current Dockerfile locally
+echo 10. No USB (excludes USB package entirely, ultra fast)
+echo 11. Test current Dockerfile locally
 echo.
 
-set /p choice="Enter your choice (1-10): "
+set /p choice="Enter your choice (1-11): "
 
 if "%choice%"=="1" (
     echo 📦 Using standard Dockerfile...
@@ -65,6 +66,11 @@ if "%choice%"=="1" (
     move Dockerfile.robust-fast Dockerfile
     echo ✅ Robust fast Dockerfile is now active
 ) else if "%choice%"=="10" (
+    echo 📦 Switching to no USB Dockerfile...
+    if exist Dockerfile move Dockerfile Dockerfile.yarn
+    move Dockerfile.no-usb Dockerfile
+    echo ✅ No USB Dockerfile is now active
+) else if "%choice%"=="11" (
     echo 🧪 Testing current Dockerfile...
     docker build -t wojat-test .
     if %errorlevel% equ 0 (

@@ -92,6 +92,58 @@ chmod +x switch-dockerfile.sh
 # Choose option 9 (Robust Fast)
 ```
 
+### **Problem:**
+```
+error /app/node_modules/usb: Command failed.
+fatal error: libudev.h: No such file or directory
+#include <libudev.h>
+compilation terminated.
+```
+
+### **Solution:**
+1. **Use No USB Dockerfile** - Excludes USB package entirely, ultra fast
+2. **Use Simple Fast Dockerfile** - Now includes libudev development libraries
+3. **Use Robust Fast Dockerfile** - Handles missing config files gracefully
+4. **Updated Dockerfiles** - All versions now include USB development libraries
+
+### **Quick Fix Options:**
+
+#### **Option 1: Use No USB Dockerfile (Recommended)**
+```bash
+# On Windows
+switch-dockerfile.bat
+# Choose option 10 (No USB)
+
+# On Linux/Mac
+chmod +x switch-dockerfile.sh
+./switch-dockerfile.sh
+# Choose option 10 (No USB)
+```
+
+#### **Option 2: Use Simple Fast Dockerfile (With USB Support)**
+```bash
+# On Windows
+switch-dockerfile.bat
+# Choose option 8 (Simple Fast)
+
+# On Linux/Mac
+chmod +x switch-dockerfile.sh
+./switch-dockerfile.sh
+# Choose option 8 (Simple Fast)
+```
+
+#### **Option 3: Use Robust Fast Dockerfile**
+```bash
+# On Windows
+switch-dockerfile.bat
+# Choose option 9 (Robust Fast)
+
+# On Linux/Mac
+chmod +x switch-dockerfile.sh
+./switch-dockerfile.sh
+# Choose option 9 (Robust Fast)
+```
+
 ## 🔧 **Lockfile Issues (Most Common)**
 
 ### **Problem:**

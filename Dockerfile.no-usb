@@ -1,16 +1,14 @@
-# Wojat Platform Dockerfile for Railway (Simple Fast Build)
+# Wojat Platform Dockerfile for Railway (No USB - Ultra Fast)
 FROM node:22-alpine AS base
 
-# Install only essential build dependencies
+# Install only essential build dependencies (no USB libs)
 RUN apk add --no-cache \
     python3 \
     make \
     g++ \
     gcc \
     libc-dev \
-    linux-headers \
-    eudev-dev \
-    libusb-dev
+    linux-headers
 
 # Set working directory
 WORKDIR /app
@@ -19,12 +17,12 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 COPY frontend/package.json frontend/yarn.lock ./frontend/
 
-# Install root dependencies (skip optional packages)
-RUN yarn install --production --ignore-optional
+# Install root dependencies (exclude USB package entirely)
+RUN yarn install --production --ignore-optional --ignore-engines
 
 # Install frontend dependencies
 WORKDIR /app/frontend
-RUN yarn install --production --ignore-optional
+RUN yarn install --production --ignore-optional --ignore-engines
 
 # Copy entire frontend directory (exclude node_modules and build artifacts)
 WORKDIR /app
@@ -38,16 +36,14 @@ RUN DISABLE_ESLINT_PLUGIN=true SKIP_TYPE_CHECK=true yarn build
 # Production stage - minimal runtime
 FROM node:22-alpine AS production
 
-# Install only runtime dependencies
+# Install only runtime dependencies (no USB libs)
 RUN apk add --no-cache \
     python3 \
     make \
     g++ \
     gcc \
     libc-dev \
-    linux-headers \
-    eudev-dev \
-    libusb-dev
+    linux-headers
 
 WORKDIR /app
 
@@ -60,8 +56,8 @@ COPY --from=base /app/frontend/package.json ./frontend/
 COPY package.json yarn.lock ./
 COPY railway-start.js ./
 
-# Install only production dependencies
-RUN yarn install --production --ignore-optional
+# Install only production dependencies (exclude USB package)
+RUN yarn install --production --ignore-optional --ignore-engines
 
 # Expose port
 EXPOSE 3000
