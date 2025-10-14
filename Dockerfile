@@ -4,10 +4,7 @@ FROM node:18-alpine
 # Set working directory
 WORKDIR /app
 
-# Install dependencies
-RUN npm install -g yarn
-
-# Copy package files
+# Copy package files first for better caching
 COPY package.json yarn.lock ./
 COPY frontend/package.json frontend/yarn.lock ./frontend/
 COPY elizaos-agents/package.json elizaos-agents/yarn.lock ./elizaos-agents/
