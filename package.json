@@ -10,6 +10,8 @@
     "install:all": "yarn install && cd frontend && yarn install",
     "postinstall": "cd frontend && yarn install",
     "wojat": "node start-iris.js",
+    "wojat:railway": "node railway-start.js",
+    "railway": "node railway-start.js",
     "start:all": "node start-iris.js",
     "start:phases": "node start-iris.js",
     "run:all": "node start-iris.js",
