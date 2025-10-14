@@ -32,6 +32,56 @@ error Your lockfile needs to be updated, but yarn was run with `--frozen-lockfil
 ## 🐳 **Docker Build Issues**
 
 ### **Problem:**
+```
+error @iqai/adk@0.3.7: The engine "node" is incompatible with this module. Expected version ">=22.0". Got "20.19.5"
+```
+
+### **Solution:**
+1. **Use Node.js 22** - Updated Dockerfile uses `node:22-alpine`
+2. **Check Node.js version requirements** in package.json:
+   ```json
+   "engines": {
+     "node": ">=22.0.0"
+   }
+   ```
+
+### **Problem:**
+```
+error @solana/codecs-numbers@2.3.0: The engine "node" is incompatible with this module. Expected version ">=20.18.0". Got "18.20.8"
+```
+
+### **Solution:**
+1. **Use Node.js 20** - Updated Dockerfile uses `node:20-alpine`
+2. **Check Node.js version requirements** in package.json:
+   ```json
+   "engines": {
+     "node": ">=20.18.0"
+   }
+   ```
+
+### **Problem:**
+```
+npm error EEXIST: file already exists
+npm error File exists: /usr/local/bin/yarnpkg
+```
+
+### **Solution:**
+1. **Use the updated Dockerfile** (yarn is already installed in node:18-alpine)
+2. **Alternative: Use npm-based Dockerfile:**
+   ```bash
+   # Rename Dockerfile to Dockerfile.yarn
+   mv Dockerfile Dockerfile.yarn
+   # Use npm version
+   mv Dockerfile.npm Dockerfile
+   ```
+
+3. **Or use the robust version:**
+   ```bash
+   # Use the robust Dockerfile
+   mv Dockerfile.robust Dockerfile
+   ```
+
+### **Problem:**
 Docker build fails during dependency installation
 
 ### **Solution:**
