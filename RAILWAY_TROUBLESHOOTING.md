@@ -1,5 +1,60 @@
 # 🚨 Railway Deployment Troubleshooting Guide
 
+## ⏱️ **Build Timeout Issues**
+
+### **Problem:**
+```
+Build timed out
+sharing credentials for production-europe-west4-drams3a.railway-registry.com
+```
+
+### **Solution:**
+1. **Use Fast Dockerfile** - Optimized for Railway with minimal dependencies
+2. **Use Frontend-Only Dockerfile** - Fastest option, frontend only
+3. **Increase build timeout** - Railway config now includes `buildTimeout: 1800`
+4. **Skip optional dependencies** - Use `--ignore-optional` flag
+5. **Disable ESLint during build** - Use `DISABLE_ESLINT_PLUGIN=true`
+
+### **Quick Fix Options:**
+
+#### **Option 1: Use Fast Dockerfile (Recommended)**
+```bash
+# On Windows
+switch-dockerfile.bat
+# Choose option 6 (Fast)
+
+# On Linux/Mac
+chmod +x switch-dockerfile.sh
+./switch-dockerfile.sh
+# Choose option 6 (Fast)
+```
+
+#### **Option 2: Use Frontend-Only Dockerfile (Fastest)**
+```bash
+# On Windows
+switch-dockerfile.bat
+# Choose option 7 (Frontend Only)
+
+# On Linux/Mac
+chmod +x switch-dockerfile.sh
+./switch-dockerfile.sh
+# Choose option 7 (Frontend Only)
+```
+
+#### **Option 3: Manual Dockerfile Switch**
+```bash
+# Backup current Dockerfile
+mv Dockerfile Dockerfile.backup
+
+# Use fast Dockerfile
+mv Dockerfile.fast Dockerfile
+
+# Commit and push
+git add Dockerfile railway.json
+git commit -m "Switch to fast Dockerfile for Railway"
+git push origin main
+```
+
 ## 🔧 **Lockfile Issues (Most Common)**
 
 ### **Problem:**

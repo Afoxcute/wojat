@@ -12,10 +12,12 @@ echo "2. NPM-based (uses npm instead of yarn)"
 echo "3. Robust (handles yarn installation gracefully)"
 echo "4. Multi-stage (smaller final image, removes build deps)"
 echo "5. Lightweight (excludes USB package, faster build)"
-echo "6. Test current Dockerfile locally"
+echo "6. Fast (optimized for Railway, minimal dependencies)"
+echo "7. Frontend Only (fastest, frontend only)"
+echo "8. Test current Dockerfile locally"
 echo ""
 
-read -p "Enter your choice (1-6): " choice
+read -p "Enter your choice (1-8): " choice
 
 case $choice in
     1)
@@ -50,6 +52,18 @@ case $choice in
         echo "✅ Lightweight Dockerfile is now active"
         ;;
     6)
+        echo "📦 Switching to fast Dockerfile..."
+        mv Dockerfile Dockerfile.yarn 2>/dev/null || true
+        mv Dockerfile.fast Dockerfile
+        echo "✅ Fast Dockerfile is now active"
+        ;;
+    7)
+        echo "📦 Switching to frontend-only Dockerfile..."
+        mv Dockerfile Dockerfile.yarn 2>/dev/null || true
+        mv Dockerfile.frontend-only Dockerfile
+        echo "✅ Frontend-only Dockerfile is now active"
+        ;;
+    8)
         echo "🧪 Testing current Dockerfile..."
         docker build -t wojat-test .
         if [ $? -eq 0 ]; then

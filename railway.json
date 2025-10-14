@@ -1,12 +1,15 @@
 {
   "build": {
-    "builder": "DOCKERFILE"
+    "builder": "DOCKERFILE",
+    "buildCommand": "docker build -t wojat-platform .",
+    "dockerfilePath": "Dockerfile.fast"
   },
   "deploy": {
     "startCommand": "yarn wojat:railway",
     "healthcheckPath": "/",
     "healthcheckTimeout": 100,
     "restartPolicyType": "ON_FAILURE",
-    "restartPolicyMaxRetries": 10
+    "restartPolicyMaxRetries": 10,
+    "buildTimeout": 1800
   }
 }

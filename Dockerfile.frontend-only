@@ -1,0 +1,25 @@
+# Wojat Platform Dockerfile for Railway (Frontend Only - Fastest)
+FROM node:22-alpine
+
+# Install minimal build dependencies
+RUN apk add --no-cache python3 make g++ gcc libc-dev linux-headers
+
+WORKDIR /app
+
+# Copy frontend package files
+COPY frontend/package.json frontend/yarn.lock ./
+
+# Install frontend dependencies only
+RUN yarn install --production --ignore-optional --frozen-lockfile
+
+# Copy frontend source
+COPY frontend/ ./
+
+# Build frontend (minimal build)
+RUN DISABLE_ESLINT_PLUGIN=true SKIP_TYPE_CHECK=true yarn build
+
+# Expose port
+EXPOSE 3000
+
+# Start frontend only
+CMD ["yarn", "start"]

@@ -11,10 +11,12 @@ echo 2. NPM-based (uses npm instead of yarn)
 echo 3. Robust (handles yarn installation gracefully)
 echo 4. Multi-stage (smaller final image, removes build deps)
 echo 5. Lightweight (excludes USB package, faster build)
-echo 6. Test current Dockerfile locally
+echo 6. Fast (optimized for Railway, minimal dependencies)
+echo 7. Frontend Only (fastest, frontend only)
+echo 8. Test current Dockerfile locally
 echo.
 
-set /p choice="Enter your choice (1-6): "
+set /p choice="Enter your choice (1-8): "
 
 if "%choice%"=="1" (
     echo 📦 Using standard Dockerfile...
@@ -41,6 +43,16 @@ if "%choice%"=="1" (
     move Dockerfile.lightweight Dockerfile
     echo ✅ Lightweight Dockerfile is now active
 ) else if "%choice%"=="6" (
+    echo 📦 Switching to fast Dockerfile...
+    if exist Dockerfile move Dockerfile Dockerfile.yarn
+    move Dockerfile.fast Dockerfile
+    echo ✅ Fast Dockerfile is now active
+) else if "%choice%"=="7" (
+    echo 📦 Switching to frontend-only Dockerfile...
+    if exist Dockerfile move Dockerfile Dockerfile.yarn
+    move Dockerfile.frontend-only Dockerfile
+    echo ✅ Frontend-only Dockerfile is now active
+) else if "%choice%"=="8" (
     echo 🧪 Testing current Dockerfile...
     docker build -t wojat-test .
     if %errorlevel% equ 0 (
