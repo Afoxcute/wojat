@@ -13,6 +13,8 @@
     "wojat:railway": "node railway-start.js",
     "railway": "node railway-start.js",
     "update-lockfiles": "node -e \"console.log('Run update-lockfiles.sh or update-lockfiles.bat to update lockfiles')\"",
+    "switch-dockerfile": "node -e \"console.log('Run switch-dockerfile.sh or switch-dockerfile.bat to choose Dockerfile version')\"",
+    "check-node": "node -e \"console.log('Run check-node-version.sh or check-node-version.bat to check Node.js version')\"",
     "start:all": "node start-iris.js",
     "start:phases": "node start-iris.js",
     "run:all": "node start-iris.js",
@@ -82,5 +84,9 @@
     "twitter",
     "scraper"
   ],
+  "engines": {
+    "node": ">=20.18.0",
+    "yarn": ">=1.22.0"
+  },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
