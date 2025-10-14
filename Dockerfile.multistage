@@ -1,5 +1,5 @@
-# Wojat Platform Dockerfile for Railway
-FROM node:22-alpine
+# Wojat Platform Dockerfile for Railway (Multi-stage build)
+FROM node:22-alpine AS builder
 
 # Install build dependencies for native modules
 RUN apk add --no-cache \
@@ -47,8 +47,24 @@ COPY . .
 WORKDIR /app/frontend
 RUN yarn build
 
-# Set working directory back to root
+# Production stage
+FROM node:22-alpine AS production
+
+# Set working directory
 WORKDIR /app
+
+# Copy built application from builder stage
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/frontend/node_modules ./frontend/node_modules
+COPY --from=builder /app/frontend/.next ./frontend/.next
+COPY --from=builder /app/frontend/public ./frontend/public
+COPY --from=builder /app/frontend/package.json ./frontend/package.json
+COPY --from=builder /app/elizaos-agents ./elizaos-agents
+COPY --from=builder /app/js-scraper ./js-scraper
+COPY --from=builder /app/bitquery ./bitquery
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/yarn.lock ./
+COPY --from=builder /app/railway-start.js ./
 
 # Expose port
 EXPOSE 3000

@@ -1,4 +1,4 @@
-# Wojat Platform Dockerfile for Railway
+# Wojat Platform Dockerfile for Railway (npm version)
 FROM node:22-alpine
 
 # Install build dependencies for native modules
@@ -14,30 +14,30 @@ RUN apk add --no-cache \
 WORKDIR /app
 
 # Copy package files first for better caching
-COPY package.json yarn.lock ./
-COPY frontend/package.json frontend/yarn.lock ./frontend/
-COPY elizaos-agents/package.json elizaos-agents/yarn.lock ./elizaos-agents/
-COPY js-scraper/package.json js-scraper/yarn.lock ./js-scraper/
-COPY bitquery/package.json bitquery/yarn.lock ./bitquery/
+COPY package.json package-lock.json ./
+COPY frontend/package.json frontend/package-lock.json ./frontend/
+COPY elizaos-agents/package.json ./elizaos-agents/
+COPY js-scraper/package.json ./js-scraper/
+COPY bitquery/package.json ./bitquery/
 
 # Install root dependencies
-RUN yarn install
+RUN npm ci --only=production
 
 # Install frontend dependencies
 WORKDIR /app/frontend
-RUN yarn install
+RUN npm ci
 
 # Install elizaos-agents dependencies
 WORKDIR /app/elizaos-agents
-RUN yarn install
+RUN npm install
 
 # Install js-scraper dependencies
 WORKDIR /app/js-scraper
-RUN yarn install
+RUN npm install
 
 # Install bitquery dependencies
 WORKDIR /app/bitquery
-RUN yarn install
+RUN npm install
 
 # Copy source code
 WORKDIR /app
@@ -45,7 +45,7 @@ COPY . .
 
 # Build frontend
 WORKDIR /app/frontend
-RUN yarn build
+RUN npm run build
 
 # Set working directory back to root
 WORKDIR /app
@@ -54,4 +54,4 @@ WORKDIR /app
 EXPOSE 3000
 
 # Start the application
-CMD ["yarn", "wojat:railway"]
+CMD ["npm", "run", "wojat:railway"]

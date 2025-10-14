@@ -33,6 +33,26 @@ error Your lockfile needs to be updated, but yarn was run with `--frozen-lockfil
 
 ### **Problem:**
 ```
+error /app/node_modules/usb: Command failed.
+gyp ERR! find Python Python is not set from command line or npm configuration
+gyp ERR! find Python You need to install the latest version of Python.
+```
+
+### **Solution:**
+1. **Use updated Dockerfile** - Now includes Python and build tools
+2. **Build dependencies installed** - Dockerfile includes:
+   ```dockerfile
+   RUN apk add --no-cache \
+       python3 \
+       make \
+       g++ \
+       gcc \
+       libc-dev \
+       linux-headers
+   ```
+
+### **Problem:**
+```
 error @iqai/adk@0.3.7: The engine "node" is incompatible with this module. Expected version ">=22.0". Got "20.19.5"
 ```
 

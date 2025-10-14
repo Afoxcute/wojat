@@ -1,4 +1,4 @@
-# Wojat Platform Dockerfile for Railway
+# Wojat Platform Dockerfile for Railway (Robust version)
 FROM node:22-alpine
 
 # Install build dependencies for native modules
@@ -13,6 +13,9 @@ RUN apk add --no-cache \
 # Set working directory
 WORKDIR /app
 
+# Install yarn if not present, or use existing
+RUN which yarn || npm install -g yarn@latest
+
 # Copy package files first for better caching
 COPY package.json yarn.lock ./
 COPY frontend/package.json frontend/yarn.lock ./frontend/
@@ -21,23 +24,23 @@ COPY js-scraper/package.json js-scraper/yarn.lock ./js-scraper/
 COPY bitquery/package.json bitquery/yarn.lock ./bitquery/
 
 # Install root dependencies
-RUN yarn install
+RUN yarn install --frozen-lockfile || yarn install
 
 # Install frontend dependencies
 WORKDIR /app/frontend
-RUN yarn install
+RUN yarn install --frozen-lockfile || yarn install
 
 # Install elizaos-agents dependencies
 WORKDIR /app/elizaos-agents
-RUN yarn install
+RUN yarn install --frozen-lockfile || yarn install
 
 # Install js-scraper dependencies
 WORKDIR /app/js-scraper
-RUN yarn install
+RUN yarn install --frozen-lockfile || yarn install
 
 # Install bitquery dependencies
 WORKDIR /app/bitquery
-RUN yarn install
+RUN yarn install --frozen-lockfile || yarn install
 
 # Copy source code
 WORKDIR /app
