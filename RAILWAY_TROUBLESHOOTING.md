@@ -1,203 +1,5 @@
 # 🚨 Railway Deployment Troubleshooting Guide
 
-## ⏱️ **Build Timeout Issues**
-
-### **Problem:**
-```
-Build timed out
-sharing credentials for production-europe-west4-drams3a.railway-registry.com
-```
-
-### **Solution:**
-1. **Use Fast Dockerfile** - Optimized for Railway with minimal dependencies
-2. **Use Frontend-Only Dockerfile** - Fastest option, frontend only
-3. **Increase build timeout** - Railway config now includes `buildTimeout: 1800`
-4. **Skip optional dependencies** - Use `--ignore-optional` flag
-5. **Disable ESLint during build** - Use `DISABLE_ESLINT_PLUGIN=true`
-
-### **Quick Fix Options:**
-
-#### **Option 1: Use Fast Dockerfile (Recommended)**
-```bash
-# On Windows
-switch-dockerfile.bat
-# Choose option 6 (Fast)
-
-# On Linux/Mac
-chmod +x switch-dockerfile.sh
-./switch-dockerfile.sh
-# Choose option 6 (Fast)
-```
-
-#### **Option 2: Use Frontend-Only Dockerfile (Fastest)**
-```bash
-# On Windows
-switch-dockerfile.bat
-# Choose option 7 (Frontend Only)
-
-# On Linux/Mac
-chmod +x switch-dockerfile.sh
-./switch-dockerfile.sh
-# Choose option 7 (Frontend Only)
-```
-
-#### **Option 3: Manual Dockerfile Switch**
-```bash
-# Backup current Dockerfile
-mv Dockerfile Dockerfile.backup
-
-# Use fast Dockerfile
-mv Dockerfile.fast Dockerfile
-
-# Commit and push
-git add Dockerfile railway.json
-git commit -m "Switch to fast Dockerfile for Railway"
-git push origin main
-```
-
-### **Problem:**
-```
-ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref 48fcuztqfjshqtd69mi57n1sd::pyijtijoto0t6anaz05kqvhal: "/frontend/postcss.config.js": not found
-```
-
-### **Solution:**
-1. **Use Simple Fast Dockerfile** - Copies entire frontend directory, handles missing files
-2. **Use Robust Fast Dockerfile** - Handles missing config files gracefully
-3. **Check file extensions** - Config files may have different extensions (.mjs, .ts, .js)
-4. **Updated Dockerfiles** - Now handle missing files and different extensions
-
-### **Quick Fix Options:**
-
-#### **Option 1: Use Simple Fast Dockerfile (Recommended)**
-```bash
-# On Windows
-switch-dockerfile.bat
-# Choose option 8 (Simple Fast)
-
-# On Linux/Mac
-chmod +x switch-dockerfile.sh
-./switch-dockerfile.sh
-# Choose option 8 (Simple Fast)
-```
-
-#### **Option 2: Use Robust Fast Dockerfile**
-```bash
-# On Windows
-switch-dockerfile.bat
-# Choose option 9 (Robust Fast)
-
-# On Linux/Mac
-chmod +x switch-dockerfile.sh
-./switch-dockerfile.sh
-# Choose option 9 (Robust Fast)
-```
-
-### **Problem:**
-```
-error /app/node_modules/usb: Command failed.
-fatal error: libudev.h: No such file or directory
-#include <libudev.h>
-compilation terminated.
-```
-
-### **Solution:**
-1. **Use No USB Dockerfile** - Excludes USB package entirely, ultra fast
-2. **Use Simple Fast Dockerfile** - Now includes libudev development libraries
-3. **Use Robust Fast Dockerfile** - Handles missing config files gracefully
-4. **Updated Dockerfiles** - All versions now include USB development libraries
-
-### **Quick Fix Options:**
-
-#### **Option 1: Use No USB Dockerfile (Recommended)**
-```bash
-# On Windows
-switch-dockerfile.bat
-# Choose option 10 (No USB)
-
-# On Linux/Mac
-chmod +x switch-dockerfile.sh
-./switch-dockerfile.sh
-# Choose option 10 (No USB)
-```
-
-#### **Option 2: Use Simple Fast Dockerfile (With USB Support)**
-```bash
-# On Windows
-switch-dockerfile.bat
-# Choose option 8 (Simple Fast)
-
-# On Linux/Mac
-chmod +x switch-dockerfile.sh
-./switch-dockerfile.sh
-# Choose option 8 (Simple Fast)
-```
-
-#### **Option 3: Use Robust Fast Dockerfile**
-```bash
-# On Windows
-switch-dockerfile.bat
-# Choose option 9 (Robust Fast)
-
-# On Linux/Mac
-chmod +x switch-dockerfile.sh
-./switch-dockerfile.sh
-# Choose option 9 (Robust Fast)
-```
-
-## 🔧 **Package Lock File Issues**
-
-### **Problem:**
-```
-ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref ... "/package-lock.json": not found
-```
-
-### **Solution:**
-1. **Use NPM Simple Dockerfile** - Single-stage build, no multi-stage complexity ⭐ **RECOMMENDED**
-2. **Use Simple Fast Dockerfile** - Copies entire frontend directory, handles missing files
-3. **Use Robust Fast Dockerfile** - Handles missing config files gracefully
-4. **Check file extensions** - Config files may have different extensions (.mjs, .ts, .js)
-5. **Updated Dockerfiles** - Now handle missing files and different extensions
-
-### **Quick Fix Options:**
-
-#### **Option 1: Use NPM Simple Dockerfile (Recommended)**
-```bash
-# On Windows
-switch-dockerfile.bat
-# Choose option 13 (NPM Simple)
-
-# On Linux/Mac
-chmod +x switch-dockerfile.sh
-./switch-dockerfile.sh
-# Choose option 13 (NPM Simple)
-```
-
-#### **Option 2: Use Simple Fast Dockerfile**
-```bash
-# On Windows
-switch-dockerfile.bat
-# Choose option 8 (Simple Fast)
-
-# On Linux/Mac
-chmod +x switch-dockerfile.sh
-./switch-dockerfile.sh
-# Choose option 8 (Simple Fast)
-```
-
-#### **Option 3: Manual Dockerfile Switch**
-```bash
-# Backup current Dockerfile
-mv Dockerfile Dockerfile.backup
-
-# Use NPM simple Dockerfile
-mv Dockerfile.npm-simple Dockerfile
-
-# Commit and push
-git add Dockerfile railway.json
-git commit -m "Switch to NPM simple Dockerfile for Railway"
-git push origin main
-```
-
 ## 🔧 **Lockfile Issues (Most Common)**
 
 ### **Problem:**
@@ -206,8 +8,7 @@ error Your lockfile needs to be updated, but yarn was run with `--frozen-lockfil
 ```
 
 ### **Solution:**
-1. **Use updated Dockerfiles** - All Dockerfiles now use `yarn install` without `--frozen-lockfile`
-2. **Update lockfiles locally (optional):**
+1. **Update lockfiles locally:**
    ```bash
    # On Windows
    update-lockfiles.bat
@@ -217,16 +18,16 @@ error Your lockfile needs to be updated, but yarn was run with `--frozen-lockfil
    ./update-lockfiles.sh
    ```
 
-3. **Commit updated lockfiles (optional):**
+2. **Commit updated lockfiles:**
    ```bash
    git add yarn.lock frontend/yarn.lock elizaos-agents/yarn.lock js-scraper/yarn.lock bitquery/yarn.lock
    git commit -m "Update lockfiles for Railway deployment"
    git push origin main
    ```
 
-4. **Redeploy on Railway:**
+3. **Redeploy on Railway:**
    - Railway will automatically redeploy when you push changes
-   - The Docker build will now work without lockfile issues
+   - The Docker build will now use the updated lockfiles
 
 ## 🐳 **Docker Build Issues**
 

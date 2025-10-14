@@ -12,22 +12,10 @@ echo "2. NPM-based (uses npm instead of yarn)"
 echo "3. Robust (handles yarn installation gracefully)"
 echo "4. Multi-stage (smaller final image, removes build deps)"
 echo "5. Lightweight (excludes USB package, faster build)"
-echo "6. Fast (optimized for Railway, minimal dependencies)"
-echo "7. Frontend Only (fastest, frontend only)"
-echo "8. Simple Fast (copies entire frontend, handles missing files)"
-echo "9. Robust Fast (handles missing config files gracefully)"
-echo "10. No USB (excludes USB package entirely, ultra fast)"
-echo "11. Ultra Fast (NPM with ignore-scripts, fastest)"
-echo "12. Selective (installs only essential packages)"
-echo "13. NPM Simple (single-stage NPM build, reliable)"
-echo "14. Hybrid (NPM root + Yarn frontend, handles both)"
-echo "15. Yarn Simple (pure Yarn, includes USB libs)"
-echo "16. Yarn No USB (pure Yarn, excludes wallet adapters)"
-echo "17. Yarn Ignore Scripts (pure Yarn, skips native compilation) ⭐ RECOMMENDED"
-echo "18. Test current Dockerfile locally"
+echo "6. Test current Dockerfile locally"
 echo ""
 
-read -p "Enter your choice (1-18): " choice
+read -p "Enter your choice (1-6): " choice
 
 case $choice in
     1)
@@ -62,78 +50,6 @@ case $choice in
         echo "✅ Lightweight Dockerfile is now active"
         ;;
     6)
-        echo "📦 Switching to fast Dockerfile..."
-        mv Dockerfile Dockerfile.yarn 2>/dev/null || true
-        mv Dockerfile.fast Dockerfile
-        echo "✅ Fast Dockerfile is now active"
-        ;;
-    7)
-        echo "📦 Switching to frontend-only Dockerfile..."
-        mv Dockerfile Dockerfile.yarn 2>/dev/null || true
-        mv Dockerfile.frontend-only Dockerfile
-        echo "✅ Frontend-only Dockerfile is now active"
-        ;;
-    8)
-        echo "📦 Switching to simple fast Dockerfile..."
-        mv Dockerfile Dockerfile.yarn 2>/dev/null || true
-        mv Dockerfile.simple-fast Dockerfile
-        echo "✅ Simple fast Dockerfile is now active"
-        ;;
-    9)
-        echo "📦 Switching to robust fast Dockerfile..."
-        mv Dockerfile Dockerfile.yarn 2>/dev/null || true
-        mv Dockerfile.robust-fast Dockerfile
-        echo "✅ Robust fast Dockerfile is now active"
-        ;;
-    10)
-        echo "📦 Switching to no USB Dockerfile..."
-        mv Dockerfile Dockerfile.yarn 2>/dev/null || true
-        mv Dockerfile.no-usb Dockerfile
-        echo "✅ No USB Dockerfile is now active"
-        ;;
-    11)
-        echo "📦 Switching to ultra fast NPM Dockerfile..."
-        mv Dockerfile Dockerfile.yarn 2>/dev/null || true
-        mv Dockerfile.npm-ultra-fast Dockerfile
-        echo "✅ Ultra fast NPM Dockerfile is now active"
-        ;;
-    12)
-        echo "📦 Switching to selective Dockerfile..."
-        mv Dockerfile Dockerfile.yarn 2>/dev/null || true
-        mv Dockerfile.selective Dockerfile
-        echo "✅ Selective Dockerfile is now active"
-        ;;
-    13)
-        echo "📦 Switching to NPM simple Dockerfile..."
-        mv Dockerfile Dockerfile.yarn 2>/dev/null || true
-        mv Dockerfile.npm-simple Dockerfile
-        echo "✅ NPM simple Dockerfile is now active"
-        ;;
-    14)
-        echo "📦 Switching to hybrid Dockerfile..."
-        mv Dockerfile Dockerfile.yarn 2>/dev/null || true
-        mv Dockerfile.hybrid Dockerfile
-        echo "✅ Hybrid Dockerfile is now active"
-        ;;
-    15)
-        echo "📦 Switching to Yarn simple Dockerfile..."
-        mv Dockerfile Dockerfile.yarn 2>/dev/null || true
-        mv Dockerfile.yarn-simple Dockerfile
-        echo "✅ Yarn simple Dockerfile is now active"
-        ;;
-    16)
-        echo "📦 Switching to Yarn no USB Dockerfile..."
-        mv Dockerfile Dockerfile.yarn 2>/dev/null || true
-        mv Dockerfile.yarn-no-usb Dockerfile
-        echo "✅ Yarn no USB Dockerfile is now active"
-        ;;
-    17)
-        echo "📦 Switching to Yarn ignore scripts Dockerfile..."
-        mv Dockerfile Dockerfile.yarn 2>/dev/null || true
-        mv Dockerfile.yarn-ignore-scripts Dockerfile
-        echo "✅ Yarn ignore scripts Dockerfile is now active"
-        ;;
-    18)
         echo "🧪 Testing current Dockerfile..."
         docker build -t wojat-test .
         if [ $? -eq 0 ]; then
