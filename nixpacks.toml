@@ -4,11 +4,6 @@ nixPkgs = ['nodejs', 'yarn']
 [phases.install]
 cmds = [
   'yarn install --ignore-optional',
-  'ls -la',
-  'ls -la frontend/',
-  'ls -la bitquery/',
-  'ls -la elizaos-agents/',
-  'ls -la js-scraper/',
   'cd frontend && yarn install --ignore-optional',
   'cd bitquery && yarn install --ignore-optional',
   'cd elizaos-agents && yarn install --ignore-optional',

@@ -1,11 +1,7 @@
 module.exports = {
   extends: [
-    'next/core-web-vitals',
-    'eslint:recommended',
-    '@typescript-eslint/recommended'
+    'next/core-web-vitals'
   ],
-  parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
   rules: {
     // Disable some strict rules that might cause build issues
     '@typescript-eslint/no-unused-vars': 'warn',
@@ -18,12 +14,5 @@ module.exports = {
     browser: true,
     es2021: true,
     node: true
-  },
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    ecmaFeatures: {
-      jsx: true
-    }
   }
 };
