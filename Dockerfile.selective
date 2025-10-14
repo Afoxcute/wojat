@@ -1,4 +1,4 @@
-# Wojat Platform Dockerfile for Railway (No USB - Ultra Fast)
+# Wojat Platform Dockerfile for Railway (Selective Install)
 FROM node:22-alpine AS base
 
 # Install only essential build dependencies (no USB libs)
@@ -17,12 +17,29 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 COPY frontend/package.json frontend/yarn.lock ./frontend/
 
-# Install root dependencies (exclude USB package entirely)
-RUN yarn install --production --ignore-optional --ignore-engines --ignore-platform
+# Install only essential dependencies (skip wallet adapters that require USB)
+RUN yarn add --production --ignore-optional \
+    @supabase/supabase-js \
+    axios \
+    bs58 \
+    class-variance-authority \
+    clsx \
+    cmdk \
+    date-fns \
+    date-fns-tz \
+    framer-motion \
+    lightweight-charts \
+    lodash \
+    lucide-react \
+    next-themes \
+    recharts \
+    tailwind-merge \
+    tailwindcss-animate \
+    zustand
 
 # Install frontend dependencies
 WORKDIR /app/frontend
-RUN yarn install --production --ignore-optional --ignore-engines
+RUN yarn install --production --ignore-optional --ignore-engines --ignore-platform
 
 # Copy entire frontend directory (exclude node_modules and build artifacts)
 WORKDIR /app
@@ -56,8 +73,25 @@ COPY --from=base /app/frontend/package.json ./frontend/
 COPY package.json yarn.lock ./
 COPY railway-start.js ./
 
-# Install only production dependencies (exclude USB package)
-RUN yarn install --production --ignore-optional --ignore-engines
+# Install only essential runtime dependencies
+RUN yarn add --production --ignore-optional \
+    @supabase/supabase-js \
+    axios \
+    bs58 \
+    class-variance-authority \
+    clsx \
+    cmdk \
+    date-fns \
+    date-fns-tz \
+    framer-motion \
+    lightweight-charts \
+    lodash \
+    lucide-react \
+    next-themes \
+    recharts \
+    tailwind-merge \
+    tailwindcss-animate \
+    zustand
 
 # Expose port
 EXPOSE 3000

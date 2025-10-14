@@ -1,4 +1,4 @@
-# Wojat Platform Dockerfile for Railway (No USB - Ultra Fast)
+# Wojat Platform Dockerfile for Railway (Ultra Fast - No Native Modules)
 FROM node:22-alpine AS base
 
 # Install only essential build dependencies (no USB libs)
@@ -17,12 +17,20 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 COPY frontend/package.json frontend/yarn.lock ./frontend/
 
+# Create a modified package.json that excludes problematic packages
+RUN cp package.json package.json.backup && \
+    sed -i 's/"usb":/\/\/"usb":/g' package.json && \
+    sed -i 's/"@solana\/wallet-adapter-wallets":/\/\/"@solana\/wallet-adapter-wallets":/g' package.json
+
 # Install root dependencies (exclude USB package entirely)
 RUN yarn install --production --ignore-optional --ignore-engines --ignore-platform
 
+# Restore original package.json
+RUN mv package.json.backup package.json
+
 # Install frontend dependencies
 WORKDIR /app/frontend
-RUN yarn install --production --ignore-optional --ignore-engines
+RUN yarn install --production --ignore-optional --ignore-engines --ignore-platform
 
 # Copy entire frontend directory (exclude node_modules and build artifacts)
 WORKDIR /app
@@ -57,7 +65,7 @@ COPY package.json yarn.lock ./
 COPY railway-start.js ./
 
 # Install only production dependencies (exclude USB package)
-RUN yarn install --production --ignore-optional --ignore-engines
+RUN yarn install --production --ignore-optional --ignore-engines --ignore-platform
 
 # Expose port
 EXPOSE 3000

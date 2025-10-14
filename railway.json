@@ -2,10 +2,10 @@
   "build": {
     "builder": "DOCKERFILE",
     "buildCommand": "docker build -t wojat-platform .",
-    "dockerfilePath": "Dockerfile.no-usb"
+    "dockerfilePath": "Dockerfile.npm-ultra-fast"
   },
   "deploy": {
-    "startCommand": "yarn wojat:railway",
+    "startCommand": "npm run wojat:railway",
     "healthcheckPath": "/",
     "healthcheckTimeout": 100,
     "restartPolicyType": "ON_FAILURE",
