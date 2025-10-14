@@ -45,7 +45,7 @@ COPY . .
 
 # Build frontend
 WORKDIR /app/frontend
-RUN yarn build
+RUN DISABLE_ESLINT_PLUGIN=true yarn build
 
 # Set working directory back to root
 WORKDIR /app

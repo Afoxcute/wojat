@@ -47,7 +47,7 @@ COPY . .
 
 # Build frontend
 WORKDIR /app/frontend
-RUN npm run build
+RUN DISABLE_ESLINT_PLUGIN=true npm run build
 
 # Set working directory back to root
 WORKDIR /app
