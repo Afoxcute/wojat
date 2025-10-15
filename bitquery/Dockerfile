@@ -5,7 +5,14 @@ WORKDIR /app
 
 # Install dependencies
 COPY package*.json ./
-RUN npm ci --only=production
+COPY yarn.lock* ./
+
+# Use yarn if yarn.lock exists, otherwise use npm
+RUN if [ -f yarn.lock ]; then \
+        yarn install --frozen-lockfile --production; \
+    else \
+        npm install --omit=dev; \
+    fi
 
 # Copy source code
 COPY . .
