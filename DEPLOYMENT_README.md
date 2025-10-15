@@ -16,7 +16,7 @@ sudo ./deploy-ubuntu.sh
 ```bash
 # 1. Install dependencies
 sudo apt update && sudo apt upgrade -y
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 sudo apt install -y nodejs yarn
 
 # 2. Setup user and directories

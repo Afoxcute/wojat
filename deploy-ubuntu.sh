@@ -35,9 +35,9 @@ apt update && apt upgrade -y
 echo -e "${YELLOW}📦 Installing required packages...${NC}"
 apt install -y curl wget git build-essential software-properties-common
 
-# Install Node.js 20.x
-echo -e "${YELLOW}📦 Installing Node.js 20.x...${NC}"
-curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+# Install Node.js 22.x
+echo -e "${YELLOW}📦 Installing Node.js 22.x...${NC}"
+curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
 apt install -y nodejs
 
 # Install Yarn
