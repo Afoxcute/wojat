@@ -1,5 +1,5 @@
 # JS Scraper Service Dockerfile
-FROM node:18-alpine
+FROM node:20-alpine
 
 # Install Chrome dependencies
 RUN apk add --no-cache \
