@@ -1,7 +1,7 @@
 # JS Scraper Service Dockerfile
 FROM node:22-alpine
 
-# Install Chrome dependencies
+# Install Chrome dependencies and build tools
 RUN apk add --no-cache \
     chromium \
     nss \
@@ -9,7 +9,13 @@ RUN apk add --no-cache \
     freetype-dev \
     harfbuzz \
     ca-certificates \
-    ttf-freefont
+    ttf-freefont \
+    python3 \
+    make \
+    g++ \
+    gcc \
+    libc-dev \
+    linux-headers
 
 # Tell Puppeteer to skip installing Chromium. We'll be using the installed package.
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
