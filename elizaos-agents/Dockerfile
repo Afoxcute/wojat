@@ -10,7 +10,8 @@ RUN apk add --no-cache \
     libc-dev \
     linux-headers \
     pkgconfig \
-    libusb-dev
+    libusb-dev \
+    libudev-dev
 
 WORKDIR /app
 

@@ -17,7 +17,8 @@ RUN apk add --no-cache \
     libc-dev \
     linux-headers \
     pkgconfig \
-    libusb-dev
+    libusb-dev \
+    libudev-dev
 
 # Tell Puppeteer to skip installing Chromium. We'll be using the installed package.
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
