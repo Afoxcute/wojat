@@ -8,7 +8,9 @@ RUN apk add --no-cache \
     g++ \
     gcc \
     libc-dev \
-    linux-headers
+    linux-headers \
+    pkgconfig \
+    libusb-dev
 
 WORKDIR /app
 
