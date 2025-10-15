@@ -4,9 +4,9 @@
 
 ```bash
 # Install dependencies and start everything
-npm run wojat
+npm run iris
 # or
-yarn wojat
+yarn iris
 # or
 node start-iris.js
 ```
@@ -21,23 +21,6 @@ node start-iris.js
 - Main App: http://localhost:3000
 - AI Chat: http://localhost:3000/ai-chat
 - Dashboard: http://localhost:3000/dashboard
-
-## 🚂 **Railway Deployment**
-
-Deploy to Railway with a single command:
-
-```bash
-# Deploy to Railway
-yarn wojat:railway
-```
-
-**Railway Features:**
-- All services running simultaneously
-- Automatic scaling and monitoring
-- Public domain access
-- Environment variable management
-
-See [RAILWAY_DEPLOYMENT_GUIDE.md](RAILWAY_DEPLOYMENT_GUIDE.md) for detailed deployment instructions.
 
 ---
 

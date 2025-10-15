@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+  # Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=3000
+    env_file:
+      - .env
+    depends_on:
+      - bitquery
+      - elizaos-agents
+    restart: unless-stopped
+    networks:
+      - wojat-network
+
+  # ElizaOS Agents Service
+  elizaos-agents:
+    build:
+      context: ./elizaos-agents
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env
+    depends_on:
+      - bitquery
+    restart: unless-stopped
+    networks:
+      - wojat-network
+
+  # Bitquery Service
+  bitquery:
+    build:
+      context: ./bitquery
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - wojat-network
+
+  # JS Scraper Service (includes TikTok, Telegram, Outlight scrapers)
+  js-scraper:
+    build:
+      context: ./js-scraper
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - wojat-network
+
+  # Redis (Optional - for caching)
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - wojat-network
+
+  # PostgreSQL (Optional - if not using Supabase)
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=wojat_db
+      - POSTGRES_USER=wojat_user
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - wojat-network
+
+volumes:
+  redis_data:
+  postgres_data:
+
+networks:
+  wojat-network:
+    driver: bridge
