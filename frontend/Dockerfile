@@ -3,7 +3,7 @@ FROM node:22-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
-RUN apk add --no-cache libc6-compat python3 make g++ gcc libc-dev linux-headers pkgconfig libusb-dev libudev-dev
+RUN apk add --no-cache libc6-compat python3 make g++ gcc libc-dev linux-headers pkgconfig libusb-dev eudev-dev
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager

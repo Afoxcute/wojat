@@ -11,7 +11,7 @@ RUN apk add --no-cache \
     linux-headers \
     pkgconfig \
     libusb-dev \
-    libudev-dev
+    eudev-dev
 
 WORKDIR /app
 
