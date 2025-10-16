@@ -13,13 +13,12 @@ import React, { useEffect, useMemo, useState } from "react";
 import SortableTableHeader from "./sortable-table-header";
 import {
   IPFS_GATEWAY_URL,
-  IPFS_GATEWAY_URL_4,
   ITEMS_PER_PAGE,
 } from "@/lib/constants";
-import { LeaderboardData, SortConfig, SortKey, TokenData } from "@/lib/types";
+import { LeaderboardData, SortConfig, SortKey } from "@/lib/types";
 import TableWrapper from "./wrapper";
 import { useEnvironmentStore } from "@/components/context";
-import { formatMarketcap, getTimeAgo, toKebabCase } from "@/lib/utils";
+import { formatMarketcap, getTimeAgo } from "@/lib/utils";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { ChevronDown } from "lucide-react";
@@ -304,7 +303,7 @@ export default function HeroTable() {
                   {/* Expanded Group Rows */}
                   {expandedGroups.has(symbol) &&
                     tokens.length > 1 &&
-                    tokens.map((token, idx) => (
+                    tokens.map((token) => (
                       <TableRow
                         key={token.id}
                         className="cursor-pointer bg-muted/20 hover:bg-muted/30"

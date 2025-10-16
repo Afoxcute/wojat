@@ -95,12 +95,6 @@ export default function TrendingCoinsSummary() {
     }
   }, [fetchTotalTikTokViews, metrics]);
 
-  const reconnectTikTokViews = useCallback(() => {
-    console.log('🔄 Manually reconnecting TikTok views service...');
-    tiktokViewsService.disconnect();
-    tiktokViewsService.connect('24h');
-  }, []);
-
   useEffect(() => {
     // Only fetch data after we're on the client side
     if (!isClient) return;

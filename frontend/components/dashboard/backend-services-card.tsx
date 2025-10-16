@@ -16,8 +16,7 @@ import {
   Database,
   Target,
   Zap,
-  Activity,
-  Clock
+  Activity
 } from 'lucide-react';
 
 interface BackendServicesCardProps {

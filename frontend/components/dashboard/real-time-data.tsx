@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { TrendingUp, TrendingDown, Users, Activity, Target, Zap } from 'lucide-react';
+import { TrendingUp, TrendingDown } from 'lucide-react';
 import { realTimeService } from '@/lib/real-time-service';
 import { telegramViewsService } from '@/lib/telegram-views-service';
 import { tiktokHashtagsService } from '@/lib/tiktok-hashtags-service';

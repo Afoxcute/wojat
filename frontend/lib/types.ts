@@ -10,7 +10,7 @@ type SearchTokenResponse = {
   name: string;
   symbol: string;
   uri: string;
-  image: any;
+  image: string | null;
 };
 
 type TokenData = {
@@ -18,7 +18,7 @@ type TokenData = {
   name: string;
   symbol: string;
   uri: string;
-  image: any;
+  image: string | null;
   created_at: string;
   address: string;
   prices: Price[];
@@ -28,7 +28,7 @@ type TokenData = {
   views: number;
   mentions: number;
   tweets: Tweet[];
-  tiktoks: any[];
+  tiktoks: TikTokData[];
   // New market data fields
   market_cap?: number;
   total_supply?: number;
@@ -59,7 +59,7 @@ type LeaderboardData = {
   name: string;
   symbol: string;
   uri: string;
-  image: any;
+  image: string | null;
   created_at: string;
   latest_price_usd: number | null;
   latest_market_cap: number | null;
@@ -85,10 +85,19 @@ interface SortableTableHeaderProps {
   direction: SortDirection;
 }
 
+export interface NavItem {
+  title: string;
+  href?: string;
+  disabled?: boolean;
+  external?: boolean;
+  icon?: string;
+  label?: string;
+}
+
 export interface DocsConfig {
-  mainNav: any[];
-  sidebarNav: any[];
-  chartsNav: any[];
+  mainNav: NavItem[];
+  sidebarNav: NavItem[];
+  chartsNav: NavItem[];
 }
 
 interface TradeData {

@@ -7,14 +7,12 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   MessageSquare, 
   Users, 
   Clock, 
   Activity, 
   Search, 
-  Filter,
   ExternalLink,
   Play,
   Pause,
@@ -113,28 +111,6 @@ export default function TelegramChannels({ className }: TelegramChannelsProps) {
       }
     } catch (error) {
       console.error('Error toggling channel:', error);
-    }
-  };
-
-  const handleUpdateInterval = async (channel: TelegramChannel, interval: number) => {
-    try {
-      const updatedChannel = await telegramChannelsService.updateChannel(channel.id, {
-        scrape_interval_minutes: interval
-      });
-      
-      if (updatedChannel) {
-        setData(prev => {
-          if (!prev) return prev;
-          return {
-            ...prev,
-            channels: prev.channels.map(c => 
-              c.id === channel.id ? { ...c, scrape_interval_minutes: updatedChannel.scrape_interval_minutes } : c
-            )
-          };
-        });
-      }
-    } catch (error) {
-      console.error('Error updating interval:', error);
     }
   };
 

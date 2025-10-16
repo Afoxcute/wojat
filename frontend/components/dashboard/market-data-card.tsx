@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { TrendingUp, TrendingDown, DollarSign, Coins, Calendar, Hash } from 'lucide-react';
+import { TrendingUp, TrendingDown, DollarSign, Coins, Hash } from 'lucide-react';
 
 interface MarketDataCardProps {
   token: {

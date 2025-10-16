@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { TrendingUp, TrendingDown, Activity, Target, Zap, Search, Filter, X } from 'lucide-react';
+import { TrendingUp, TrendingDown, Search, Filter, X } from 'lucide-react';
 import { realTimeService } from '@/lib/real-time-service';
 
 interface TrendingCoinsData {
@@ -103,12 +103,6 @@ export default function TrendingCoinsAnalytics() {
     if (score >= 0.6) return 'text-yellow-600';
     if (score >= 0.4) return 'text-orange-600';
     return 'text-red-600';
-  };
-
-  const getPriceChangeColor = (change: number): string => {
-    if (change > 0) return 'text-green-600';
-    if (change < 0) return 'text-red-600';
-    return 'text-gray-600';
   };
 
   const getCorrelationBadgeVariant = (score: number): "default" | "secondary" | "destructive" | "outline" => {
