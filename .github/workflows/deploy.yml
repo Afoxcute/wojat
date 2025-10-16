@@ -88,6 +88,7 @@ jobs:
             # Create wojat directory if it doesn't exist
             mkdir -p ~/wojat
             cd ~/wojat
+            docker-compose down && docker-compose up -d
             
             # Create env directory if it doesn't exist
             mkdir -p ~/wojat/env
@@ -182,7 +183,6 @@ jobs:
             
             # Stop and remove existing containers
             echo "Stopping existing Wojat containers..."
-            docker-compose down && docker-compose up -d
             sudo docker stop wojat-frontend wojat-elizaos-agents wojat-bitquery wojat-js-scraper || true
             sudo docker rm wojat-frontend wojat-elizaos-agents wojat-bitquery wojat-js-scraper || true
             
