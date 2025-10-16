@@ -12,7 +12,6 @@ import {
   MicOff, 
   Bot, 
   User, 
-  TrendingUp, 
   AlertCircle, 
   BarChart3,
   Loader2,

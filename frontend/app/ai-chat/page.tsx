@@ -5,7 +5,6 @@ import { AIChatInterface } from '@/components/ai-chat/ai-chat-interface';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Bot, 
   TrendingUp, 
@@ -13,8 +12,7 @@ import {
   Settings, 
   BarChart3,
   Users,
-  Zap,
-  AlertCircle
+  Zap
 } from 'lucide-react';
 import { aiAgentService, ChatMessage } from '@/lib/services/ai-agent-service';
 import { personalizationService, PersonalizedRecommendation } from '@/lib/services/personalization-service';

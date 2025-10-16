@@ -58,12 +58,8 @@ import {
   Mic, 
   MicOff, 
   Volume2, 
-  VolumeX, 
-  Play, 
   Pause, 
-  RotateCcw,
   Settings,
-  CheckCircle,
   XCircle,
   Loader2
 } from 'lucide-react';
