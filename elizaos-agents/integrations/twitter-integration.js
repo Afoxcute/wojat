@@ -226,13 +226,37 @@ export class TwitterIntegration {
       const user = await this.client.v2.me();
       return user.data;
     } catch (error) {
-      console.error('❌ Error fetching account info:', error);
+      if (error.code === 429) {
+        console.error('❌ Twitter API rate limit exceeded. Please wait before making more requests.');
+        console.error(`Rate limit resets at: ${new Date(error.rateLimit?.reset * 1000).toLocaleString()}`);
+      } else {
+        console.error('❌ Error fetching account info:', error);
+      }
       return null;
     }
   }
 
-  // Check if Twitter integration is working
+  // Check if Twitter integration is working (without API call to avoid rate limits)
   async testConnection() {
+    if (!this.isConfigured) {
+      return { success: false, message: 'Twitter not configured' };
+    }
+
+    // Just check if credentials are configured, don't make API call during initialization
+    // This avoids hitting rate limits during startup
+    if (this.hasValidCredentials()) {
+      return { 
+        success: true, 
+        message: 'Twitter credentials configured (connection not tested to avoid rate limits)',
+        account: null
+      };
+    } else {
+      return { success: false, message: 'Twitter credentials not properly configured' };
+    }
+  }
+
+  // Test actual API connection (use this sparingly due to rate limits)
+  async testAPIConnection() {
     if (!this.isConfigured) {
       return { success: false, message: 'Twitter not configured' };
     }
