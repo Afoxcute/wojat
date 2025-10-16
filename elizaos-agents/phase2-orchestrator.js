@@ -144,38 +144,8 @@ export class Phase2Orchestrator {
       console.log('   ❌ Twitter Manager: Failed');
     }
     
-    // Test Telegram Manager
-    console.log('3️⃣ Testing Telegram Manager Agent...');
-    try {
-      const status = this.telegramManager.getStatus();
-      testResults.telegramManager = {
-        success: true,
-        configured: status.isConfigured,
-        memberCount: status.memberCount
-      };
-      console.log(`   ✅ Telegram Manager: ${status.isConfigured ? 'Configured' : 'Simulation mode'}`);
-    } catch (error) {
-      testResults.telegramManager = { success: false, error: error.message };
-      console.log('   ❌ Telegram Manager: Failed');
-    }
-    
-    // Test Discord Manager
-    console.log('4️⃣ Testing Discord Manager Agent...');
-    try {
-      const status = this.discordManager.getStatus();
-      testResults.discordManager = {
-        success: true,
-        configured: status.isConfigured,
-        memberCount: status.memberCount
-      };
-      console.log(`   ✅ Discord Manager: ${status.isConfigured ? 'Configured' : 'Simulation mode'}`);
-    } catch (error) {
-      testResults.discordManager = { success: false, error: error.message };
-      console.log('   ❌ Discord Manager: Failed');
-    }
-    
     // Test Master Scheduler
-    console.log('5️⃣ Testing Master Scheduler Agent...');
+    console.log('3️⃣ Testing Master Scheduler Agent...');
     try {
       const status = this.masterScheduler.getStatus();
       testResults.masterScheduler = {
