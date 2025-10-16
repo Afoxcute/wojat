@@ -2,6 +2,7 @@
 import MasterSchedulerAgent from './agents/master-scheduler-agent.js';
 import ContentGeneratorAgent from './agents/content-generator-agent.js';
 import TwitterManagerAgent from './agents/twitter-manager-agent.js';
+import DatabaseIntegration from './integrations/database-integration.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -18,11 +19,13 @@ export class Phase2Orchestrator {
     // Individual agents for direct access (Twitter only)
     this.contentGenerator = new ContentGeneratorAgent();
     this.twitterManager = new TwitterManagerAgent();
+    this.database = new DatabaseIntegration();
     
     this.agents = [
       this.masterScheduler,
       this.contentGenerator,
-      this.twitterManager
+      this.twitterManager,
+      this.database
     ];
     
     this.isRunning = false;
@@ -208,10 +211,64 @@ export class Phase2Orchestrator {
     };
   }
 
-  // Create sample campaign data
+  // Create campaign data with real trending information
+  async createRealCampaign() {
+    try {
+      console.log('🔍 Fetching real trending data for campaign...');
+      
+      // Get real trending tokens from database
+      const trendingTokens = await this.database.getTrendingTokens(3);
+      const topToken = trendingTokens[0]; // Get the most trending token
+      
+      // Get trending hashtags
+      const trendingHashtags = await this.database.getTrendingHashtags(5);
+      
+      // Get market analysis
+      const marketAnalysis = await this.database.getMarketAnalysis();
+      
+      // Educational topics rotation
+      const educationalTopics = ['risk-management', 'technical-analysis', 'social-sentiment', 'market-timing'];
+      const randomTopic = educationalTopics[Math.floor(Math.random() * educationalTopics.length)];
+      
+      const campaign = {
+        type: 'real-trending-campaign',
+        timestamp: new Date().toISOString(),
+        trendingData: topToken ? {
+          token: topToken.token,
+          name: topToken.name,
+          price: topToken.price,
+          volume: topToken.volume,
+          hashtags: topToken.hashtags
+        } : null,
+        educationalTopic: randomTopic,
+        marketAnalysis: marketAnalysis,
+        trends: {
+          topToken: topToken?.token || 'Unknown',
+          sentiment: marketAnalysis.confidence,
+          volumeSpike: topToken?.volume > 1000000,
+          hashtags: trendingHashtags
+        }
+      };
+      
+      console.log('✅ Real campaign data created:', {
+        token: campaign.trendingData?.token,
+        price: campaign.trendingData?.price,
+        volume: campaign.trendingData?.volume,
+        educationalTopic: campaign.educationalTopic
+      });
+      
+      return campaign;
+      
+    } catch (error) {
+      console.error('❌ Error creating real campaign, falling back to sample:', error);
+      return this.createSampleCampaign();
+    }
+  }
+
+  // Create sample campaign data (fallback)
   createSampleCampaign() {
     return {
-      type: 'trending-memecoin-campaign',
+      type: 'sample-memecoin-campaign',
       trendingData: {
         token: '$BONK',
         price: 0.000012,
@@ -248,10 +305,10 @@ export async function main() {
     console.log('\n🧪 Running comprehensive agent tests...');
     const testResults = await orchestrator.testAllAgents();
     
-    // Create and run sample campaign
-    console.log('\n🎯 Running sample social media campaign...');
-    const sampleCampaign = orchestrator.createSampleCampaign();
-    const campaignResults = await orchestrator.runSocialMediaCampaign(sampleCampaign);
+    // Create and run a real campaign with database data
+    console.log('\n🎯 Running real social media campaign with database data...');
+    const realCampaign = await orchestrator.createRealCampaign();
+    const campaignResults = await orchestrator.runSocialMediaCampaign(realCampaign);
     
     // Display results
     console.log('\n📊 Wojat Phase 2 System Status:');

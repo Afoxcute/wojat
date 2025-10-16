@@ -21,6 +21,7 @@
   "dependencies": {
     "@elizaos/core": "^0.1.0",
     "@elizaos/plugin-solana": "^0.1.0",
+    "@supabase/supabase-js": "^2.75.0",
     "amqplib": "^0.10.9",
     "dotenv": "^16.4.5",
     "sharp": "^0.34.4",
