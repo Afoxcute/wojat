@@ -21,7 +21,10 @@ export default async function transferTokens() {
     const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
 
     // Get Phantom provider
-    const provider = (window as any).phantom?.solana;
+    const provider = (window as { phantom?: { solana?: { 
+      publicKey?: PublicKey;
+      signAndSendTransaction: (transaction: Transaction) => Promise<{ signature: string }>;
+    } } }).phantom?.solana;
     if (!provider?.publicKey) throw new Error("Wallet not connected!");
 
     // Get the token mint
@@ -40,13 +43,12 @@ export default async function transferTokens() {
     const transaction = new Transaction();
 
     // Check if recipient token account exists
-    let recipientTokenAccountInfo;
     try {
-      recipientTokenAccountInfo = await getAccount(
+      await getAccount(
         connection,
         recipientTokenAccount
       );
-    } catch (error) {
+    } catch {
       // If account doesn't exist, add instruction to create it
       console.log("Creating recipient token account...");
       transaction.add(

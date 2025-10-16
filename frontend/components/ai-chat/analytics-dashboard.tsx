@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { 
   TrendingUp, 
-  TrendingDown, 
   Target, 
   Award, 
   Clock, 
@@ -371,7 +370,7 @@ export function AnalyticsDashboard({ userId = 'user_123', className = '' }: Anal
                   Learning Progress
                 </p>
                 <p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
-                  You're making excellent progress! Focus on portfolio diversification 
+                  You&apos;re making excellent progress! Focus on portfolio diversification 
                   to further improve your trading strategy.
                 </p>
               </div>
@@ -386,7 +385,7 @@ export function AnalyticsDashboard({ userId = 'user_123', className = '' }: Anal
                   Engagement Tip
                 </p>
                 <p className="text-sm text-yellow-700 dark:text-yellow-300 mt-1">
-                  You're using the AI assistant {analytics.engagement.dailyActiveMinutes} minutes daily. 
+                  You&apos;re using the AI assistant {analytics.engagement.dailyActiveMinutes} minutes daily. 
                   Try using voice commands for faster interactions!
                 </p>
               </div>

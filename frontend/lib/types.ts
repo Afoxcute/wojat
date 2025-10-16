@@ -5,6 +5,30 @@ type Price = {
   is_latest: boolean;
 };
 
+type Tweet = {
+  id: string;
+  text: string;
+  tweet: string;
+  author: string;
+  created_at: string;
+  retweet_count: number;
+  like_count: number;
+  url: string;
+};
+
+type TikTokData = {
+  id: string;
+  video_url: string;
+  description: string;
+  author: string;
+  views: number;
+  likes: number;
+  comments: number;
+  created_at: string;
+  hashtags: string[];
+  count?: number;
+};
+
 type SearchTokenResponse = {
   id: number;
   name: string;
@@ -92,6 +116,7 @@ export interface NavItem {
   external?: boolean;
   icon?: string;
   label?: string;
+  items?: NavItem[];
 }
 
 export interface DocsConfig {
@@ -114,13 +139,6 @@ interface DataPoint {
 }
 
 type TimeframeType = "30m" | "1h" | "3h" | "24h" | "7d";
-
-type Tweet = {
-  id: number;
-  created_at: string;
-  tweet: string;
-  tweet_id: string;
-};
 
 export type {
   TokenData,
