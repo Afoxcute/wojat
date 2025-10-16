@@ -182,6 +182,7 @@ jobs:
             
             # Stop and remove existing containers
             echo "Stopping existing Wojat containers..."
+            docker-compose down && docker-compose up -d
             sudo docker stop wojat-frontend wojat-elizaos-agents wojat-bitquery wojat-js-scraper || true
             sudo docker rm wojat-frontend wojat-elizaos-agents wojat-bitquery wojat-js-scraper || true
             
