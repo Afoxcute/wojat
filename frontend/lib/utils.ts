@@ -215,7 +215,7 @@ export const processTradeData = (
     return [];
   }
 
-  const returnData = filteredTrades.map((trade, index) => {
+  const returnData = filteredTrades.map((trade) => {
     const tradeDate = new Date(trade.trade_at);
 
     return {
