@@ -1,8 +1,8 @@
-# Iris - Complete AI-Powered Memecoin Trading Platform
+# Wojat - Complete AI-Powered Memecoin Trading Platform
 
 ## 🎉 Platform Complete!
 
-Iris has been successfully transformed from a simple data collector into a comprehensive, AI-powered autonomous memecoin trading platform. The platform now provides end-to-end capabilities for memecoin discovery, analysis, trading, and portfolio management.
+Wojat has been successfully transformed from a simple data collector into a comprehensive, AI-powered autonomous memecoin trading platform. The platform now provides end-to-end capabilities for memecoin discovery, analysis, trading, and portfolio management.
 
 ## 🏗️ Complete Architecture
 
@@ -16,7 +16,6 @@ Iris has been successfully transformed from a simple data collector into a compr
 - **Content Generator Agent**: AI-powered content creation
 - **Twitter Manager Agent**: Automated Twitter posting
 - **Telegram Manager Agent**: Telegram channel management
-- **Discord Manager Agent**: Discord server management
 - **Master Scheduler Agent**: Cross-platform coordination
 
 ### Phase 3: AI-Powered Frontend ✅
@@ -92,7 +91,6 @@ Iris Platform/
 - **Content Generator Agent**: AI-powered content creation
 - **Twitter Manager Agent**: Automated Twitter posting
 - **Telegram Manager Agent**: Telegram channel management
-- **Discord Manager Agent**: Discord server management
 - **Master Scheduler Agent**: Cross-platform coordination
 
 ### Phase 3: AI-Powered Frontend
@@ -142,9 +140,8 @@ ZORO_ACCESS_TOKEN_SECRET=your_twitter_access_token_secret
 TELEGRAM_BOT_TOKEN=your_telegram_bot_token
 TELEGRAM_CHANNEL_ID=your_telegram_channel_id
 
-# Discord Integration
-DISCORD_BOT_TOKEN=your_discord_bot_token
-DISCORD_GUILD_ID=your_discord_guild_id
+# Discord Integration - REMOVED
+# Discord functionality has been removed from Wojat platform
 ```
 
 ## 🚀 Usage Examples
@@ -193,7 +190,7 @@ npm run dev
 
 ### 2. Social Media Automation
 - **Content Generation**: AI-powered content creation for multiple platforms
-- **Cross-Platform Posting**: Automated posting to Twitter, Telegram, Discord
+- **Cross-Platform Posting**: Automated posting to Twitter, Telegram
 - **Community Management**: Automated community engagement and moderation
 - **Trend Amplification**: Strategic content distribution for maximum reach
 
@@ -272,7 +269,7 @@ cd elizaos-agents && node phase4-orchestrator.js
 ## 🎯 Complete User Journey
 
 ### 1. Discovery Phase
-- User visits Iris platform
+- User visits Wojat platform
 - AI chat interface greets and explains capabilities
 - Personalized dashboard shows relevant memecoins
 - Real-time trend alerts and market updates
@@ -351,7 +348,7 @@ For questions or issues:
 
 ## 🚀 Ready for Launch!
 
-Iris is now a complete, production-ready autonomous memecoin trading platform that can:
+Wojat is now a complete, production-ready autonomous memecoin trading platform that can:
 
 1. **Discover Trends**: Real-time TikTok and social media trend detection
 2. **Analyze Markets**: AI-powered market analysis and prediction

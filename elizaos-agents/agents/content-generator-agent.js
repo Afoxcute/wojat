@@ -17,23 +17,19 @@ export class ContentGeneratorAgent {
     this.contentTemplates = {
       trending: {
         twitter: '🔥 TRENDING ALERT! 🔥\n\n📈 {token} is pumping!\n💰 Price: ${price}\n📊 Volume: ${volume}\n🎬 TikTok: {hashtags}\n\n#Solana #Memecoin #Pump #TikTok #Crypto',
-        telegram: '🚨 <b>TRENDING ALERT!</b> 🚨\n\n📈 <b>{token}</b> is showing strong momentum!\n💰 <b>Price:</b> ${price}\n📊 <b>24h Volume:</b> ${volume}\n🎬 <b>TikTok Hashtags:</b> {hashtags}\n\n#Solana #Memecoin #Pump',
-        discord: '🔥 **TRENDING ALERT!** 🔥\n\n📈 **{token}** is pumping!\n💰 **Price:** ${price}\n📊 **Volume:** ${volume}\n🎬 **TikTok:** {hashtags}\n\n@everyone Check this out!'
+        telegram: '🚨 <b>TRENDING ALERT!</b> 🚨\n\n📈 <b>{token}</b> is showing strong momentum!\n💰 <b>Price:</b> ${price}\n📊 <b>24h Volume:</b> ${volume}\n🎬 <b>TikTok Hashtags:</b> {hashtags}\n\n#Solana #Memecoin #Pump'
       },
       educational: {
         twitter: '📚 MEMECOIN EDUCATION 📚\n\n{title}\n\n{content}\n\n💡 Key takeaway: {takeaway}\n\n#MemecoinEducation #TradingTips #Solana',
-        telegram: '📚 <b>MEMECOIN EDUCATION</b> 📚\n\n<b>{title}</b>\n\n{content}\n\n💡 <b>Key takeaway:</b> {takeaway}\n\n#MemecoinEducation #TradingTips',
-        discord: '📚 **MEMECOIN EDUCATION** 📚\n\n**{title}**\n\n{content}\n\n💡 **Key takeaway:** {takeaway}\n\n#MemecoinEducation #TradingTips'
+        telegram: '📚 <b>MEMECOIN EDUCATION</b> 📚\n\n<b>{title}</b>\n\n{content}\n\n💡 <b>Key takeaway:</b> {takeaway}\n\n#MemecoinEducation #TradingTips'
       },
       analysis: {
         twitter: '📊 MARKET ANALYSIS 📊\n\n{analysis}\n\n🎯 Recommendation: {recommendation}\n📈 Confidence: {confidence}%\n\n#MarketAnalysis #Trading #Solana',
-        telegram: '📊 <b>MARKET ANALYSIS</b> 📊\n\n{analysis}\n\n🎯 <b>Recommendation:</b> {recommendation}\n📈 <b>Confidence:</b> {confidence}%\n\n#MarketAnalysis #Trading',
-        discord: '📊 **MARKET ANALYSIS** 📊\n\n{analysis}\n\n🎯 **Recommendation:** {recommendation}\n📈 **Confidence:** {confidence}%\n\n#MarketAnalysis #Trading'
+        telegram: '📊 <b>MARKET ANALYSIS</b> 📊\n\n{analysis}\n\n🎯 <b>Recommendation:</b> {recommendation}\n📈 <b>Confidence:</b> {confidence}%\n\n#MarketAnalysis #Trading'
       },
       community: {
         twitter: '👥 COMMUNITY SPOTLIGHT 👥\n\n{content}\n\n🎉 Shoutout to our amazing community!\n\n#Community #Memecoin #Solana',
-        telegram: '👥 <b>COMMUNITY SPOTLIGHT</b> 👥\n\n{content}\n\n🎉 Shoutout to our amazing community!\n\n#Community #Memecoin',
-        discord: '👥 **COMMUNITY SPOTLIGHT** 👥\n\n{content}\n\n🎉 Shoutout to our amazing community!\n\n#Community #Memecoin'
+        telegram: '👥 <b>COMMUNITY SPOTLIGHT</b> 👥\n\n{content}\n\n🎉 Shoutout to our amazing community!\n\n#Community #Memecoin'
       }
     };
   }
@@ -138,7 +134,7 @@ export class ContentGeneratorAgent {
         '3/8 What to look for:\n\n• Hashtag growth\n• Video engagement\n• Creator mentions\n• Comment activity\n• Share velocity',
         '4/8 Timing matters:\n\n• Early trend = Higher potential\n• Peak trend = Higher risk\n• Late trend = Lower returns\n• Dead trend = Avoid',
         '5/8 Key indicators:\n\n• Sudden spike in mentions\n• Celebrity involvement\n• Cross-platform spread\n• Media coverage\n• Community buzz',
-        '6/8 Research tools:\n\n• TikTok analytics\n• Social listening tools\n• Google Trends\n• Twitter sentiment\n• Discord activity',
+        '6/8 Research tools:\n\n• TikTok analytics\n• Social listening tools\n• Google Trends\n• Twitter sentiment\n• Community forums',
         '7/8 Risk management:\n\n• Not all trends translate\n• Timing is crucial\n• Social sentiment changes fast\n• Always verify with data',
         '8/8 Pro tips:\n\n• Follow trendsetters\n• Monitor multiple platforms\n• Set alerts for keywords\n• Track engagement metrics\n• Stay ahead of the curve\n\n#TikTokTrends #Memecoin #Analysis'
       ]
@@ -151,8 +147,7 @@ export class ContentGeneratorAgent {
   generatePoll(question, options, platform = 'twitter') {
     const pollTemplates = {
       twitter: `📊 POLL: ${question}\n\n${options.map((opt, i) => `${String.fromCharCode(65 + i)}) ${opt}`).join('\n')}\n\nVote and share your reasoning! 👇`,
-      telegram: `📊 <b>POLL:</b> ${question}\n\n${options.map((opt, i) => `${String.fromCharCode(65 + i)}) ${opt}`).join('\n')}\n\nVote and share your reasoning! 👇`,
-      discord: `📊 **POLL:** ${question}\n\n${options.map((opt, i) => `${String.fromCharCode(65 + i)}) ${opt}`).join('\n')}\n\nVote and share your reasoning! 👇`
+      telegram: `📊 <b>POLL:</b> ${question}\n\n${options.map((opt, i) => `${String.fromCharCode(65 + i)}) ${opt}`).join('\n')}\n\nVote and share your reasoning! 👇`
     };
 
     return pollTemplates[platform];
@@ -162,19 +157,16 @@ export class ContentGeneratorAgent {
   generateAnnouncement(type, data, platform = 'twitter') {
     const announcements = {
       'new-feature': {
-        twitter: `🚀 NEW FEATURE ALERT! 🚀\n\n{feature}\n\n{description}\n\nTry it out and let us know what you think! 👇\n\n#NewFeature #Iris #Memecoin`,
-        telegram: `🚀 <b>NEW FEATURE ALERT!</b> 🚀\n\n<b>{feature}</b>\n\n{description}\n\nTry it out and let us know what you think! 👇`,
-        discord: `🚀 **NEW FEATURE ALERT!** 🚀\n\n**{feature}**\n\n{description}\n\nTry it out and let us know what you think! 👇`
+        twitter: `🚀 NEW FEATURE ALERT! 🚀\n\n{feature}\n\n{description}\n\nTry it out and let us know what you think! 👇\n\n#NewFeature #Wojat #Memecoin`,
+        telegram: `🚀 <b>NEW FEATURE ALERT!</b> 🚀\n\n<b>{feature}</b>\n\n{description}\n\nTry it out and let us know what you think! 👇`
       },
       'partnership': {
-        twitter: `🤝 PARTNERSHIP ANNOUNCEMENT! 🤝\n\nWe\'re excited to partner with {partner}!\n\n{details}\n\n#Partnership #Iris #Memecoin`,
-        telegram: `🤝 <b>PARTNERSHIP ANNOUNCEMENT!</b> 🤝\n\nWe\'re excited to partner with <b>{partner}</b>!\n\n{details}`,
-        discord: `🤝 **PARTNERSHIP ANNOUNCEMENT!** 🤝\n\nWe\'re excited to partner with **{partner}**!\n\n{details}`
+        twitter: `🤝 PARTNERSHIP ANNOUNCEMENT! 🤝\n\nWe\'re excited to partner with {partner}!\n\n{details}\n\n#Partnership #Wojat #Memecoin`,
+        telegram: `🤝 <b>PARTNERSHIP ANNOUNCEMENT!</b> 🤝\n\nWe\'re excited to partner with <b>{partner}</b>!\n\n{details}`
       },
       'milestone': {
-        twitter: `🎉 MILESTONE ACHIEVED! 🎉\n\n{milestone}\n\nThank you to our amazing community! 🙏\n\n#Milestone #Iris #Community`,
-        telegram: `🎉 <b>MILESTONE ACHIEVED!</b> 🎉\n\n{milestone}\n\nThank you to our amazing community! 🙏`,
-        discord: `🎉 **MILESTONE ACHIEVED!** 🎉\n\n{milestone}\n\nThank you to our amazing community! 🙏`
+        twitter: `🎉 MILESTONE ACHIEVED! 🎉\n\n{milestone}\n\nThank you to our amazing community! 🙏\n\n#Milestone #Wojat #Community`,
+        telegram: `🎉 <b>MILESTONE ACHIEVED!</b> �🎉\n\n{milestone}\n\nThank you to our amazing community! 🙏`
       }
     };
 
@@ -234,7 +226,7 @@ export class ContentGeneratorAgent {
     const randomQuestion = pollQuestions[Math.floor(Math.random() * pollQuestions.length)];
     const pollOptions = [
       ['Fear of missing out', 'Risk management', 'Timing entries', 'Finding good projects'],
-      ['TikTok', 'Twitter', 'Discord', 'Telegram'],
+      ['TikTok', 'Twitter', 'Telegram', 'Community Forums'],
       ['Conservative', 'Moderate', 'Aggressive', 'YOLO'],
       ['Minutes', 'Hours', 'Days', 'Weeks']
     ];

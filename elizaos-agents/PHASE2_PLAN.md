@@ -11,7 +11,6 @@ Phase 2 Agents:
 ├── Content Generator Agent    # Creates engaging posts
 ├── Twitter Manager Agent      # Manages Twitter strategy
 ├── Telegram Manager Agent     # Manages Telegram channels
-├── Discord Manager Agent      # Manages Discord servers
 ├── Analytics Agent           # Tracks performance
 ├── Community Manager Agent   # Engages with users
 └── Scheduler Agent           # Manages posting timing
@@ -22,7 +21,6 @@ Phase 2 Agents:
 ### 1. Multi-Platform Management
 - **Twitter**: Enhanced posting, thread creation, engagement
 - **Telegram**: Channel management, community building
-- **Discord**: Server management, role assignments, announcements
 - **Cross-platform**: Unified content strategy across all platforms
 
 ### 2. Intelligent Content Generation
