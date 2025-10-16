@@ -22,6 +22,20 @@ export async function fetchMarketData(tokenMintAddress) {
     throw new Error("ACCESS_TOKEN environment variable is not set");
   }
 
+  // Validate token address format (basic Solana address validation)
+  if (!tokenMintAddress || tokenMintAddress.length < 32 || tokenMintAddress.length > 44) {
+    console.warn(`⚠️ Invalid token address format: ${tokenMintAddress}`);
+    return {
+      tokenMintAddress: tokenMintAddress,
+      supply: null,
+      marketCap: null,
+      currentPrice: null,
+      name: null,
+      symbol: null,
+      decimals: null
+    };
+  }
+
   const query = {
     query: `{
       Solana {
