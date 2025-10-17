@@ -136,7 +136,7 @@ run_tiktok() {
     
     if docker-compose ps js-scraper | grep -q "Up"; then
         print_status "Executing TikTok scraper in scheduled container..."
-        docker-compose exec js-scraper yarn scrape-tiktok
+        docker-compose exec js-scraper su -s /bin/bash scraper -c 'cd /app && yarn scrape-tiktok'
         print_success "TikTok scraper completed"
     else
         print_status "Starting manual TikTok scraper container..."
@@ -151,7 +151,7 @@ run_telegram() {
     
     if docker-compose ps js-scraper | grep -q "Up"; then
         print_status "Executing Telegram scraper in scheduled container..."
-        docker-compose exec js-scraper yarn scrape-telegram
+        docker-compose exec js-scraper su -s /bin/bash scraper -c 'cd /app && yarn scrape-telegram'
         print_success "Telegram scraper completed"
     else
         print_status "Starting manual Telegram scraper container..."
@@ -166,7 +166,7 @@ run_outlight() {
     
     if docker-compose ps js-scraper | grep -q "Up"; then
         print_status "Executing Outlight scraper in scheduled container..."
-        docker-compose exec js-scraper yarn scrape-outlight
+        docker-compose exec js-scraper su -s /bin/bash scraper -c 'cd /app && yarn scrape-outlight'
         print_success "Outlight scraper completed"
     else
         print_status "Starting manual Outlight scraper container..."

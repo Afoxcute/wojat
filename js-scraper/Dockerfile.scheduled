@@ -43,7 +43,7 @@ RUN if [ -f yarn.lock ]; then \
 # Copy source code
 COPY . .
 
-# Create non-root user
+# Create non-root user for running scrapers
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S scraper -u 1001
 
@@ -53,19 +53,18 @@ RUN chown -R scraper:nodejs /app
 # Create log directory and set permissions
 RUN mkdir -p /var/log && chown scraper:nodejs /var/log
 
-# Create cron jobs to run all three scrapers every 3 hours
+# Create cron jobs to run all three scrapers every 3 hours as root
 # Format: minute hour day month weekday command
 # Run TikTok scraper every 3 hours starting at 0 minutes
-RUN echo "0 */3 * * * cd /app && /bin/bash -c 'echo \"[$(date)] Starting TikTok scraper...\" >> /var/log/scraper-cron.log && yarn scrape-tiktok >> /var/log/scraper-cron.log 2>&1 && echo \"[$(date)] TikTok scraper completed\" >> /var/log/scraper-cron.log'" | crontab -
+RUN echo "0 */3 * * * cd /app && su -s /bin/bash scraper -c 'echo \"[$(date)] Starting TikTok scraper...\" >> /var/log/scraper-cron.log && yarn scrape-tiktok >> /var/log/scraper-cron.log 2>&1 && echo \"[$(date)] TikTok scraper completed\" >> /var/log/scraper-cron.log'" | crontab -
 
 # Run Telegram scraper every 3 hours starting at 20 minutes
-RUN echo "20 */3 * * * cd /app && /bin/bash -c 'echo \"[$(date)] Starting Telegram scraper...\" >> /var/log/scraper-cron.log && yarn scrape-telegram >> /var/log/scraper-cron.log 2>&1 && echo \"[$(date)] Telegram scraper completed\" >> /var/log/scraper-cron.log'" | crontab -
+RUN echo "20 */3 * * * cd /app && su -s /bin/bash scraper -c 'echo \"[$(date)] Starting Telegram scraper...\" >> /var/log/scraper-cron.log && yarn scrape-telegram >> /var/log/scraper-cron.log 2>&1 && echo \"[$(date)] Telegram scraper completed\" >> /var/log/scraper-cron.log'" | crontab -
 
 # Run Outlight scraper every 3 hours starting at 40 minutes
-RUN echo "40 */3 * * * cd /app && /bin/bash -c 'echo \"[$(date)] Starting Outlight scraper...\" >> /var/log/scraper-cron.log && yarn scrape-outlight >> /var/log/scraper-cron.log 2>&1 && echo \"[$(date)] Outlight scraper completed\" >> /var/log/scraper-cron.log'" | crontab -
+RUN echo "40 */3 * * * cd /app && su -s /bin/bash scraper -c 'echo \"[$(date)] Starting Outlight scraper...\" >> /var/log/scraper-cron.log && yarn scrape-outlight >> /var/log/scraper-cron.log 2>&1 && echo \"[$(date)] Outlight scraper completed\" >> /var/log/scraper-cron.log'" | crontab -
 
-# Switch to non-root user
-USER scraper
+# Keep running as root for cron daemon, but scrapers run as scraper user
 
 # Expose port (if needed)
 EXPOSE 3003
@@ -82,9 +81,9 @@ echo "   - Outlight scraper: Every 3 hours at :40 minutes"
 echo "📝 Logs will be written to /var/log/scraper-cron.log"
 echo ""
 echo "Available commands:"
-echo "  - Run TikTok manually: docker exec <container> yarn scrape-tiktok"
-echo "  - Run Telegram manually: docker exec <container> yarn scrape-telegram"
-echo "  - Run Outlight manually: docker exec <container> yarn scrape-outlight"
+echo "  - Run TikTok manually: docker exec <container> su -s /bin/bash scraper -c 'cd /app && yarn scrape-tiktok'"
+echo "  - Run Telegram manually: docker exec <container> su -s /bin/bash scraper -c 'cd /app && yarn scrape-telegram'"
+echo "  - Run Outlight manually: docker exec <container> su -s /bin/bash scraper -c 'cd /app && yarn scrape-outlight'"
 echo "  - View logs: docker exec <container> tail -f /var/log/scraper-cron.log"
 echo "  - Check cron: docker exec <container> crontab -l"
 echo ""

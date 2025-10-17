@@ -392,4 +392,6 @@ jobs:
             echo "  - View JS Scraper logs: sudo docker logs wojat-js-scraper"
             echo "  - Check cron schedule: sudo docker exec wojat-js-scraper crontab -l"
             echo "  - View cron logs: sudo docker exec wojat-js-scraper tail -f /var/log/scraper-cron.log"
-            echo "  - Run scrapers manually: sudo docker exec wojat-js-scraper yarn scrape-tiktok"
+            echo "  - Run TikTok manually: sudo docker exec wojat-js-scraper su -s /bin/bash scraper -c 'cd /app && yarn scrape-tiktok'"
+            echo "  - Run Telegram manually: sudo docker exec wojat-js-scraper su -s /bin/bash scraper -c 'cd /app && yarn scrape-telegram'"
+            echo "  - Run Outlight manually: sudo docker exec wojat-js-scraper su -s /bin/bash scraper -c 'cd /app && yarn scrape-outlight'"
