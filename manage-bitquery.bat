@@ -30,9 +30,10 @@ if !errorlevel! equ 0 (
     goto :end
 )
 docker-compose up -d bitquery
-echo [SUCCESS] Bitquery scheduled service started
-echo [INFO] Service will run every 24 hours at 2 AM UTC
-echo [INFO] Use 'manage-bitquery.bat logs' to view logs
+    echo [SUCCESS] Bitquery scheduled service started
+    echo [INFO] Service will run every 12 hours:
+    echo [INFO]   - Bitquery: Every 12 hours at 2:00 AM and 2:00 PM UTC
+    echo [INFO] Use 'manage-bitquery.bat logs' to view logs
 goto :end
 
 :stop
@@ -85,7 +86,7 @@ echo [INFO] Running Bitquery immediately...
 docker-compose ps bitquery | findstr "Up" >nul
 if !errorlevel! equ 0 (
     echo [INFO] Executing manual run in scheduled container...
-    docker-compose exec bitquery node index.mjs
+    docker-compose exec bitquery su -s /bin/bash bitquery -c "cd /app && node index.mjs"
     echo [SUCCESS] Manual run completed
 ) else (
     echo [INFO] Starting manual run container...

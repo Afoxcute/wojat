@@ -42,12 +42,11 @@ RUN chown -R bitquery:nodejs /app
 # Create log directory and set permissions
 RUN mkdir -p /var/log && chown bitquery:nodejs /var/log
 
-# Create cron job to run bitquery every 24 hours at 2 AM UTC
+# Create cron job to run bitquery every 12 hours (at 2 AM and 2 PM UTC)
 # Format: minute hour day month weekday command
-RUN echo "0 2 * * * cd /app && /bin/bash -c 'echo \"[$(date)] Starting scheduled Bitquery run...\" >> /var/log/bitquery-cron.log && node index.mjs >> /var/log/bitquery-cron.log 2>&1 && echo \"[$(date)] Bitquery run completed\" >> /var/log/bitquery-cron.log'" | crontab -
+RUN echo "0 2,14 * * * cd /app && su -s /bin/bash bitquery -c 'echo \"[$(date)] Starting scheduled Bitquery run...\" >> /var/log/bitquery-cron.log && node index.mjs >> /var/log/bitquery-cron.log 2>&1 && echo \"[$(date)] Bitquery run completed\" >> /var/log/bitquery-cron.log'" | crontab -
 
-# Switch to non-root user
-USER bitquery
+# Keep running as root for cron daemon, but bitquery runs as bitquery user
 
 # Expose port (if needed)
 EXPOSE 3002
@@ -57,11 +56,12 @@ RUN cat > /app/start-scheduled.sh << 'EOF'
 #!/bin/bash
 
 echo "🚀 Starting Wojat Bitquery Scheduled Service..."
-echo "📅 Cron job configured to run every 24 hours at 2 AM UTC"
+echo "📅 Cron job configured to run every 12 hours:"
+echo "   - Bitquery: Every 12 hours at 2:00 AM and 2:00 PM UTC"
 echo "📝 Logs will be written to /var/log/bitquery-cron.log"
 echo ""
 echo "Available commands:"
-echo "  - Run manually: docker exec <container> node index.mjs"
+echo "  - Run manually: docker exec <container> su -s /bin/bash bitquery -c 'cd /app && node index.mjs'"
 echo "  - View logs: docker exec <container> tail -f /var/log/bitquery-cron.log"
 echo "  - Check cron: docker exec <container> crontab -l"
 echo ""

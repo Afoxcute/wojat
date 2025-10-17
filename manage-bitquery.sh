@@ -63,7 +63,8 @@ start_service() {
     
     docker-compose up -d bitquery
     print_success "Bitquery scheduled service started"
-    print_status "Service will run every 24 hours at 2 AM UTC"
+    print_status "Service will run every 12 hours:"
+    print_status "  - Bitquery: Every 12 hours at 2:00 AM and 2:00 PM UTC"
     print_status "Use '$0 logs' to view logs"
 }
 
@@ -130,7 +131,7 @@ run_now() {
     
     if docker-compose ps bitquery | grep -q "Up"; then
         print_status "Executing manual run in scheduled container..."
-        docker-compose exec bitquery node index.mjs
+        docker-compose exec bitquery su -s /bin/bash bitquery -c 'cd /app && node index.mjs'
         print_success "Manual run completed"
     else
         print_status "Starting manual run container..."

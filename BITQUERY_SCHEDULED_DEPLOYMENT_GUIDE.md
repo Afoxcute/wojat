@@ -42,8 +42,8 @@ docker-compose exec bitquery crontab -l
 ## ⏰ Scheduling Details
 
 ### Cron Schedule
-- **Frequency**: Every 24 hours
-- **Time**: 2:00 AM UTC
+- **Frequency**: Every 12 hours
+- **Times**: 2:00 AM and 2:00 PM UTC
 - **Command**: `cd /app && node index.mjs`
 - **Logs**: Written to `/var/log/bitquery-cron.log`
 
@@ -51,13 +51,13 @@ docker-compose exec bitquery crontab -l
 The service runs on UTC time. To adjust for your timezone:
 
 ```bash
-# Example: Run at 2 AM local time (adjust TZ as needed)
-# For EST (UTC-5): Run at 7 AM UTC
-# For PST (UTC-8): Run at 10 AM UTC
+# Example: Run at 2 AM and 2 PM local time (adjust TZ as needed)
+# For EST (UTC-5): Run at 7 AM and 7 PM UTC
+# For PST (UTC-8): Run at 10 AM and 10 PM UTC
 
 # Edit the Dockerfile.scheduled and change:
-# FROM: "0 2 * * *" 
-# TO: "0 7 * * *" (for EST) or "0 10 * * *" (for PST)
+# FROM: "0 2,14 * * *" 
+# TO: "0 7,19 * * *" (for EST) or "0 10,22 * * *" (for PST)
 ```
 
 ## 🛠️ Management Commands
