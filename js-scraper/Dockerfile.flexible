@@ -1,4 +1,4 @@
-# JS Scraper Service Dockerfile
+# JS Scraper Service Dockerfile - Individual Scraper Mode
 FROM node:22-alpine
 
 # Install Chrome dependencies and build tools
@@ -51,45 +51,51 @@ USER scraper
 # Expose port (if needed)
 EXPOSE 3003
 
-# Create startup script for all scrapers
-RUN cat > /app/start-all-scrapers.sh << 'EOF'
+# Create flexible startup script
+RUN cat > /app/start-scraper.sh << 'EOF'
 #!/bin/bash
 
 echo "🚀 Starting Wojat JS Scraper Service..."
 echo "📊 Available scrapers: TikTok, Telegram, Outlight"
 echo ""
 
-# Function to run scraper with error handling
-run_scraper() {
-    local name=$1
-    local command=$2
-    
-    echo "🔄 Starting $name scraper..."
-    if yarn $command; then
-        echo "✅ $name scraper completed successfully"
-    else
-        echo "❌ $name scraper failed"
-        return 1
-    fi
-}
+# Check if specific scraper is requested via environment variable
+SCRAPER_TYPE=${SCRAPER_TYPE:-"all"}
 
-# Run all scrapers in sequence
-echo "📱 Running TikTok scraper..."
-yarn scrape-tiktok
+case $SCRAPER_TYPE in
+    "tiktok")
+        echo "📱 Running TikTok scraper only..."
+        yarn scrape-tiktok
+        ;;
+    "telegram")
+        echo "📢 Running Telegram scraper only..."
+        yarn scrape-telegram
+        ;;
+    "outlight")
+        echo "🔍 Running Outlight scraper only..."
+        yarn scrape-outlight
+        ;;
+    "all"|*)
+        echo "🔄 Running all scrapers in sequence..."
+        echo ""
+        echo "📱 Running TikTok scraper..."
+        yarn scrape-tiktok
+        
+        echo ""
+        echo "📢 Running Telegram scraper..."
+        yarn scrape-telegram
+        
+        echo ""
+        echo "🔍 Running Outlight scraper..."
+        yarn scrape-outlight
+        ;;
+esac
 
 echo ""
-echo "📢 Running Telegram scraper..."
-yarn scrape-telegram
-
-echo ""
-echo "🔍 Running Outlight scraper..."
-yarn scrape-outlight
-
-echo ""
-echo "🎉 All scrapers completed!"
+echo "🎉 Scraper(s) completed!"
 EOF
 
-RUN chmod +x /app/start-all-scrapers.sh
+RUN chmod +x /app/start-scraper.sh
 
-# Start all scrapers
-CMD ["/app/start-all-scrapers.sh"]
+# Start scraper based on environment variable
+CMD ["/app/start-scraper.sh"]

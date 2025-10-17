@@ -36,8 +36,23 @@ services:
     networks:
       - wojat-network
 
-  # Bitquery Service
+  # Bitquery Service (Scheduled - runs every 24 hours)
   bitquery:
+    build:
+      context: ./bitquery
+      dockerfile: Dockerfile.scheduled
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env
+    volumes:
+      - bitquery_logs:/var/log
+    restart: unless-stopped
+    networks:
+      - wojat-network
+
+  # Bitquery Manual Service (for immediate runs)
+  bitquery-manual:
     build:
       context: ./bitquery
       dockerfile: Dockerfile
@@ -45,7 +60,8 @@ services:
       - NODE_ENV=production
     env_file:
       - .env
-    restart: unless-stopped
+    profiles:
+      - manual
     networks:
       - wojat-network
 
@@ -59,6 +75,64 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+    networks:
+      - wojat-network
+
+  # JS Scraper Service - Flexible Mode (run specific scrapers)
+  js-scraper-flexible:
+    build:
+      context: ./js-scraper
+      dockerfile: Dockerfile.flexible
+    environment:
+      - NODE_ENV=production
+      - SCRAPER_TYPE=${SCRAPER_TYPE:-all}
+    env_file:
+      - .env
+    profiles:
+      - flexible
+    networks:
+      - wojat-network
+
+  # Individual Scraper Services
+  js-scraper-tiktok:
+    build:
+      context: ./js-scraper
+      dockerfile: Dockerfile.flexible
+    environment:
+      - NODE_ENV=production
+      - SCRAPER_TYPE=tiktok
+    env_file:
+      - .env
+    profiles:
+      - individual
+    networks:
+      - wojat-network
+
+  js-scraper-telegram:
+    build:
+      context: ./js-scraper
+      dockerfile: Dockerfile.flexible
+    environment:
+      - NODE_ENV=production
+      - SCRAPER_TYPE=telegram
+    env_file:
+      - .env
+    profiles:
+      - individual
+    networks:
+      - wojat-network
+
+  js-scraper-outlight:
+    build:
+      context: ./js-scraper
+      dockerfile: Dockerfile.flexible
+    environment:
+      - NODE_ENV=production
+      - SCRAPER_TYPE=outlight
+    env_file:
+      - .env
+    profiles:
+      - individual
     networks:
       - wojat-network
 
@@ -91,6 +165,7 @@ services:
 volumes:
   redis_data:
   postgres_data:
+  bitquery_logs:
 
 networks:
   wojat-network:
