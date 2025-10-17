@@ -44,6 +44,8 @@ show_usage() {
     echo "  restart         Restart all scraper services"
     echo "  status          Show service status"
     echo "  logs            Show recent logs"
+    echo "  cron-logs       Show cron job logs"
+    echo "  schedule        Show cron schedule"
     echo "  run-tiktok      Run TikTok scraper immediately"
     echo "  run-telegram    Run Telegram scraper immediately"
     echo "  run-outlight    Run Outlight scraper immediately"
@@ -156,6 +158,36 @@ show_logs() {
     done
 }
 
+# Function to show cron logs
+show_cron_logs() {
+    print_status "Showing JS scraper cron job logs..."
+    echo ""
+    
+    if docker-compose ps js-scraper | grep -q "Up"; then
+        print_status "Cron Job Logs (last 100 lines):"
+        docker-compose exec js-scraper tail -100 /var/log/js-scraper/cron.log 2>/dev/null || echo "No cron logs available yet"
+    else
+        print_warning "JS scraper service is not running"
+    fi
+}
+
+# Function to show cron schedule
+show_schedule() {
+    print_status "Showing JS scraper cron schedule..."
+    echo ""
+    
+    if docker-compose ps js-scraper | grep -q "Up"; then
+        print_status "Cron Schedule:"
+        docker-compose exec js-scraper crontab -l 2>/dev/null || echo "No cron schedule found"
+        echo ""
+        print_status "Schedule Explanation:"
+        echo "0 */3 * * * - Runs every 3 hours (at 00:00, 03:00, 06:00, 09:00, 12:00, 15:00, 18:00, 21:00)"
+        echo "Runs: TikTok → Telegram → Outlight scrapers in sequence"
+    else
+        print_warning "JS scraper service is not running"
+    fi
+}
+
 # Function to run scraper immediately
 run_scraper() {
     local scraper_type=$1
@@ -212,6 +244,12 @@ case "${1:-help}" in
         ;;
     logs)
         show_logs
+        ;;
+    cron-logs)
+        show_cron_logs
+        ;;
+    schedule)
+        show_schedule
         ;;
     run-tiktok)
         run_scraper "tiktok"

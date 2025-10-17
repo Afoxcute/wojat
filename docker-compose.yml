@@ -75,6 +75,8 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+    volumes:
+      - js_scraper_logs:/var/log/js-scraper
     networks:
       - wojat-network
 
@@ -166,6 +168,7 @@ volumes:
   redis_data:
   postgres_data:
   bitquery_logs:
+  js_scraper_logs:
 
 networks:
   wojat-network:

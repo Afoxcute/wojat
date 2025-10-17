@@ -17,6 +17,8 @@ if "%1"=="stop" goto :stop
 if "%1"=="restart" goto :restart
 if "%1"=="status" goto :status
 if "%1"=="logs" goto :logs
+if "%1"=="cron-logs" goto :cron-logs
+if "%1"=="schedule" goto :schedule
 if "%1"=="run-tiktok" goto :run-tiktok
 if "%1"=="run-telegram" goto :run-telegram
 if "%1"=="run-outlight" goto :run-outlight
@@ -130,6 +132,34 @@ if !errorlevel! equ 0 (
 )
 goto :end
 
+:cron-logs
+echo [INFO] Showing JS scraper cron job logs...
+echo.
+docker-compose ps js-scraper | findstr "Up" >nul
+if !errorlevel! equ 0 (
+    echo [INFO] Cron Job Logs (last 100 lines):
+    docker-compose exec js-scraper tail -100 /var/log/js-scraper/cron.log 2>nul || echo No cron logs available yet
+) else (
+    echo [WARNING] JS scraper service is not running
+)
+goto :end
+
+:schedule
+echo [INFO] Showing JS scraper cron schedule...
+echo.
+docker-compose ps js-scraper | findstr "Up" >nul
+if !errorlevel! equ 0 (
+    echo [INFO] Cron Schedule:
+    docker-compose exec js-scraper crontab -l 2>nul || echo No cron schedule found
+    echo.
+    echo [INFO] Schedule Explanation:
+    echo 0 */3 * * * - Runs every 3 hours (at 00:00, 03:00, 06:00, 09:00, 12:00, 15:00, 18:00, 21:00)
+    echo Runs: TikTok → Telegram → Outlight scrapers in sequence
+) else (
+    echo [WARNING] JS scraper service is not running
+)
+goto :end
+
 :run-tiktok
 echo [INFO] Running TikTok scraper immediately...
 docker-compose --profile individual run --rm js-scraper-tiktok
@@ -168,6 +198,8 @@ echo   stop            Stop all scraper services
 echo   restart         Restart all scraper services
 echo   status          Show service status
 echo   logs            Show recent logs
+echo   cron-logs       Show cron job logs
+echo   schedule        Show cron schedule
 echo   run-tiktok      Run TikTok scraper immediately
 echo   run-telegram    Run Telegram scraper immediately
 echo   run-outlight    Run Outlight scraper immediately
