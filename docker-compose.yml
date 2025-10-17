@@ -69,72 +69,12 @@ services:
   js-scraper:
     build:
       context: ./js-scraper
-      dockerfile: Dockerfile.alternative
+      dockerfile: Dockerfile
     environment:
       - NODE_ENV=production
     env_file:
       - .env
     restart: unless-stopped
-    volumes:
-      - js_scraper_logs:/var/log/js-scraper
-    networks:
-      - wojat-network
-
-  # JS Scraper Service - Flexible Mode (run specific scrapers)
-  js-scraper-flexible:
-    build:
-      context: ./js-scraper
-      dockerfile: Dockerfile.flexible
-    environment:
-      - NODE_ENV=production
-      - SCRAPER_TYPE=${SCRAPER_TYPE:-all}
-    env_file:
-      - .env
-    profiles:
-      - flexible
-    networks:
-      - wojat-network
-
-  # Individual Scraper Services
-  js-scraper-tiktok:
-    build:
-      context: ./js-scraper
-      dockerfile: Dockerfile.flexible
-    environment:
-      - NODE_ENV=production
-      - SCRAPER_TYPE=tiktok
-    env_file:
-      - .env
-    profiles:
-      - individual
-    networks:
-      - wojat-network
-
-  js-scraper-telegram:
-    build:
-      context: ./js-scraper
-      dockerfile: Dockerfile.flexible
-    environment:
-      - NODE_ENV=production
-      - SCRAPER_TYPE=telegram
-    env_file:
-      - .env
-    profiles:
-      - individual
-    networks:
-      - wojat-network
-
-  js-scraper-outlight:
-    build:
-      context: ./js-scraper
-      dockerfile: Dockerfile.flexible
-    environment:
-      - NODE_ENV=production
-      - SCRAPER_TYPE=outlight
-    env_file:
-      - .env
-    profiles:
-      - individual
     networks:
       - wojat-network
 
@@ -168,7 +108,6 @@ volumes:
   redis_data:
   postgres_data:
   bitquery_logs:
-  js_scraper_logs:
 
 networks:
   wojat-network:
