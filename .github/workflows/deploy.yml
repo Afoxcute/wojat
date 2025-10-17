@@ -65,16 +65,27 @@ jobs:
           cache-from: type=registry,ref=${{ env.DOCKER_USERNAME }}/wojat-bitquery:buildcache
           cache-to: type=registry,ref=${{ env.DOCKER_USERNAME }}/wojat-bitquery:buildcache,mode=max
 
-      - name: Build and push JS Scraper image
+      - name: Build and push JS Scraper Scheduled image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./js-scraper
+          file: ./js-scraper/Dockerfile.scheduled
+          push: true
+          tags: |
+            ${{ env.DOCKER_USERNAME }}/wojat-js-scraper-scheduled:latest
+          cache-from: type=registry,ref=${{ env.DOCKER_USERNAME }}/wojat-js-scraper-scheduled:buildcache
+          cache-to: type=registry,ref=${{ env.DOCKER_USERNAME }}/wojat-js-scraper-scheduled:buildcache,mode=max
+
+      - name: Build and push JS Scraper Manual image
         uses: docker/build-push-action@v4
         with:
           context: ./js-scraper
           file: ./js-scraper/Dockerfile
           push: true
           tags: |
-            ${{ env.DOCKER_USERNAME }}/wojat-js-scraper:latest
-          cache-from: type=registry,ref=${{ env.DOCKER_USERNAME }}/wojat-js-scraper:buildcache
-          cache-to: type=registry,ref=${{ env.DOCKER_USERNAME }}/wojat-js-scraper:buildcache,mode=max
+            ${{ env.DOCKER_USERNAME }}/wojat-js-scraper-manual:latest
+          cache-from: type=registry,ref=${{ env.DOCKER_USERNAME }}/wojat-js-scraper-manual:buildcache
+          cache-to: type=registry,ref=${{ env.DOCKER_USERNAME }}/wojat-js-scraper-manual:buildcache,mode=max
 
       - name: Deploy to Ubuntu server
         uses: appleboy/ssh-action@master
@@ -187,7 +198,7 @@ jobs:
             sudo docker pull ${{ env.DOCKER_USERNAME }}/wojat-frontend:latest
             sudo docker pull ${{ env.DOCKER_USERNAME }}/wojat-elizaos-agents:latest
             sudo docker pull ${{ env.DOCKER_USERNAME }}/wojat-bitquery:latest
-            sudo docker pull ${{ env.DOCKER_USERNAME }}/wojat-js-scraper:latest
+            sudo docker pull ${{ env.DOCKER_USERNAME }}/wojat-js-scraper-scheduled:latest
             
             # Create Docker network for Wojat services
             echo "Creating Wojat Docker network..."
@@ -223,15 +234,16 @@ jobs:
               -v /home/ubuntu/wojat/.env:/app/.env:ro \
               ${{ env.DOCKER_USERNAME }}/wojat-bitquery:latest
             
-            # Run JS Scraper container
-            echo "Starting Wojat JS Scraper container..."
+            # Run JS Scraper Scheduled container
+            echo "Starting Wojat JS Scraper Scheduled container..."
             sudo docker run -d \
               --name wojat-js-scraper \
               --network wojat-network \
               --restart unless-stopped \
               -p 3003:3003 \
               -v /home/ubuntu/wojat/.env:/app/.env:ro \
-              ${{ env.DOCKER_USERNAME }}/wojat-js-scraper:latest
+              -v wojat-js-scraper-logs:/var/log \
+              ${{ env.DOCKER_USERNAME }}/wojat-js-scraper-scheduled:latest
             
             # Verify deployment
             echo "Verifying Wojat Platform deployment..."
@@ -264,6 +276,23 @@ jobs:
                 sudo docker logs $container
               fi
             done
+            
+            # Check JS Scraper scheduled service specifically
+            echo "=== JS Scraper Scheduled Service Status ==="
+            if sudo docker ps | grep -q wojat-js-scraper; then
+              echo "✅ JS Scraper scheduled service is running"
+              echo "Checking cron schedule..."
+              sudo docker exec wojat-js-scraper crontab -l || echo "Could not retrieve cron schedule"
+              echo "Checking cron logs..."
+              sudo docker exec wojat-js-scraper tail -10 /var/log/scraper-cron.log 2>/dev/null || echo "No cron logs available yet"
+              echo ""
+              echo "JS Scraper will run every 3 hours:"
+              echo "  - TikTok scraper: Every 3 hours at :00 minutes"
+              echo "  - Telegram scraper: Every 3 hours at :20 minutes"
+              echo "  - Outlight scraper: Every 3 hours at :40 minutes"
+            else
+              echo "❌ JS Scraper scheduled service is not running"
+            fi
             
             echo "Wojat Platform deployment completed at $(date '+%Y-%m-%d %H:%M:%S UTC')"
 
@@ -331,9 +360,36 @@ jobs:
               sudo docker logs --tail 10 $container | grep -i "supabase\|database\|connection\|error" || echo "No Supabase-related messages in recent logs"
             done
             
+            # JS Scraper Scheduled Service Verification
+            echo "=== JS Scraper Scheduled Service Verification ==="
+            if sudo docker ps | grep -q wojat-js-scraper; then
+              echo "✅ JS Scraper scheduled service is running"
+              echo "Cron Schedule:"
+              sudo docker exec wojat-js-scraper crontab -l
+              echo ""
+              echo "Recent Cron Logs:"
+              sudo docker exec wojat-js-scraper tail -20 /var/log/scraper-cron.log 2>/dev/null || echo "No cron logs available yet"
+              echo ""
+              echo "Service Status:"
+              sudo docker exec wojat-js-scraper ps aux | grep cron || echo "Cron daemon not found"
+            else
+              echo "❌ JS Scraper scheduled service is not running"
+            fi
+            
             echo ""
             echo "=== Wojat Platform Deployment Verification Complete ==="
             echo "🌐 Frontend accessible at: http://$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4):3000"
             echo "🤖 ElizaOS Agents accessible at: http://$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4):3001"
             echo "📊 Bitquery Service accessible at: http://$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4):3002"
-            echo "🔍 JS Scraper accessible at: http://$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4):3003"
+            echo "🔍 JS Scraper Scheduled Service accessible at: http://$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4):3003"
+            echo ""
+            echo "📅 JS Scraper Schedule:"
+            echo "  - TikTok scraper: Every 3 hours at :00 minutes"
+            echo "  - Telegram scraper: Every 3 hours at :20 minutes"
+            echo "  - Outlight scraper: Every 3 hours at :40 minutes"
+            echo ""
+            echo "📝 Management Commands:"
+            echo "  - View JS Scraper logs: sudo docker logs wojat-js-scraper"
+            echo "  - Check cron schedule: sudo docker exec wojat-js-scraper crontab -l"
+            echo "  - View cron logs: sudo docker exec wojat-js-scraper tail -f /var/log/scraper-cron.log"
+            echo "  - Run scrapers manually: sudo docker exec wojat-js-scraper yarn scrape-tiktok"

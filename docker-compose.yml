@@ -65,8 +65,23 @@ services:
     networks:
       - wojat-network
 
-  # JS Scraper Service (includes TikTok, Telegram, Outlight scrapers)
+  # JS Scraper Service (Scheduled - runs TikTok, Telegram, Outlight every 3 hours)
   js-scraper:
+    build:
+      context: ./js-scraper
+      dockerfile: Dockerfile.scheduled
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env
+    volumes:
+      - js_scraper_logs:/var/log
+    restart: unless-stopped
+    networks:
+      - wojat-network
+
+  # JS Scraper Manual Service (for immediate runs)
+  js-scraper-manual:
     build:
       context: ./js-scraper
       dockerfile: Dockerfile
@@ -74,7 +89,8 @@ services:
       - NODE_ENV=production
     env_file:
       - .env
-    restart: unless-stopped
+    profiles:
+      - manual
     networks:
       - wojat-network
 
@@ -108,6 +124,7 @@ volumes:
   redis_data:
   postgres_data:
   bitquery_logs:
+  js_scraper_logs:
 
 networks:
   wojat-network:
