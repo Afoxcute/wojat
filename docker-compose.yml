@@ -69,7 +69,7 @@ services:
   js-scraper:
     build:
       context: ./js-scraper
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.alternative
     environment:
       - NODE_ENV=production
     env_file:
