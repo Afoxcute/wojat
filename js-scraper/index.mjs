@@ -171,7 +171,13 @@ async function initBrowser() {
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage'
+        '--disable-dev-shm-usage',
+        '--disable-blink-features=AutomationControlled',
+        '--disable-features=VizDisplayCompositor',
+        '--disable-web-security',
+        '--disable-features=TranslateUI',
+        '--disable-ipc-flooding-protection',
+        '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
       ]
     });
     return browser;
@@ -184,11 +190,11 @@ async function initBrowser() {
 const verifyPageLoaded = async (page, url, timeout = 60000) => {
   try {
     logger.info(`Loading ${url}...`);
-    await page.goto(url, { waitUntil: "networkidle0", timeout });
+    await page.goto(url, { waitUntil: "domcontentloaded", timeout });
     console.log('waiting for body')
     await page.waitForSelector("body");
     console.log('waiting for timeout')
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    await new Promise((resolve) => setTimeout(resolve, 8000)); // Increased wait time
     logger.info(`Successfully loaded ${url}`);
     return true;
   } catch (e) {
@@ -316,16 +322,20 @@ const processSearchTerm = async (page, keyword, maxResults = 50) => {
 
 const processHashtagTerm = async (page, keyword, maxResults = 50) => {
   const hashtagUrl = `https://www.tiktok.com/tag/${keyword}`;
+  const searchUrl = `https://www.tiktok.com/search?q=${keyword}`;
   const results = [];
   const scrollPauseTime = 2000;
   const startTime = Date.now();
   const SCRAPING_TIMEOUT = 300000; // 5 minutes timeout
+  const maxRetries = 15; // Maximum number of retries
+  let retryCount = 0;
+  let currentUrl = hashtagUrl;
 
   try {
     console.log(`\nProcessing hashtag term: ${keyword}`);
-    console.log(`Navigating to: ${hashtagUrl}`);
+    console.log(`Navigating to: ${currentUrl}`);
 
-    if (await verifyPageLoaded(page, hashtagUrl)) {
+    if (await verifyPageLoaded(page, currentUrl)) {
       console.log("\nWaiting for video feed...");
 
       // Timeout check
@@ -334,14 +344,78 @@ const processHashtagTerm = async (page, keyword, maxResults = 50) => {
         return results;
       }
 
-while (results.length < maxResults) {
-        const videoElements = await page.$$('div[class*="DivItemContainerV2"]') || [];
+      while (results.length < maxResults && retryCount < maxRetries) {
+        // Try multiple selectors for video elements (same as search terms)
+        let videoElements = await page.$$('div[class*="DivItemContainerForSearch"]') || [];
+        
+        // If no elements found, try alternative selectors
+        if (!videoElements.length) {
+          videoElements = await page.$$('div[class*="DivItemContainerV2"]') || [];
+        }
+        
+        // Try more generic selectors
+        if (!videoElements.length) {
+          videoElements = await page.$$('[data-e2e="search-video-item"]') || [];
+        }
+        
+        // Try even more generic selectors
+        if (!videoElements.length) {
+          videoElements = await page.$$('div[class*="ItemContainer"]') || [];
+        }
+
+        // Try TikTok's newer selectors
+        if (!videoElements.length) {
+          videoElements = await page.$$('div[class*="DivVideoFeedItem"]') || [];
+        }
+
+        // Try even more generic video-related selectors
+        if (!videoElements.length) {
+          videoElements = await page.$$('div[class*="VideoItem"]') || [];
+        }
+
+        // Try link-based selectors
+        if (!videoElements.length) {
+          videoElements = await page.$$('a[href*="/video/"]') || [];
+        }
 
         if (!videoElements.length) {
-          console.log("No video elements found. Waiting...");
+          retryCount++;
+          console.log(`No video elements found. Waiting... (Attempt ${retryCount}/${maxRetries})`);
+          
+          if (retryCount >= maxRetries) {
+            console.log("\n❌ Maximum retries reached. TikTok may be blocking or has changed structure.");
+            console.log("🔄 Attempting to refresh page and try different approach...");
+            
+            // Try refreshing the page once, then fallback to search URL
+            if (retryCount === maxRetries) {
+              try {
+                if (currentUrl === hashtagUrl) {
+                  console.log("🔄 Trying search URL as fallback...");
+                  currentUrl = searchUrl;
+                  await page.goto(currentUrl, { waitUntil: "domcontentloaded" });
+                  await new Promise((resolve) => setTimeout(resolve, 10000));
+                  retryCount = 0; // Reset retry count
+                  continue;
+                } else {
+                  console.log("❌ Both hashtag and search URLs failed. Moving to next hashtag.");
+                  break;
+                }
+              } catch (refreshError) {
+                console.log("❌ Fallback failed. Moving to next hashtag.");
+                break;
+              }
+            } else {
+              break;
+            }
+          }
+          
+          // Try scrolling to trigger content loading
+          await page.evaluate("window.scrollTo(0, document.documentElement.scrollHeight)");
           await new Promise((resolve) => setTimeout(resolve, 5000));
           continue;
         }
+
+        console.log(`Found ${videoElements.length} video elements`);
 
         for (const element of videoElements) {
           if (results.length >= maxResults) break;
@@ -349,7 +423,7 @@ while (results.length < maxResults) {
           const videoData = await extractVideoData(element);
           if (videoData?.video_url && !processedUrls.has(videoData.video_url)) {
             console.log(
-              `Found video ${results.length}/${maxResults}: ${videoData.video_url}`
+              `Found video ${results.length + 1}/${maxResults}: ${videoData.video_url}`
             );
 
             const postId = videoData.video_url.split("/").pop();
@@ -362,10 +436,11 @@ while (results.length < maxResults) {
         }
 
         if (results.length >= maxResults) {
-          console.log(`\nReached target number of videos for '${keyword}'`);
+          console.log(`\n✅ Reached target number of videos for '#${keyword}'`);
           break;
         }
 
+        // Scroll down to load more content
         const previousHeight = await page.evaluate(
           "document.documentElement.scrollHeight"
         );
@@ -377,8 +452,9 @@ while (results.length < maxResults) {
         const newHeight = await page.evaluate(
           "document.documentElement.scrollHeight"
         );
+
         if (newHeight === previousHeight) {
-          console.log(`\nReached end of feed for '${keyword}'`);
+          console.log(`\n⚠️ No new content loaded for '#${keyword}'. Moving to next hashtag.`);
           break;
         }
       }
@@ -422,6 +498,10 @@ const main = async () => {
   const selectedProfile = "Profile 3";
   logger.info(`Using Chrome profile: ${selectedProfile}`);
 
+  // Set overall timeout for the entire scraping process
+  const OVERALL_TIMEOUT = 1800000; // 30 minutes
+  const startTime = Date.now();
+
   try {
     logger.info("Starting Chrome with profile...");
     const browser = await initBrowser();
@@ -432,6 +512,28 @@ const main = async () => {
     }
 
     const page = await browser.newPage();
+    
+    // Set up page to avoid detection
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+    await page.setViewport({ width: 1920, height: 1080 });
+    
+    // Remove webdriver property
+    await page.evaluateOnNewDocument(() => {
+      Object.defineProperty(navigator, 'webdriver', {
+        get: () => undefined,
+      });
+    });
+    
+    // Set extra headers
+    await page.setExtraHTTPHeaders({
+      'Accept-Language': 'en-US,en;q=0.9',
+      'Accept-Encoding': 'gzip, deflate, br',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+      'Upgrade-Insecure-Requests': '1',
+      'Cache-Control': 'no-cache',
+      'Pragma': 'no-cache'
+    });
+    
     logger.info("Chrome started successfully");
 
     const allResults = [];
@@ -440,6 +542,12 @@ const main = async () => {
 
     // Process search terms
     for (const search of searchTerms) {
+      // Check overall timeout
+      if (Date.now() - startTime > OVERALL_TIMEOUT) {
+        console.log("\n⏰ Overall timeout reached. Stopping scraping process.");
+        break;
+      }
+      
       const results = await processSearchTerm(page, search, 100);
       if (results.length) {
         allResults.push({
@@ -475,6 +583,12 @@ const main = async () => {
 
     // Process hashtag terms
     for (const hashtag of hashtagTerms) {
+      // Check overall timeout
+      if (Date.now() - startTime > OVERALL_TIMEOUT) {
+        console.log("\n⏰ Overall timeout reached. Stopping scraping process.");
+        break;
+      }
+      
       const results = await processHashtagTerm(page, hashtag, 200);
       if (results.length) {
         allResults.push({

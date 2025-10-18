@@ -21,9 +21,9 @@ COPY yarn.lock* ./
 
 # Use yarn if yarn.lock exists, otherwise use npm
 RUN if [ -f yarn.lock ]; then \
-        yarn install --frozen-lockfile --production; \
+        yarn install --frozen-lockfile --production --legacy-peer-deps; \
     else \
-        npm install --omit=dev; \
+        npm install --omit=dev --legacy-peer-deps; \
     fi
 
 # Copy source code

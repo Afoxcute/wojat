@@ -76,17 +76,17 @@ chmod +x $WOJAT_DIR/start-wojat-server.js
 
 # Install dependencies
 echo -e "${YELLOW}📦 Installing application dependencies...${NC}"
-sudo -u $WOJAT_USER bash -c "cd $WOJAT_DIR && yarn install"
+sudo -u $WOJAT_USER bash -c "cd $WOJAT_DIR && yarn install --legacy-peer-deps"
 
 # Install frontend dependencies
 echo -e "${YELLOW}📦 Installing frontend dependencies...${NC}"
-sudo -u $WOJAT_USER bash -c "cd $WOJAT_DIR/frontend && yarn install && yarn build"
+sudo -u $WOJAT_USER bash -c "cd $WOJAT_DIR/frontend && yarn install --legacy-peer-deps && yarn build"
 
 # Install service dependencies
 echo -e "${YELLOW}📦 Installing service dependencies...${NC}"
-sudo -u $WOJAT_USER bash -c "cd $WOJAT_DIR/elizaos-agents && npm install"
-sudo -u $WOJAT_USER bash -c "cd $WOJAT_DIR/bitquery && npm install"
-sudo -u $WOJAT_USER bash -c "cd $WOJAT_DIR/js-scraper && npm install"
+sudo -u $WOJAT_USER bash -c "cd $WOJAT_DIR/elizaos-agents && npm install --legacy-peer-deps"
+sudo -u $WOJAT_USER bash -c "cd $WOJAT_DIR/bitquery && npm install --legacy-peer-deps"
+sudo -u $WOJAT_USER bash -c "cd $WOJAT_DIR/js-scraper && npm install --legacy-peer-deps"
 
 # Create environment file
 echo -e "${YELLOW}⚙️ Setting up environment configuration...${NC}"
